@@ -40,10 +40,10 @@ Our team had an amazing time working on this project, and hope to share our insi
 
 | Official Full Name  | Student ID (MTech Applicable)  | Work Items (Who Did What) | Email (Optional) |
 | :------------ |:---------------:| :-----| :-----|
-| Antonia Devina |  | • Front-end development <br>• Google Dialogflow & API setup <br>• Knowledge-based system configuration <br>• Report and video presentation| e0689798@u.nus.edu |
-| Chwa Choon Xiang | A0229962R | • Market researching <br>• Collecting information <br>• Composing report <br>• Other assistant works| e0687370@u.nus.edu|
-| Gerard Ong Zi Quan |  | • Design the architecture <br>• Front-end development <br>• Routers/MySQL/Google Map setup <br>• Bug fix| e0687375@u.nus.edu |
-| Benjamin Quek Xiang Yi |  | • Data collection (Python crawler) <br>• Back-end development <br>• Front-end development <br>• Google Dialogflow setup| e0687381@u.nus.edu |
+| Antonia Devina |  | | e0689798@u.nus.edu |
+| Chwa Choon Xiang | A0229962R | | e0687370@u.nus.edu|
+| Gerard Ong Zi Quan |  | | e0687375@u.nus.edu |
+| Benjamin Quek Xiang Yi |  | | e0687381@u.nus.edu |
 
 ---
 
