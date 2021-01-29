@@ -1,114 +1,64 @@
-<p align="center">
-  <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
-</p>
 
-<h3 align="center">Project Title</h3>
+## SECTION 1 : PROJECT TITLE
+## CarsAI - Car Recommendation System.
 
-<div align="center">
-
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
-
-</div>
+<img src="https://github.com/se7ven012/IRS-PM-2020-10-31-IS02PT-GRP5-CarsAI-CarRecommendationSystem/blob/master/Miscellaneous/pic.png"
+     style="float: left; margin-right: 0px;" />
 
 ---
 
-<p align="center"> Few lines describing your project.
-    <br> 
-</p>
+## SECTION 2 : EXECUTIVE SUMMARY / PAPER ABSTRACT
 
-## 📝 Table of Contents
+Affected by the COVID-19, many industries have been hit hard, and the automobile industry is no exception. Dealers cannot restore the original customer flow soon. It is undoubtedly a massive loss for vehicle manufacturers, especially whose sale is over millions. At the same time, the usual after-sales business cannot be carried out due to the pandemic. Consumers feel great inconvenience in both pre-sales and after-sales services. Therefore, it is essential to open up new online services.  
+As an established car manufacturer, Audi is well known in the field of automobile. To help Audi tide over the difficulties, we designed a car recommendation system, which saves human resources in the sales process, brings a personalized shopping experience to consumers, and improve the user experience of after-sales services. The system allows Audi to gain more advantages in the automotive market competition and make up for the pandemic's losses.
 
-- [About](#about)
-- [Getting Started](#getting_started)
-- [Deployment](#deployment)
-- [Usage](#usage)
-- [Built Using](#built_using)
-- [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
-- [Authors](#authors)
-- [Acknowledgments](#acknowledgement)
+---
 
-## 🧐 About <a name = "about"></a>
+## SECTION 3 : CREDITS / PROJECT CONTRIBUTION
 
-Write about 1-2 paragraphs describing the purpose of your project.
+| Official Full Name  | Student ID (MTech Applicable)  | Work Items (Who Did What) | Email (Optional) |
+| :------------ |:---------------:| :-----| :-----|
+| Antonia Devina |  | • Front-end development <br>• Google Dialogflow & API setup <br>• Knowledge-based system configuration <br>• Report and video presentation| e0689798@u.nus.edu |
+| Chwa Choon Xiang | A0229962R | • Market researching <br>• Collecting information <br>• Composing report <br>• Other assistant works| e0687370@u.nus.edu|
+| Gerard Ong Zi Quan |  | • Design the architecture <br>• Front-end development <br>• Routers/MySQL/Google Map setup <br>• Bug fix| e0687375@u.nus.edu |
+| Benjamin Quek Xiang Yi |  | • Data collection (Python crawler) <br>• Back-end development <br>• Front-end development <br>• Google Dialogflow setup| e0687381@u.nus.edu |
 
-## 🏁 Getting Started <a name = "getting_started"></a>
+---
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+## SECTION 4 : VIDEO OF SYSTEM MODELLING & USE CASE DEMO
 
-### Prerequisites
+[![CarsAI](https://github.com/se7ven012/IRS-PM-2020-10-31-IS02PT-GRP5-CarsAI-CarRecommendationSystem/blob/master/Miscellaneous/pic.png)](https://youtu.be/pTkbI4d4ZjM)
+---
 
-What things you need to install the software and how to install them.
+## SECTION 5 : USER GUIDE
 
-```
-Give examples
-```
+Refer to appendix <User Guide> in project report at Github Folder: User_Guide <br>
+https://github.com/se7ven012/IRS-PM-2020-10-31-IS02PT-GRP5-CarsAI-CarRecommendationSystem/blob/master/User_Guide/User%20Guide.pdf
 
-### Installing
+---
+## SECTION 6 : PROJECT REPORT / PAPER
 
-A step by step series of examples that tell you how to get a development env running.
+Refer to project report at Github Folder: Project_report <br>
 
-Say what the step will be
+- Executive Summary
+- Market Research
+- System Architecture
+- Systen Design and Implementation
+- Conclusions
+- Appendix A: Project Proposal
+- Appendix B: Mapped System Functionalities against knowledge, techniques and skills of modular courses: MR, RS, CGS
+- Appendix C: Installation and User Guide
+- Appendix D: Individual project report
+---
+## SECTION 7 : MISCELLANEOUS
 
-```
-Give the example
-```
+Refer to Github Folder: Miscellaneous
+---
 
-And repeat
+**This [Machine Reasoning (MR)](https://www.iss.nus.edu.sg/executive-education/course/detail/machine-reasoning "Machine Reasoning") course is part of the Analytics and Intelligent Systems and Graduate Certificate in [Intelligent Reasoning Systems (IRS)](https://www.iss.nus.edu.sg/stackable-certificate-programmes/intelligent-systems "Intelligent Reasoning Systems") series offered by [NUS-ISS](https://www.iss.nus.edu.sg "Institute of Systems Science, National University of Singapore").**
 
-```
-until finished
-```
+**Lecturer: [GU Zhan (Sam)](https://www.iss.nus.edu.sg/about-us/staff/detail/201/GU%20Zhan "GU Zhan (Sam)")**
 
-End with an example of getting some data out of the system or using it for a little demo.
+[![alt text](https://www.iss.nus.edu.sg/images/default-source/About-Us/7.6.1-teaching-staff/sam-website.tmb-.png "Let's check Sam' profile page")](https://www.iss.nus.edu.sg/about-us/staff/detail/201/GU%20Zhan)
 
-## 🔧 Running the tests <a name = "tests"></a>
-
-Explain how to run the automated tests for this system.
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## 🎈 Usage <a name="usage"></a>
-
-Add notes about how to use the system.
-
-## 🚀 Deployment <a name = "deployment"></a>
-
-Add additional notes about how to deploy this on a live system.
-
-## ⛏️ Built Using <a name = "built_using"></a>
-
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
-
-## ✍️ Authors <a name = "authors"></a>
-
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
-
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
-
-## 🎉 Acknowledgements <a name = "acknowledgement"></a>
-
-- Hat tip to anyone whose code was used
-- Inspiration
-- References
+**zhan.gu@nus.edu.sg**
