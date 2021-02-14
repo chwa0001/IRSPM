@@ -42,7 +42,7 @@ Our team had an amazing time working on this project, and hope to share our insi
 | :------------ |:---------------:| :-----| :-----|
 | Antonia Devina | A0127686R | | e0689798@u.nus.edu |
 | Chwa Choon Xiang | A0229962R | | e0687370@u.nus.edu|
-| Gerard Ong Zi Quan |  | | e0687375@u.nus.edu |
+| Gerard Ong Zi Quan | A0229967H | | e0687375@u.nus.edu |
 | Benjamin Quek Xiang Yi |  | | e0687381@u.nus.edu |
 
 ---
