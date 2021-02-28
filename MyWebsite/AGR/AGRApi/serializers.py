@@ -1,9 +1,18 @@
 from rest_framework import serializers
-from .models import Room
+from .models import User,UserData
 
 
-class RoomSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Room
-        fields = ('id', 'code', 'host', 'guest_can_pause',
-                  'votes_to_skip', 'created_at')
+        model = User
+        fields = ('id', 'code', 'fullname','DOB','username', 'password', 'created_at')
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('fullname','DOB','username', 'password')
+
+class UserDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserData
+        fields = ('id','user','fitness_level','gender','goal','accomplishment','bmi','intensity')
