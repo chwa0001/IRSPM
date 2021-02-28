@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class AgrapiConfig(AppConfig):
+class ApiConfig(AppConfig):
     name = 'AGRApi'
