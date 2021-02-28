@@ -3,11 +3,11 @@ import { MuiThemeProvider, CssBaseline } from "@material-ui/core";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { render } from "react-dom";
 
-import HomePage from "./HomePage";
 import SecondHomePage from "./SecondHomePage";
 import theme from "./styles/theme";
 import GlobalStyles from "./styles/GlobalStyles";
 import Pace from "./components/Pace";
+import SignIn from "./SignIn";
 
 export default class App extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ export default class App extends Component {
         <Suspense fallback={<Fragment />}>
           <Switch>
             <Route exact path="/">
-              <HomePage />
+              <SignIn />
             </Route>
             <Route exact path="/SecondHome" component={SecondHomePage}>
             </Route>
