@@ -5,4 +5,5 @@ urlpatterns = [
     path('', index),
     path('Home', index),
     path('SecondHome', index),
+    path('SignUp', index),
 ]

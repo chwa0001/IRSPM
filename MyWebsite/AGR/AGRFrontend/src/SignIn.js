@@ -1,5 +1,7 @@
 
-import React from 'react';
+import React,{useState,useEffect} from 'react';
+import { useHistory } from "react-router-dom";
+import Alert from '@material-ui/lab/Alert';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,7 +21,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Advance Gym Recommender (AGR) 
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -49,6 +51,55 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const [username,setUsername] = useState('');
+  const [password,setPassword] = useState('');
+  const [alertText,setAlertText] = useState('');
+  const [alertShow,setAlertShow] = useState('hidden');
+
+  let history = useHistory();
+  const [userStatus, setUserStatus] = useState(-1);
+  useEffect(() => {
+    if(userStatus===0)
+    {
+      setUserStatus(-1);
+      history.push(`/SecondHome?username=${username}`);
+    }
+    else if (userStatus===1)
+    {
+      setUserStatus(-1);
+      setAlertShow('visible');
+      setAlertText('Wrong password!');
+    }
+    else if (userStatus===2){
+      setUserStatus(-1);
+      setAlertShow('visible');
+      setAlertText('Invalid username!');
+    }
+  }, [userStatus])
+  function TryLogin(username,password) {
+  const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+  };
+  if (username!='' && password!=''){
+  fetch('/AGR/LoginUser', requestOptions)
+      .then(response => response.json())
+      .then(
+        (data) => {
+          setUserStatus(data.status);
+        },
+        (error) => {alert(str(error))}
+      )
+      }
+  else{
+    if(username==''){alert('Username cannot be blank!')}
+    else if(password==''){alert('Password cannot be blank!')}
+  }
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -66,11 +117,12 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username1"
             autoFocus
+            onChange={e => setUsername(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -82,17 +134,19 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={e => setPassword(e.target.value)}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
           <Button
-            type="submit"
+            // type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            // className={classes.submit}
+            onClick={() => TryLogin(username,password)}
           >
             Sign In
           </Button>
@@ -103,13 +157,16 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/SignUp" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
           </Grid>
         </form>
       </div>
+      <Box mt={1} visibility={alertShow}>
+      <Alert severity="error">{alertText}</Alert>
+      </Box>
       <Box mt={8}>
         <Copyright />
       </Box>

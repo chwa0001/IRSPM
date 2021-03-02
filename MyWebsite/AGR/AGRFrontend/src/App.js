@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { render } from "react-dom";
 
 import SecondHomePage from "./SecondHomePage";
+import SignUp from "./SignUp";
 import theme from "./styles/theme";
 import GlobalStyles from "./styles/GlobalStyles";
 import Pace from "./components/Pace";
@@ -26,8 +27,8 @@ export default class App extends Component {
             <Route exact path="/">
               <SignIn />
             </Route>
-            <Route exact path="/SecondHome" component={SecondHomePage}>
-            </Route>
+            <Route exact path="/SecondHome" component={SecondHomePage}/>
+            <Route exact path="/SignUp" component={SignUp}/>
           </Switch>
         </Suspense>
       </MuiThemeProvider>
