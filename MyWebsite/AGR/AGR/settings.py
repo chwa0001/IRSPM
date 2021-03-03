@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'AGRApi.apps.ApiConfig',
     'rest_framework',
-    'AGRFrontend.apps.FrontendConfig'
+    'AGRFrontend.apps.FrontendConfig',
+    'AGRExercises.apps.AgrexercisesConfig'
 ]
 
 MIDDLEWARE = [
