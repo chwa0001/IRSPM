@@ -11,7 +11,7 @@ class Exercise(models.Model):
     equipment               = models.CharField(max_length=100,blank=True,null=True)
     difficulty              = models.CharField(max_length=20,blank=True,null=True)
     instruction_text        = models.TextField(blank=True,null=True)
-    pic_url                 = models.TextField(blank=True,null=True)
+    pic_no                 = models.TextField(blank=True,null=True)
     link_url                = models.URLField(blank=True,null=True)
     class Meta:
         db_table = 'EXERCISE'
@@ -36,3 +36,14 @@ class RoutineExercises(models.Model):
     Exercise        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     class Meta: 
         db_table = 'ROUTINE_EXERICSE'
+
+
+def generate_database(): 
+    ex_db = pd.read_excel("ExerciseDataBase2.xlsx",index_col=0).dropna(axis=1, thresh=90).drop_duplicates()
+    for ind,ex in ex_db.iterrows():
+        e = Exercise(exercise_name = ex['Exercise Name'], main_musclegroup = ex['MainMuscleGroup'], 
+                        detailed_musclegroup = ex['DetailedMuscleGroup'], other_musclegroups = ex['OtherMuscleGroups'],
+                        exercise_type = ex['Type'], mechanics = ex['Mechanics'], equipment = ex['Equipment'], 
+                        difficulty = ex['Difficulty'], instruction_text = ex['InstructionText'], 
+                        pic_no = ex['PIC_NO'], link_url = ex['Link'])
+        e.save()
