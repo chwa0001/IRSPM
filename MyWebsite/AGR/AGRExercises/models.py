@@ -3,16 +3,16 @@ from django.db import models
 
 class Exercise(models.Model):
     exercise_name           = models.CharField(max_length=50, unique=True)
-    main_musclegroup        = models.CharField(max_length=30)
-    detailed_musclegroup    = models.CharField(max_length=30)
-    other_musclegroups      = models.CharField(max_length=100)
-    exercise_type           = models.CharField(max_length=30)
-    mechanics               = models.CharField(max_length=30)
-    equipment               = models.CharField(max_length=100)
-    difficulty              = models.CharField(max_length=20)
-    instruction_text        = models.TextField()
-    pic_url                 = models.TextField()
-    link_url                = models.URLField()
+    main_musclegroup        = models.CharField(max_length=30,blank=True,null=True)
+    detailed_musclegroup    = models.CharField(max_length=30,blank=True,null=True)
+    other_musclegroups      = models.CharField(max_length=100,blank=True,null=True)
+    exercise_type           = models.CharField(max_length=30,blank=True,null=True)
+    mechanics               = models.CharField(max_length=30,blank=True,null=True)
+    equipment               = models.CharField(max_length=100,blank=True,null=True)
+    difficulty              = models.CharField(max_length=20,blank=True,null=True)
+    instruction_text        = models.TextField(blank=True,null=True)
+    pic_url                 = models.TextField(blank=True,null=True)
+    link_url                = models.URLField(blank=True,null=True)
     class Meta:
         db_table = 'EXERCISE'
 
