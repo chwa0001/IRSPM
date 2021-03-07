@@ -1,5 +1,6 @@
 
 import React,{useState,useEffect} from 'react';
+import Cookies from 'js-cookie';
 import { useHistory } from "react-router-dom";
 import Alert from '@material-ui/lab/Alert';
 import Avatar from '@material-ui/core/Avatar';
@@ -62,7 +63,8 @@ export default function SignIn() {
     if(userStatus===0)
     {
       setUserStatus(-1);
-      history.push(`/SecondHome?username=${username}`);
+      Cookies.set('username', username)
+      history.push('/SecondHome');
     }
     else if (userStatus===1)
     {
