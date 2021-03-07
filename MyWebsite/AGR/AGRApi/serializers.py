@@ -23,3 +23,12 @@ class ExerciseSerializer(serializers.ModelSerializer):
         fields = ('id','exercise_name','main_musclegroup','detailed_musclegroup','other_musclegroups',
                     'exercise_type','mechanics','equipment','difficulty','instruction_text','pic_no','link_url')
 
+class RoutineSerializer (serializers.ModelSerializer):
+    class Meta:
+        model = Routine
+        fields = ('id','userdata','set_id','date')
+
+class RoutineExercisesSerializer (serializers.ModelSerializer):
+    class Meta: 
+        model = RoutineExercises
+        fields = ('id','set_id','exercise_id')

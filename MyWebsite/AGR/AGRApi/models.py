@@ -71,7 +71,7 @@ class Routine(models.Model):
 
 class RoutineExercises(models.Model):
     set_id          = models.ForeignKey(Routine, on_delete=models.CASCADE)
-    Exercise        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    exercise_id        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     class Meta: 
         db_table = 'ROUTINE_EXERICSE'
 
@@ -85,3 +85,11 @@ def generate_database():
                         difficulty = ex['Difficulty'], instruction_text = ex['InstructionText'], 
                         pic_no = ex['PIC_NO'], link_url = ex['Link'])
         e.save()
+<<<<<<< Updated upstream
+=======
+
+
+def save_routine_exercises ():
+    # to add in how to write the server
+    return 0
+>>>>>>> Stashed changes

@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import UserSerializer,UpdateUserSerializer
-from .models import User,UserData
+from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
+from .models import User,UserData,Routine,RoutineExercises
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from datetime import date
 
 # Create your views here.
 
@@ -64,4 +65,42 @@ class CreateUserView(APIView):
                     return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+<<<<<<< Updated upstream
         return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
+=======
+        return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
+
+class RoutineView(APIView):
+    serializer_class = UpdateUserSerializer
+
+    def post(self, request, format=None):
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+        try:
+            user_id = request.data.get("user_id") ##need to doublecheck this when running
+            set_id = request.data.get("set_id")
+            exercise_ids = request.data.get("exercise_ids") ## should get in term of string seperated by # example 43#23#12 --> exercise 43, 23 and 12
+            routine = Routine(user_id=user_id, set_id=set_id, date=date.today())
+            routine.save()
+            set_id = 1 ##how to get set_id? 
+            for exercise_id in exercise_ids.split("#"):
+                routine_exercise = RoutineExercises(set_id=set_id,exercise_id=exercise_id)
+                routine_exercise.save()
+            return Response(UserSerializer(user).data, status=status.HTTP_200_OK) 
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST) 
+
+class ModelToLearn(APIView):
+    def get(self, request, format=None):
+        username = request.GET.get('username')
+        queryset = User.objects.filter(username=username)
+        try:
+            if username!=None:
+                user = queryset[0]
+                f = open('./FolderToTest/'+username+".txt","w+")
+                f.write("This is %s/r/n"%username)
+                f.close()
+                return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
+>>>>>>> Stashed changes
