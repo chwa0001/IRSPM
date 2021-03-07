@@ -65,3 +65,17 @@ class CreateUserView(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
+
+class ModelToLearn(APIView):
+    def get(self, request, format=None):
+        username = request.GET.get('username')
+        queryset = User.objects.filter(username=username)
+        try:
+            if username!=None:
+                user = queryset[0]
+                f = open('./FolderToTest/'+username+".txt","w+")
+                f.write("This is %s/r/n"%username)
+                f.close()
+                return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)

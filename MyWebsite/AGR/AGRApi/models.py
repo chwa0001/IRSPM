@@ -18,7 +18,7 @@ def generate_unique_code():
 class User(models.Model):
     code = models.CharField(max_length=8, default=generate_unique_code, unique=True)
     fullname = models.CharField(max_length=50,default='Noname')
-    DOB = models.CharField(max_length=6,default='010190') ## should be in DateField? Char field user can put "099020"
+    DOB = models.CharField(max_length=8,default='01011994') ## should be in DateField? Char field user can put "099020"
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=50,unique=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -76,12 +76,12 @@ class RoutineExercises(models.Model):
         db_table = 'ROUTINE_EXERICSE'
 
 
-def generate_database(): 
-    ex_db = pd.read_excel("ExerciseDataBase2.xlsx",index_col=0).dropna(axis=1, thresh=90).drop_duplicates()
-    for ind,ex in ex_db.iterrows():
-        e = Exercise(exercise_name = ex['Exercise Name'], main_musclegroup = ex['MainMuscleGroup'], 
-                        detailed_musclegroup = ex['DetailedMuscleGroup'], other_musclegroups = ex['OtherMuscleGroups'],
-                        exercise_type = ex['Type'], mechanics = ex['Mechanics'], equipment = ex['Equipment'], 
-                        difficulty = ex['Difficulty'], instruction_text = ex['InstructionText'], 
-                        pic_no = ex['PIC_NO'], link_url = ex['Link'])
-        e.save()
+# def generate_database(): 
+#     ex_db = pd.read_excel("ExerciseDataBase2.xlsx",index_col=0).dropna(axis=1, thresh=90).drop_duplicates()
+#     for ind,ex in ex_db.iterrows():
+#         e = Exercise(exercise_name = ex['Exercise Name'], main_musclegroup = ex['MainMuscleGroup'], 
+#                         detailed_musclegroup = ex['DetailedMuscleGroup'], other_musclegroups = ex['OtherMuscleGroups'],
+#                         exercise_type = ex['Type'], mechanics = ex['Mechanics'], equipment = ex['Equipment'], 
+#                         difficulty = ex['Difficulty'], instruction_text = ex['InstructionText'], 
+#                         pic_no = ex['PIC_NO'], link_url = ex['Link'])
+#         e.save()
