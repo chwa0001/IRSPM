@@ -64,7 +64,7 @@ export default function Album() {
             color="secondary"
             onClick={() =>GoBack() }
           >
-            Logout
+            LogoutHere
         </Button>
       <Toolbar>
         <Typography>
