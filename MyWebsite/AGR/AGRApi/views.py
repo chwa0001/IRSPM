@@ -65,11 +65,8 @@ class CreateUserView(APIView):
                     return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
-<<<<<<< Updated upstream
         return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
-=======
-        return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
-
+        
 class RoutineView(APIView):
     serializer_class = UpdateUserSerializer
 
@@ -103,4 +100,3 @@ class ModelToLearn(APIView):
                 return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
->>>>>>> Stashed changes
