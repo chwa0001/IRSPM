@@ -18,7 +18,7 @@ def generate_unique_code():
 class User(models.Model):
     code = models.CharField(max_length=8, default=generate_unique_code, unique=True)
     fullname = models.CharField(max_length=50,default='Noname')
-    DOB = models.CharField(max_length=8,default='01011994') ## should be in DateField? Char field user can put "099020"
+    DOB = models.CharField(max_length=6,default='010190') ## should be in DateField? Char field user can put "099020"
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=50,unique=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -71,17 +71,25 @@ class Routine(models.Model):
 
 class RoutineExercises(models.Model):
     set_id          = models.ForeignKey(Routine, on_delete=models.CASCADE)
-    Exercise        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    exercise_id        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     class Meta: 
         db_table = 'ROUTINE_EXERICSE'
 
 
-# def generate_database(): 
-#     ex_db = pd.read_excel("ExerciseDataBase2.xlsx",index_col=0).dropna(axis=1, thresh=90).drop_duplicates()
-#     for ind,ex in ex_db.iterrows():
-#         e = Exercise(exercise_name = ex['Exercise Name'], main_musclegroup = ex['MainMuscleGroup'], 
-#                         detailed_musclegroup = ex['DetailedMuscleGroup'], other_musclegroups = ex['OtherMuscleGroups'],
-#                         exercise_type = ex['Type'], mechanics = ex['Mechanics'], equipment = ex['Equipment'], 
-#                         difficulty = ex['Difficulty'], instruction_text = ex['InstructionText'], 
-#                         pic_no = ex['PIC_NO'], link_url = ex['Link'])
-#         e.save()
+def generate_database(): 
+    ex_db = pd.read_excel("ExerciseDataBase2.xlsx",index_col=0).dropna(axis=1, thresh=90).drop_duplicates()
+    for ind,ex in ex_db.iterrows():
+        e = Exercise(exercise_name = ex['Exercise Name'], main_musclegroup = ex['MainMuscleGroup'], 
+                        detailed_musclegroup = ex['DetailedMuscleGroup'], other_musclegroups = ex['OtherMuscleGroups'],
+                        exercise_type = ex['Type'], mechanics = ex['Mechanics'], equipment = ex['Equipment'], 
+                        difficulty = ex['Difficulty'], instruction_text = ex['InstructionText'], 
+                        pic_no = ex['PIC_NO'], link_url = ex['Link'])
+        e.save()
+<<<<<<< Updated upstream
+=======
+
+
+def save_routine_exercises ():
+    # to add in how to write the server
+    return 0
+>>>>>>> Stashed changes
