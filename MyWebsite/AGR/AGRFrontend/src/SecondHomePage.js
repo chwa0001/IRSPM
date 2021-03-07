@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import {useLocation,useHistory} from "react-router-dom";
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -20,31 +21,59 @@ export default function Album() {
     return new URLSearchParams(useLocation().search);
   }
   let history = useHistory()
+  const username = Cookies.get('username')
+  function GetModel(username) {
+    if (username!=''){
+    fetch(`/AGR/AskModelToLearn?username=${username}`)
+        .then(response => response.json())
+        .then(
+          (data) => {console.log(data)},
+          (error) => {alert(error)}
+        )
+        }
+    else{
+      if(username==''){alert('Username is not detected!')}
+    }
+    }
+  function GoBack()
+  {
+    Cookies.remove('username')
+    history.push('/')
+  }
   return (
     <React.Fragment>
       <CssBaseline />
       <AppBar>
         <Toolbar>
           <Typography>
-            {useQuery().get("username")}
+            {username}
           </Typography>
         </Toolbar>
-        
       </AppBar>
         <Button
             fullWidth
             variant="contained"
             color="primary"
-            onClick={() => history.push('/')}
+            onClick={() =>GetModel(username) }
           >
-            GoBack
+            GetUserData
         </Button>
+        <Button
+            fullWidth
+            variant="contained"
+            color="secondary"
+            onClick={() =>GoBack() }
+          >
+            LogoutHere!
+        </Button>
+      <Toolbar>
         <Typography>
           Footer
         </Typography>
         <Typography>
           Something here to give the footer a purpose!
         </Typography>
+      </Toolbar>
     </React.Fragment>
   );
 }
