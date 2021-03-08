@@ -89,4 +89,8 @@ def generate_database():
 
 def save_routine_exercises ():
     # to add in how to write the server
+<<<<<<< Updated upstream
     return 0
+=======
+    return 0
+>>>>>>> Stashed changes
