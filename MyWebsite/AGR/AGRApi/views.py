@@ -112,17 +112,17 @@ class ModelToLearn(APIView):
         exercise_id = request.GET.get('exercise_id')
         print(Exercise.objects.filter(id= exercise_id).exists())
         if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists():
-            exercise_data = Exercise.objects.all()
+            exercise_data = Exercise.objects.all() #get all data from db according to models.py format
             exercisesArr = []
             i = 0
             while i < len(exercise_data):
-                exercisesArr.append(ExerciseSerializer(exercise_data[i]).data)
+                exercisesArr.append(ExerciseSerializer(exercise_data[i]).data) #convert into list of json format
                 i += 1
-            df = pd.DataFrame(exercisesArr)
+            df = pd.DataFrame(exercisesArr) #convert into dataframe
             # print("here", len(df))
 
             #Select features to find similarity
-            features = ['other_musclegroups', 'exercise_type', 'mechanics', 'equipment', 'exercise_name']
+            features = ['other_musclegroups', 'exercise_type', 'mechanics', 'equipment', 'exercise_name'] #type change to exercise type because type is special keyword
             for feature in features:
                 df[feature] = df[feature].fillna('')
             #print(df[feature])
