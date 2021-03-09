@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function ResetPassword() {
   const classes = useStyles();
   const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
@@ -63,8 +63,8 @@ export default function SignIn() {
     if(userStatus===0)
     {
       setUserStatus(-1);
-      Cookies.set('username', username)
-      history.push('/SecondHome');
+      alert('Password is changed successfully!')
+      history.push('/');
     }
     else if (userStatus===1)
     {
@@ -78,7 +78,7 @@ export default function SignIn() {
       setAlertText('Invalid username!');
     }
   }, [userStatus])
-  function TryLogin(username,password) {
+  function Reset(username,password) {
   const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -88,7 +88,7 @@ export default function SignIn() {
       }),
   };
   if (username!='' && password!=''){
-  fetch('/AGR/LoginUser', requestOptions)
+  fetch('/AGR/CreateUser', requestOptions)
       .then(response => response.json())
       .then(
         (data) => {
@@ -111,7 +111,7 @@ export default function SignIn() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Reset Password
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
@@ -138,26 +138,17 @@ export default function SignIn() {
             autoComplete="current-password"
             onChange={e => setPassword(e.target.value)}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => TryLogin(username,password)}
+            onClick={() => Reset(username,password)}
           >
-            Sign In
+            Reset Password
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="/Reset" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
+          <Grid container alignItems="flex-end">
+            <Grid item >
               <Link href="/SignUp" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>

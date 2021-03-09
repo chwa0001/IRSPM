@@ -115,7 +115,6 @@ export default function SignUp() {
             </Grid>
           </Grid>
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
@@ -125,7 +124,7 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

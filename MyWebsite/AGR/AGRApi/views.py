@@ -52,7 +52,8 @@ class CreateUserView(APIView):
                 user.username = username
                 user.password = password
                 user.save(update_fields=["username", "password"])
-                return Response(UserSerializer(user).data, status=status.HTTP_200_OK) 
+                # return Response(UserSerializer(user).data, status=status.HTTP_200_OK) 
+                return Response({"status":0}, status=status.HTTP_200_OK) 
             else:
                 serializer = self.serializer_class(data=request.data)
                 if serializer.is_valid():
@@ -62,7 +63,8 @@ class CreateUserView(APIView):
                     user.save()
                     user_data = UserData(user_id=user.id)
                     user_data.save()
-                    return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+                    # return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+                    return Response({"status":0}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
