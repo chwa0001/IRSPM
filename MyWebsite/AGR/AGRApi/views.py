@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
-from .models import User,UserData,Routine,RoutineExercises
+from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer, ExerciseSerializer
+from .models import User,UserData,Routine,RoutineExercises, Exercise
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Create your views here.
 
@@ -88,15 +92,80 @@ class RoutineView(APIView):
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST) 
 
 class ModelToLearn(APIView):
+    # def get(self, request, format=None):
+    #     username = request.GET.get('username')
+    #     queryset = User.objects.filter(username=username)
+    #     try:
+    #         if username!=None:
+    #             user = queryset[0]
+    #             f = open('./FolderToTest/'+username+".txt","w+")
+    #             f.write("This is %s/r/n"%username)
+    #             f.close()
+    #             return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+    #         else:
+    #             return Response({"Bad Request": "No Username"}, status=status.HTTP_200_OK)
+    #     except Exception as error:
+    #         return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
+
     def get(self, request, format=None):
         username = request.GET.get('username')
-        queryset = User.objects.filter(username=username)
-        try:
-            if username!=None:
-                user = queryset[0]
-                f = open('./FolderToTest/'+username+".txt","w+")
-                f.write("This is %s/r/n"%username)
-                f.close()
-                return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
-        except Exception as error:
-            return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
+        exercise_id = request.GET.get('exercise_id')
+        print(Exercise.objects.filter(id= exercise_id).exists())
+        if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists():
+            exercise_data = Exercise.objects.all()
+            exercisesArr = []
+            i = 0
+            while i < len(exercise_data):
+                exercisesArr.append(ExerciseSerializer(exercise_data[i]).data)
+                i += 1
+            df = pd.DataFrame(exercisesArr)
+            # print("here", len(df))
+
+            #Select features to find similarity
+            features = ['other_musclegroups', 'exercise_type', 'mechanics', 'equipment', 'exercise_name']
+            for feature in features:
+                df[feature] = df[feature].fillna('')
+            #print(df[feature])
+
+            #Create combined features column
+            def combined_features(row):
+                return row['other_musclegroups']+" "+row['exercise_type']+" "+row['mechanics']+" "+row['exercise_name']+" "+row['equipment']
+            df["combined_features"] = df.apply(combined_features, axis =1)
+            #print(df["combined_features"])
+
+            #Use CountVectorizer to convert words into word count for cosine similarity
+            cv = CountVectorizer()
+            count_matrix = cv.fit_transform(df["combined_features"])
+            #print("Count Matrix:", count_matrix.toarray())
+
+            #Cosine similarity
+            cosine_sim = cosine_similarity(count_matrix)
+            # print("here", len(cosine_sim))
+
+            exercise_index = int(exercise_id) #user input in exercise_id
+
+            #Place similar exercises in list and sort in descending similarity score
+            similar_exercises = list(enumerate(cosine_sim[exercise_index]))
+            #print(similar_exercises)
+            sorted_similar_exercises = sorted(similar_exercises, key=lambda x:x[1], reverse=True)
+
+            #Store top 6 similar exercise_id in list
+            recoList = []
+            i=0
+            for exercise in sorted_similar_exercises:
+                recoList.append(exercise[0])
+                i=i+1
+                if i>5:
+                    break
+                
+            print(recoList)
+
+
+            # Creating json
+            data = {}
+            data["recoList"] = recoList
+
+            return Response(data, status=status.HTTP_200_OK)
+            
+        else:
+            return Response({"Bad Request": "No Username and/or exercise_id out of range"}, status=status.HTTP_400_BAD_REQUEST)

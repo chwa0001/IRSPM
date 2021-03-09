@@ -85,11 +85,8 @@ def generate_database():
                         difficulty = ex['Difficulty'], instruction_text = ex['InstructionText'], 
                         pic_no = ex['PIC_NO'], link_url = ex['Link'])
         e.save()
-<<<<<<< Updated upstream
-=======
 
 
 def save_routine_exercises ():
     # to add in how to write the server
     return 0
->>>>>>> Stashed changes
