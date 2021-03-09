@@ -165,6 +165,15 @@ class ModelToLearn(APIView):
             data = {}
             data["recoList"] = recoList
 
+            recoEx = Exercise.objects.filter(id__in = recoList)
+            recoExArray = []
+            i = 0
+            while i < len(recoEx):
+                recoExArray.append(ExerciseSerializer(recoEx[i]).data)
+                i += 1
+            data['recoExList'] = recoExArray
+
+
             return Response(data, status=status.HTTP_200_OK)
             
         else:
