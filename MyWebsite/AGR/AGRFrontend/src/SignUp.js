@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{useState,useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import moment from 'moment';
+import { useHistory } from "react-router-dom";
 
 function Copyright() {
   return (
@@ -48,7 +50,69 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-
+  const [fullname,setFullname] = useState('');
+  const [username,setUsername] = useState('');
+  const [password,setPassword] = useState('');
+  const [dob,setDOB] = useState('');
+  let history = useHistory();
+  const [userStatus, setUserStatus] = useState(-1);
+  useEffect(() => {
+    if(userStatus===0)
+    {
+      setUserStatus(-1);
+      alert('Account is signup successfully!');
+      history.push('/');
+    }
+    else if (userStatus===1)
+    {
+      setUserStatus(-1);
+      // setAlertShow('visible');
+      // setAlertText('Username has been used!');
+      alert('Username has been used!')
+    }
+    else if (userStatus===2){
+      setUserStatus(-1);
+      // setAlertShow('visible');
+      // setAlertText('Not sure but cannot signup!');
+      alert('Not sure but cannot signup!')
+    }
+  }, [userStatus])
+  function SignupNow(fullname,username,password,dob) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username:username,
+          password: password,
+          fullname:fullname,
+          DOB:dob,
+          CreateUser:1,
+        }),
+    };
+    const boolDateValue = moment(dob,'DDMMYYYY',true).isValid();
+    if (fullname!='' && username!='' && password!=''&& boolDateValue==true){
+    fetch('/AGR/CreateUser', requestOptions)
+        .then(function(response){
+          if (!response.ok){
+            throw new Error('Response not OK');
+          }
+          else{
+            return response.json();
+          }
+        }).then(
+          (data) => {
+            setUserStatus(data.status);
+          },
+          (error) => {alert(error)}
+        )
+        }
+    else{
+      if(fullname=='') {alert('Username cannot be blank!')}
+      else if (username==''){alert('Full name cannot be blank!')}
+      else if(password==''){alert('Password cannot be blank!')}
+      else if(boolDateValue==false){alert('Date of Birth cannot be blank or incorrect format!')}
+    }
+    }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -61,27 +125,17 @@ export default function SignUp() {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="fullName"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="fullname"
+                label="Full Name"
                 autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
+                onChange={e => setFullname(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -89,10 +143,23 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="off"
+                onChange={e => setUsername(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="DOB"
+                label="Date of Birth(DDMMYYYY)"
+                name="DOB"
+                autoComplete="off"
+                onChange={e => setDOB(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -104,7 +171,8 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                autoComplete="off"
+                onChange={e => setPassword(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -119,6 +187,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={() => SignupNow(fullname,username,password,dob)}
           >
             Sign Up Now!
           </Button>

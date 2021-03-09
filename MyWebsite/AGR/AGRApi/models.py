@@ -16,9 +16,9 @@ def generate_unique_code():
 # Create your models here.
 
 class User(models.Model):
-    code = models.CharField(max_length=8, default=generate_unique_code, unique=True)
+    code = models.CharField(max_length=6, default=generate_unique_code, unique=True)
     fullname = models.CharField(max_length=50,default='Noname')
-    DOB = models.CharField(max_length=6,default='010190') ## should be in DateField? Char field user can put "099020"
+    DOB = models.CharField(max_length=8,default='010190') ## should be in DateField? Char field user can put "099020"
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=50,unique=False)
     created_at = models.DateTimeField(auto_now_add=True)

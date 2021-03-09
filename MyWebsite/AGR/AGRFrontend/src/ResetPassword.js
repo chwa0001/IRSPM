@@ -16,6 +16,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import moment from 'moment';
 
 function Copyright() {
   return (
@@ -54,6 +55,7 @@ export default function ResetPassword() {
   const classes = useStyles();
   const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
+  const [dob,setDOB] = useState('');
   const [alertText,setAlertText] = useState('');
   const [alertShow,setAlertShow] = useState('hidden');
 
@@ -70,7 +72,7 @@ export default function ResetPassword() {
     {
       setUserStatus(-1);
       setAlertShow('visible');
-      setAlertText('Wrong password!');
+      setAlertText('Invalid date of birth is provided!');
     }
     else if (userStatus===2){
       setUserStatus(-1);
@@ -78,28 +80,38 @@ export default function ResetPassword() {
       setAlertText('Invalid username!');
     }
   }, [userStatus])
-  function Reset(username,password) {
+  function Reset(username,password,dob) {
   const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         username: username,
         password: password,
+        DOB:dob,
+        CreateUser:0,
       }),
   };
-  if (username!='' && password!=''){
+  const boolDateValue = moment(dob,'DDMMYYYY',true).isValid();
+  if (username!='' && password!=''&& boolDateValue==true){
   fetch('/AGR/CreateUser', requestOptions)
-      .then(response => response.json())
-      .then(
-        (data) => {
-          setUserStatus(data.status);
-        },
-        (error) => {alert(str(error))}
-      )
+  .then(function(response){
+    if (!response.ok){
+      throw new Error('Response not OK');
+    }
+    else{
+      return response.json();
+    }
+  }).then(
+    (data) => {
+      setUserStatus(data.status);
+    },
+    (error) => {alert(error)}
+  )
       }
   else{
     if(username==''){alert('Username cannot be blank!')}
     else if(password==''){alert('Password cannot be blank!')}
+    else if(boolDateValue==false){alert('Date of Birth cannot be blank or incorrect format!')}
   }
   }
 
@@ -135,15 +147,27 @@ export default function ResetPassword() {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
+            autoComplete="off"
             onChange={e => setPassword(e.target.value)}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="DOB"
+            label="Date Of Birth(DDMMYYYY)"
+            name="DOB"
+            autoComplete="off"
+            autoFocus
+            onChange={e => setDOB(e.target.value)}
           />
           <Button
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => Reset(username,password)}
+            onClick={() => Reset(username,password,dob)}
           >
             Reset Password
           </Button>

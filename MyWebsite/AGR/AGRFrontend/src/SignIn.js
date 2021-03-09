@@ -89,13 +89,19 @@ export default function SignIn() {
   };
   if (username!='' && password!=''){
   fetch('/AGR/LoginUser', requestOptions)
-      .then(response => response.json())
-      .then(
-        (data) => {
-          setUserStatus(data.status);
-        },
-        (error) => {alert(str(error))}
-      )
+  .then(function(response){
+    if (!response.ok){
+      throw new Error('Response not OK');
+    }
+    else{
+      return response.json();
+    }
+  }).then(
+    (data) => {
+      setUserStatus(data.status);
+    },
+    (error) => {alert(error)}
+  )
       }
   else{
     if(username==''){alert('Username cannot be blank!')}

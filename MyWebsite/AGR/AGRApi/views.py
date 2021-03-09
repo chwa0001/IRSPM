@@ -44,28 +44,43 @@ class CreateUserView(APIView):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
         try:
+            CreateUser = request.data.get("CreateUser")
             username = request.data.get("username")
             password = request.data.get("password")
             queryset = User.objects.filter(username=username)
-            if queryset.exists():
-                user = queryset[0]
-                user.username = username
-                user.password = password
-                user.save(update_fields=["username", "password"])
-                # return Response(UserSerializer(user).data, status=status.HTTP_200_OK) 
-                return Response({"status":0}, status=status.HTTP_200_OK) 
+            if CreateUser==0:
+                if queryset.exists():
+                    user = queryset[0]
+                    if user.DOB == request.data.get("DOB"):
+                        user.username = username
+                        user.password = password
+                        user.save(update_fields=["username", "password"])
+                        # return Response(UserSerializer(user).data, status=status.HTTP_200_OK) 
+                        return Response({"status":0}, status=status.HTTP_200_OK)
+                    else:
+                        #incorrect data of birth
+                        return Response({"status":1}, status=status.HTTP_200_OK)
+                else:
+                    #incorrect data of birth
+                    return Response({"status":2}, status=status.HTTP_200_OK)
             else:
-                serializer = self.serializer_class(data=request.data)
-                if serializer.is_valid():
-                    fullname = serializer.data.get("fullname")
-                    dob = serializer.data.get("DOB")
-                    user = User(username=username,fullname=fullname,DOB=dob,password=password)
-                    user.save()
-                    user_data = UserData(user_id=user.id)
-                    user_data.save()
-                    # return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
-                    return Response({"status":0}, status=status.HTTP_200_OK)
+                if queryset.exists():
+                    #The same username is stored in database
+                    return Response({"status":1}, status=status.HTTP_200_OK)
+                else:
+                    request.data.pop('CreateUser')
+                    serializer = self.serializer_class(data=request.data)
+                    if serializer.is_valid(raise_exception=True):
+                        fullname = serializer.data.get("fullname")
+                        dob = serializer.data.get("DOB")
+                        user = User(username=username,fullname=fullname,DOB=dob,password=password)
+                        user.save()
+                        user_data = UserData(user_id=user.id)
+                        user_data.save()
+                        # return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+                        return Response({"status":0}, status=status.HTTP_200_OK)
         except Exception as error:
+            print(error)
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
         
