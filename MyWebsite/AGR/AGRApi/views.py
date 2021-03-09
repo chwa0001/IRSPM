@@ -165,11 +165,11 @@ class ModelToLearn(APIView):
             data = {}
             data["recoList"] = recoList
 
-            recoEx = Exercise.objects.filter(id__in = recoList)
+            recoEx = Exercise.objects.filter(id__in = recoList) #filter for Exercise db for recommended exercise according to models.py format
             recoExArray = []
             i = 0
             while i < len(recoEx):
-                recoExArray.append(ExerciseSerializer(recoEx[i]).data)
+                recoExArray.append(ExerciseSerializer(recoEx[i]).data) #serialize into json format
                 i += 1
             data['recoExList'] = recoExArray
 
