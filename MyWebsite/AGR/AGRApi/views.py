@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics, status
 from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
-from .models import User,UserData,Routine,RoutineExercises
+from .models import User,UserData,Routine,RoutineExercises,get_userid_from_userdb, get_data_from_userdb
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
@@ -36,6 +36,53 @@ class LoginUserView(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
         
+class SetUserData(APIView):
+    def post(self, request, format=None):
+        try:
+            if not self.request.session.exists(self.request.session.session_key):
+                self.request.session.create()
+            username = request.data.get("username")
+            fitness_level = request.data.get("fitness_level")
+            gender = request.data.get("gender")
+            goal = request.data.get("goal")
+            intensity = request.data.get("intensity")
+            user_id = get_userid_from_userdb(username)
+            queryset = UserData.objects.filter(user_id=user_id)
+            if queryset.exists():
+                user = queryset[0]
+                if user.user_id==user_id:
+                    #status:0==> user credential verified okay
+                    user.fitness_level=fitness_level
+                    user.goal = goal
+                    user.gender = gender
+                    user.intensity = intensity
+                    user.save()
+                    return Response({"status":0}, status=status.HTTP_200_OK)
+                else:
+                    #status:1==> user credential verified wrong password
+                    return Response({"status":1}, status=status.HTTP_200_OK)
+            else:
+                #status:2==> user not found
+                user_data = UserData(user_id=user.id)
+                user_data.save()
+                return Response({"status":2}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+
+#currently not used yet 
+class GetUserData(APIView):
+    def post(self, request, format=None):
+        try:
+            if not self.request.session.exists(self.request.session.session_key):
+                self.request.session.create()
+            username = request.data.get("username")
+            user_id = get_userid_from_userdb(username)
+            request_type =  request.data.get("request_type")  
+            print(request.data)
+            if request_type == 'getFitnessLevel':
+                return  get_data_from_userdb(username,request_type)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
 class CreateUserView(APIView):
     serializer_class = UpdateUserSerializer

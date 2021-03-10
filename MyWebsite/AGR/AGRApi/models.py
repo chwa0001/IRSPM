@@ -16,24 +16,24 @@ def generate_unique_code():
 # Create your models here.
 
 class User(models.Model):
-    code = models.CharField(max_length=6, default=generate_unique_code, unique=True)
-    fullname = models.CharField(max_length=50,default='Noname')
-    DOB = models.CharField(max_length=8,default='010190') ## should be in DateField? Char field user can put "099020"
-    username = models.CharField(max_length=50, unique=True)
-    password = models.CharField(max_length=50,unique=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField(default=True)
+    code        = models.CharField(max_length=6, default=generate_unique_code, unique=True)
+    fullname    = models.CharField(max_length=50,default='Noname')
+    DOB         = models.CharField(max_length=8,default='010190') ## should be in DateField? Char field user can put "099020"
+    username    = models.CharField(max_length=50, unique=True)
+    password    = models.CharField(max_length=50,unique=False)
+    created_at  = models.DateTimeField(auto_now_add=True)
+    status      = models.BooleanField(default=True)
     class Meta:
         db_table = "USER_CREDENTIAL_DATABASE"
 
 class UserData(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    fitness_level = models.IntegerField(null=False, default=1)
-    gender = models.CharField(max_length=1, default='M')
-    goal = models.CharField(max_length=50, default='')
-    accomplishment = models.CharField(max_length=50, default='')
-    bmi = models.IntegerField(null=False, default=0)
-    intensity = models.IntegerField(null=False, default=0)
+    user         = models.ForeignKey(User,on_delete=models.CASCADE)
+    fitness_level   = models.IntegerField(null=False, default=1)
+    gender          = models.CharField(max_length=1, default='M')
+    goal            = models.CharField(max_length=50, default='')
+    accomplishment  = models.CharField(max_length=50, default='')
+    bmi             = models.IntegerField(null=False, default=0)
+    intensity       = models.IntegerField(null=False, default=0)
     class Meta:
         db_table = "USER_DATABASE"
 
@@ -49,7 +49,7 @@ class Exercise(models.Model):
     equipment               = models.CharField(max_length=100,blank=True,null=True)
     difficulty              = models.CharField(max_length=20,blank=True,null=True)
     instruction_text        = models.TextField(blank=True,null=True)
-    pic_no                 = models.TextField(blank=True,null=True)
+    pic_no                  = models.TextField(blank=True,null=True)
     link_url                = models.URLField(blank=True,null=True)
     class Meta:
         db_table = 'EXERCISE'
@@ -90,3 +90,34 @@ def generate_database():
 def save_routine_exercises ():
     # to add in how to write the server
     return 0
+
+
+def get_userid_from_userdb (username):
+    queryset = User.objects.filter(username=username)
+
+    if queryset.exists():
+        user = queryset[0]
+        print(user.id)
+        if user.username==username:
+            #status:0==> user credential verified okay
+            user_id = user.id
+            print(f"print user_id from get_userid_from_userdb function: {user_id}")
+            return user_id
+    else:
+        return -1
+
+##currently not used yet
+def get_data_from_userdb (username,request_type):
+    print("was here")
+    queryset = User.objects.filter(username=username)
+
+    if queryset.exists():
+        user = queryset[0]
+        print(user.id)
+        if user.username==username:
+            #status:0==> user credential verified okay
+            return_var = user.request_type
+            print(f"print user_id from get_userid_from_userdb function: {return_var}")
+            return user_id
+    else:
+        return -1

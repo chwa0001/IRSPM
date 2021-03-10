@@ -7,4 +7,5 @@ urlpatterns = [
     path('SecondHome', index),
     path('SignUp', index),
     path('Reset', index),
+    path('Test', index),
 ]
