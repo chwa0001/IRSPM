@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import generics, status
 from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
-from .models import User,UserData,Routine,RoutineExercises,get_userid_from_userdb, get_data_from_userdb
+from .models import User,UserData,Routine,RoutineExercises
+from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
@@ -41,22 +42,43 @@ class SetUserData(APIView):
         try:
             if not self.request.session.exists(self.request.session.session_key):
                 self.request.session.create()
+            print(f"requestdata : {request.data}")
             username = request.data.get("username")
             fitness_level = request.data.get("fitness_level")
             gender = request.data.get("gender")
             goal = request.data.get("goal")
             intensity = request.data.get("intensity")
+            bmi = request.data.get("bmi")
+            accomplishment = request.data.get("accomplishment")
+
             user_id = get_userid_from_userdb(username)
             queryset = UserData.objects.filter(user_id=user_id)
             if queryset.exists():
                 user = queryset[0]
                 if user.user_id==user_id:
                     #status:0==> user credential verified okay
-                    user.fitness_level=fitness_level
-                    user.goal = goal
-                    user.gender = gender
-                    user.intensity = intensity
+                    if (fitness_level != ""):
+                        print(f"print fitness {fitness_level}")
+                        user.fitness_level=int(fitness_level)
+                    if (goal != ""):
+                        print(f"print goal {goal}")
+                        user.goal = goal
+                    if (gender != ""):
+                        print(f"print gender {gender}")
+                        user.gender = gender
+                    if (intensity != ""):
+                        print(f"print intensity {intensity}")
+                        user.intensity = int(intensity)
+                    if (accomplishment != ""):
+                        print(f"print accomplishment {accomplishment}")
+                        user.accomplishment = accomplishment
+                    if (bmi != None and bmi != ""):
+                        print(f"print bmi {bmi}")
+                        user.bmi = int(bmi)
+                    print(f"print fitness {fitness_level}")
                     user.save()
+                    print(user.user_id+5)
+
                     return Response({"status":0}, status=status.HTTP_200_OK)
                 else:
                     #status:1==> user credential verified wrong password
@@ -74,13 +96,19 @@ class GetUserData(APIView):
     def post(self, request, format=None):
         try:
             if not self.request.session.exists(self.request.session.session_key):
+                print("AGRApi no session")
                 self.request.session.create()
             username = request.data.get("username")
-            user_id = get_userid_from_userdb(username)
-            request_type =  request.data.get("request_type")  
-            print(request.data)
-            if request_type == 'getFitnessLevel':
-                return  get_data_from_userdb(username,request_type)
+            print(username)
+            userdata = get_alluserdata_from_userdb(username)
+            fitnesslevel = userdata.fitness_level
+            print(fitnesslevel)
+            return Response({"gender":userdata.gender,
+                            "fitness_level":userdata.fitness_level,
+                            "goal":userdata.goal,
+                            "intensity":userdata.intensity,
+                            "accomplishment":userdata.accomplishment,
+                            "bmi":userdata.bmi}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 

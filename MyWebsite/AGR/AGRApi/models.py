@@ -27,7 +27,7 @@ class User(models.Model):
         db_table = "USER_CREDENTIAL_DATABASE"
 
 class UserData(models.Model):
-    user         = models.ForeignKey(User,on_delete=models.CASCADE)
+    user            = models.ForeignKey(User,on_delete=models.CASCADE)
     fitness_level   = models.IntegerField(null=False, default=1)
     gender          = models.CharField(max_length=1, default='M')
     goal            = models.CharField(max_length=50, default='')
@@ -113,11 +113,21 @@ def get_data_from_userdb (username,request_type):
 
     if queryset.exists():
         user = queryset[0]
-        print(user.id)
+        print(f"get_data_from_userdb: {user.id}")
         if user.username==username:
             #status:0==> user credential verified okay
             return_var = user.request_type
             print(f"print user_id from get_userid_from_userdb function: {return_var}")
-            return user_id
+            return return_var
     else:
         return -1
+
+def get_alluserdata_from_userdb (username):
+    print("was here")
+    user = User.objects.filter(username=username)[0]
+    print(f"user id from get_alluserdata_from_userdb: {user.id}")
+    userdata = UserData.objects.filter(user_id=user.id)[0]
+    if userdata.user_id==user.id:
+        print(f"user from get_alluserdata_from_userdb function: {userdata.gender}")
+        return userdata
+    return -1
