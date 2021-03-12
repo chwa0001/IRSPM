@@ -3,7 +3,6 @@ from rest_framework import generics, status
 from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
 from .models import User,UserData,Routine,RoutineExercises
 from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb
-from .serializers import UserSerializer,UpdateUserSerializer
 from .models import User,UserData, UserExerciseRating
 from rest_framework.views import APIView
 from rest_framework.response import Response
