@@ -3,6 +3,8 @@ from rest_framework import generics, status
 from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
 from .models import User,UserData,Routine,RoutineExercises
 from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb
+from .serializers import UserSerializer,UpdateUserSerializer
+from .models import User,UserData, UserExerciseRating
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
@@ -192,3 +194,25 @@ class ModelToLearn(APIView):
                 return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
+
+
+from AGRApi.recommender_algo_AGR import *
+from django_pandas.io import read_frame
+from django_pandas.managers import DataFrameManager
+
+
+class AlgoToLearn(APIView):
+    # serializer_class = UpdateUserSerializer
+
+    def post(self, request, format=None):
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+        try:
+            qs = UserExerciseRating.objects.all()
+            q = qs.values('user_id', 'exercise_id','user_score')
+            df = pd.DataFrame.from_records(q)
+            exercise, val, itemid  = recommend_exercise(101, df , n=1, rating_scale=(1, 10))
+            return Response({"status":exercise}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
+
