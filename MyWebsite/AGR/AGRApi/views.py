@@ -114,12 +114,13 @@ class FirstReco(APIView):
         print(Exercise.objects.filter(id= exercise_id).exists())
         if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists():
             exercise_data = Exercise.objects.all() #get all data from db according to models.py format
-            exercisesArr = []
-            i = 0
-            while i < len(exercise_data):
-                exercisesArr.append(ExerciseSerializer(exercise_data[i]).data) #convert into list of json format
-                i += 1
-            df = pd.DataFrame(exercisesArr) #convert into dataframe
+            df = pd.DataFrame.from_records(exercise_data.values())
+            # exercisesArr = []
+            # i = 0
+            # while i < len(exercise_data):
+            #     exercisesArr.append(ExerciseSerializer(exercise_data[i]).data) #convert into list of json format
+            #     i += 1
+            # df = pd.DataFrame(exercisesArr) #convert into dataframe
             # print("here", len(df))
 
             #Select features to find similarity
