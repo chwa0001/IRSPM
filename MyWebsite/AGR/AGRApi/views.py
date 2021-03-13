@@ -5,10 +5,6 @@ from .models import User,UserData,Routine,RoutineExercises, Exercise
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
-import pandas as pd
-import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 
 # Create your views here.
 
@@ -92,21 +88,26 @@ class RoutineView(APIView):
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST) 
 
 class ModelToLearn(APIView):
-    # def get(self, request, format=None):
-    #     username = request.GET.get('username')
-    #     queryset = User.objects.filter(username=username)
-    #     try:
-    #         if username!=None:
-    #             user = queryset[0]
-    #             f = open('./FolderToTest/'+username+".txt","w+")
-    #             f.write("This is %s/r/n"%username)
-    #             f.close()
-    #             return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
-    #         else:
-    #             return Response({"Bad Request": "No Username"}, status=status.HTTP_200_OK)
-    #     except Exception as error:
-    #         return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
+    def get(self, request, format=None):
+        username = request.GET.get('username')
+        queryset = User.objects.filter(username=username)
+        try:
+            if username!=None:
+                user = queryset[0]
+                f = open('./FolderToTest/'+username+".txt","w+")
+                f.write("This is %s/r/n"%username)
+                f.close()
+                return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+            else:
+                return Response({"Bad Request": "No Username"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+class FirstReco(APIView):
     def get(self, request, format=None):
         username = request.GET.get('username')
         exercise_id = request.GET.get('exercise_id')
