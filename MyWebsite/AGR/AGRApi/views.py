@@ -50,6 +50,10 @@ class SetUserData(APIView):
             goal = request.data.get("goal")
             intensity = request.data.get("intensity")
             bmi = request.data.get("bmi")
+<<<<<<< HEAD
+=======
+            accomplishment = request.data.get("accomplishment")
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 
             user_id = get_userid_from_userdb(username)
             queryset = UserData.objects.filter(user_id=user_id)
@@ -69,6 +73,12 @@ class SetUserData(APIView):
                     if (intensity != ""):
                         print(f"print intensity {intensity}")
                         user.intensity = int(intensity)
+<<<<<<< HEAD
+=======
+                    if (accomplishment != ""):
+                        print(f"print accomplishment {accomplishment}")
+                        user.accomplishment = accomplishment
+>>>>>>> parent of cec25ce3 (remove gitignore files)
                     if (bmi != None and bmi != ""):
                         print(f"print bmi {bmi}")
                         user.bmi = int(bmi)
@@ -86,7 +96,10 @@ class SetUserData(APIView):
                 user_data.save()
                 return Response({"status":2}, status=status.HTTP_200_OK)
         except Exception as error:
+<<<<<<< HEAD
             print("Exception in SetUserData")
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
 #currently not used yet 
@@ -99,10 +112,19 @@ class GetUserData(APIView):
             username = request.data.get("username")
             print(username)
             userdata = get_alluserdata_from_userdb(username)
+<<<<<<< HEAD
+=======
+            fitnesslevel = userdata.fitness_level
+            print(fitnesslevel)
+>>>>>>> parent of cec25ce3 (remove gitignore files)
             return Response({"gender":userdata.gender,
                             "fitness_level":userdata.fitness_level,
                             "goal":userdata.goal,
                             "intensity":userdata.intensity,
+<<<<<<< HEAD
+=======
+                            "accomplishment":userdata.accomplishment,
+>>>>>>> parent of cec25ce3 (remove gitignore files)
                             "bmi":userdata.bmi}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
@@ -151,8 +173,13 @@ class CreateUserView(APIView):
                         return Response({"status":0}, status=status.HTTP_200_OK)
         except Exception as error:
             print(error)
+<<<<<<< HEAD
             return Response({"Bad Request": str(error), "status":1}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Bad Request": "Unknown data", "status":2 }, status=status.HTTP_400_BAD_REQUEST)
+=======
+            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> parent of cec25ce3 (remove gitignore files)
         
 class RoutineView(APIView):
     serializer_class = UpdateUserSerializer
@@ -188,11 +215,14 @@ class ModelToLearn(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
+<<<<<<< HEAD
 #empty class
 class ExerciseSetView(APIView):
     def get(self, request, format=None):
         return 0 
 
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 
 from AGRApi.recommender_algo_AGR import *
 from django_pandas.io import read_frame

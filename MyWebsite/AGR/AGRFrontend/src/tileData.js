@@ -3,7 +3,11 @@ const tileData = [
       img: '/AGRFrontend/static/images/4.jpg',
       title: 'Breakfast',
       author: 'jill111',
+<<<<<<< HEAD
       cols: 1,
+=======
+      cols: 2,
+>>>>>>> parent of cec25ce3 (remove gitignore files)
       featured: true,
     },
     {
@@ -21,6 +25,7 @@ const tileData = [
     {
       img: '/AGRFrontend/static/images/9.jpg',
       title: 'Morning',
+<<<<<<< HEAD
       cols: 1,
       author: 'fancycrave1',
       featured: true,
@@ -35,10 +40,13 @@ const tileData = [
     {
       img: '/AGRFrontend/static/images/25.jpg',
       title: 'Morning',
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
       cols: 2,
       author: 'fancycrave1',
       featured: true,
     },
+<<<<<<< HEAD
     {
       img: '/AGRFrontend/static/images/28.jpg',
       title: 'Morning',
@@ -53,6 +61,8 @@ const tileData = [
       author: 'fancycrave1',
       featured: true,
     },
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
   ];
   
   export default tileData;

@@ -18,6 +18,7 @@ body {
   height: 100%;
   display: flex;
 }
+<<<<<<< HEAD
 
 #grid-container {
   display: grid;
@@ -26,3 +27,5 @@ body {
   align-content: center;
   grid-template-columns: auto auto auto auto;
 }
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
