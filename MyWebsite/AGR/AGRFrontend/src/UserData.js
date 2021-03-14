@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function TestWebpage() {
+export default function UserDataPage() {
   const classes = useStyles();
   const username = Cookies.get('username')
 
