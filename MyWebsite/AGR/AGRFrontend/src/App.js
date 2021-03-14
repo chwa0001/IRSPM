@@ -10,7 +10,8 @@ import GlobalStyles from "./styles/GlobalStyles";
 import Pace from "./components/Pace";
 import SignIn from "./SignIn";
 import ResetPassword from './ResetPassword';
-import TestWebpage from './Test';
+import UserDataPage from './UserData';
+import ExerciseSetPage from './ExerciseSet';
 
 
 export default class App extends Component {
@@ -33,7 +34,8 @@ export default class App extends Component {
             <Route exact path="/SecondHome" component={SecondHomePage}/>
             <Route exact path="/SignUp" component={SignUp}/>
             <Route exact path="/Reset" component={ResetPassword}/>
-            <Route exact path="/Test" component={TestWebpage}/>
+            <Route exact path="/UserData" component={UserDataPage}/>
+            <Route exact path="/ExerciseSet" component={ExerciseSetPage}/>
           </Switch>
         </Suspense>
       </MuiThemeProvider>

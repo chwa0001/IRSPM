@@ -188,6 +188,11 @@ class ModelToLearn(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
+#empty class
+class ExerciseSetView(APIView):
+    def get(self, request, format=None):
+        return 0 
+
 
 from AGRApi.recommender_algo_AGR import *
 from django_pandas.io import read_frame
