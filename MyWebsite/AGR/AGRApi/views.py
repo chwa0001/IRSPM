@@ -50,7 +50,6 @@ class SetUserData(APIView):
             goal = request.data.get("goal")
             intensity = request.data.get("intensity")
             bmi = request.data.get("bmi")
-            accomplishment = request.data.get("accomplishment")
 
             user_id = get_userid_from_userdb(username)
             queryset = UserData.objects.filter(user_id=user_id)
@@ -70,9 +69,6 @@ class SetUserData(APIView):
                     if (intensity != ""):
                         print(f"print intensity {intensity}")
                         user.intensity = int(intensity)
-                    if (accomplishment != ""):
-                        print(f"print accomplishment {accomplishment}")
-                        user.accomplishment = accomplishment
                     if (bmi != None and bmi != ""):
                         print(f"print bmi {bmi}")
                         user.bmi = int(bmi)
@@ -90,6 +86,7 @@ class SetUserData(APIView):
                 user_data.save()
                 return Response({"status":2}, status=status.HTTP_200_OK)
         except Exception as error:
+            print("Exception in SetUserData")
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
 #currently not used yet 
@@ -102,13 +99,10 @@ class GetUserData(APIView):
             username = request.data.get("username")
             print(username)
             userdata = get_alluserdata_from_userdb(username)
-            fitnesslevel = userdata.fitness_level
-            print(fitnesslevel)
             return Response({"gender":userdata.gender,
                             "fitness_level":userdata.fitness_level,
                             "goal":userdata.goal,
                             "intensity":userdata.intensity,
-                            "accomplishment":userdata.accomplishment,
                             "bmi":userdata.bmi}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
@@ -157,8 +151,8 @@ class CreateUserView(APIView):
                         return Response({"status":0}, status=status.HTTP_200_OK)
         except Exception as error:
             print(error)
-            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"Bad Request": str(error), "status":1}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"Bad Request": "Unknown data", "status":2 }, status=status.HTTP_400_BAD_REQUEST)
         
 class RoutineView(APIView):
     serializer_class = UpdateUserSerializer

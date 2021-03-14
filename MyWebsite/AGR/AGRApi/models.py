@@ -54,7 +54,7 @@ class Exercise(models.Model):
         db_table = 'EXERCISE'
 
 class UserExerciseRating(models.Model): 
-    user       = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
+    userdata        = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
     exercise        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     user_score      = models.FloatField(default=5)
     exercise_count  = models.IntegerField(default=1)
@@ -104,20 +104,20 @@ def get_userid_from_userdb (username):
         return -1
 
 ##currently not used yet
-# def get_data_from_userdb (username,request_type):
-#     print("was here")
-#     queryset = User.objects.filter(username=username)
+def get_data_from_userdb (username,request_type):
+    print("was here")
+    queryset = User.objects.filter(username=username)
 
-#     if queryset.exists():
-#         user = queryset[0]
-#         print(f"get_data_from_userdb: {user.id}")
-#         if user.username==username:
-#             #status:0==> user credential verified okay
-#             return_var = user.request_type
-#             print(f"print user_id from get_userid_from_userdb function: {return_var}")
-#             return return_var
-#     else:
-#         return -1
+    if queryset.exists():
+        user = queryset[0]
+        print(f"get_data_from_userdb: {user.id}")
+        if user.username==username:
+            #status:0==> user credential verified okay
+            return_var = user.request_type
+            print(f"print user_id from get_userid_from_userdb function: {return_var}")
+            return return_var
+    else:
+        return -1
 
 def get_alluserdata_from_userdb (username):
     print("was here")
