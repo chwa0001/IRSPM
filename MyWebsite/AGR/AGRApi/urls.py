@@ -2,7 +2,11 @@ from django.urls import path
 from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,SetUserData,GetUserData
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from .views import AlgoToLearn,ExerciseSetView
+=======
+from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,AlgoToLearn
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,AlgoToLearn
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -20,7 +24,10 @@ urlpatterns = [
     path('Algo',AlgoToLearn.as_view()),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     path('ExerciseSet',ExerciseSetView.as_view())
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
 =======

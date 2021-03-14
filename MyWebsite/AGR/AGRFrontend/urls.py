@@ -9,8 +9,12 @@ urlpatterns = [
     path('Reset', index),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     path('UserData', index),
     path('ExerciseSet', index)
+=======
+    path('Test', index),
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
     path('Test', index),
 >>>>>>> parent of cec25ce3 (remove gitignore files)

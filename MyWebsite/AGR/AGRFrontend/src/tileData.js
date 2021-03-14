@@ -5,7 +5,11 @@ const tileData = [
       author: 'jill111',
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       cols: 1,
+=======
+      cols: 2,
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
       cols: 2,
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -31,6 +35,7 @@ const tileData = [
       title: 'Morning',
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       cols: 1,
       author: 'fancycrave1',
       featured: true,
@@ -49,10 +54,13 @@ const tileData = [
 >>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
       cols: 2,
       author: 'fancycrave1',
       featured: true,
     },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     {
@@ -69,6 +77,8 @@ const tileData = [
       author: 'fancycrave1',
       featured: true,
     },
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
