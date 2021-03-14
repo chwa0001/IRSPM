@@ -26,7 +26,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      Advance Gym Recommender (AGR) 
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -90,17 +90,16 @@ export default function TestWebpage() {
   //           throw new Error('Response not OK');
   //         }
   //         else{
-
   //           return response.json();
   //         }
   //       }).then(
   //         (data) => {
-  //           const fitness_temp = data.fitness_level;
+  //           Cookies.set('fitness_level', data.fitness_level)
+  //           console.log(Cookies.get('fitness_level'))
   //           // setGoal(data.goal);
   //           // setGender(data.gender);
   //           // setIntensity(data.intensity);
   //           // setBmi(data.bmi);
-  //           // setAccomplishment(data.accomplishment);
   //         },
   //         // (error) => {alert(error)}
   //       )
@@ -113,10 +112,11 @@ export default function TestWebpage() {
 
   // const userdata = GetUserData_fromUsername(username);
 
+
+
   const [fitnesslevel,setFitnesslevel] = useState(' ');
   const [gender,setGender] = useState(' ');
   const [goal,setGoal] = useState(' ');
-  const [accomplishment,setAccomplishment] = useState(' ');
   const [bmi,setBmi] = useState(' ');
   const [intensity,setIntensity] = useState(' ');
   let history = useHistory();
@@ -127,8 +127,8 @@ export default function TestWebpage() {
     if(userStatus===0)
     {
       setUserStatus(-1);
-      alert('Account is signup successfully!');
-      history.push('/');
+      alert('Account has been updated!');
+      history.push('/SecondHome');
     }
     else if (userStatus===1)
     {
@@ -144,8 +144,9 @@ export default function TestWebpage() {
       alert('Not sure but cannot signup!')
     }
   }, [userStatus])
-  // function SetUserData(username,fitnesslevel,gender,goal,accomplishment,bmi,intensity) {
-  function SetUserData(username,fitnesslevel,goal,intensity,gender,accomplishment,bmi) {
+
+  // function SetUserData(username,fitnesslevel,gender,goal,bmi,intensity) {
+  function SetUserData(username,fitnesslevel,goal,intensity,gender,bmi) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -156,10 +157,9 @@ export default function TestWebpage() {
           goal:goal,
           bmi:bmi,
           intensity:intensity,
-          accomplishment:accomplishment, 
         }),
     };
-    if (username!='' && fitnesslevel!='' && gender!='' && goal!='' && intensity!='' && accomplishment!='' && bmi!=''){
+    if (username!='' && fitnesslevel!='' && gender!='' && goal!='' && intensity!='' && bmi!=''){
     fetch('/AGR/SetUserData', requestOptions)
         .then(function(response){
           if (!response.ok){
@@ -176,8 +176,11 @@ export default function TestWebpage() {
         )
       }
     else{
-      if(username=='') {alert('Username cannot be blank!')}
-      else if (fitness_level==''){alert('Full name cannot be blank!')}
+      if(bmi=='') {alert('All field must be field!')}
+      else if (fitness_level==''){alert('All field must be field!')}
+      else if (goal==''){alert('All field must be field!')}
+      else if (gender==''){alert('All field must be field!')}
+      else if (intensity==''){alert('All field must be field!')}
     }
   }
   
@@ -195,18 +198,10 @@ export default function TestWebpage() {
 
   const intensityHandleChange = (event) => {
     setIntensity(event.target.value);
-    console.log("intensityHandleChange")
-
   };
   
   const bmiHandleChange = (event) => {
     setBmi(event.target.value);
-    console.log("changebmi")
-    console.log({bmi})
-  };
-
-  const accomplishmentHandleChange = (event) => {
-    setAccomplishment(event.target.value);
   };
 
   return (
@@ -307,7 +302,9 @@ export default function TestWebpage() {
                     <em>None</em>
                   </MenuItem>
                   <MenuItem value={1}>Low</MenuItem>
+                  <MenuItem value={1}>Low-Medium</MenuItem>
                   <MenuItem value={2}>Medium</MenuItem>
+                  <MenuItem value={3}>Medium-High</MenuItem>
                   <MenuItem value={3}>High</MenuItem>
                 </Select>
               </FormControl>
@@ -317,41 +314,21 @@ export default function TestWebpage() {
               fullWidth='true'
               className={classes.formControl}
               >
-                <InputLabel id="accomplishment">Accomplishment</InputLabel>
-                <Select
-                  labelId="accomplishment"
-                  id="accomplishment"
-                  value={accomplishment}
-                  onChange={accomplishmentHandleChange}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={1}>Weight Loss</MenuItem>
-                  <MenuItem value={2}>Weight Gain</MenuItem>
-                  <MenuItem value={3}>Stay Healthy</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl 
-              fullWidth='true'
-              className={classes.formControl}
-              >
-                <InputLabel id="bmi">BMI</InputLabel>
-                <Select
-                  labelId="bmi"
+                <TextField
                   id="bmi"
-                  value={bmi}
-                  onChange={bmiHandleChange}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={1}>Underweight</MenuItem>
-                  <MenuItem value={2}>Normal</MenuItem>
-                  <MenuItem value={3}>Overweight</MenuItem>
-                </Select>
+                  label="BMI"
+                  type="number"
+                  step=".01"
+                  min="15"
+                  max="30"
+                  margin="normal"
+                  defaultValue="20"
+                  fullWidth
+                  onChange={e => setBmi(e.target.value)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
               </FormControl>
             </Grid>
           </Grid>
@@ -360,7 +337,7 @@ export default function TestWebpage() {
             variant="contained"
             className={classes.submit}
             startIcon={<CloudUploadIcon />}
-            onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,accomplishment,bmi)}
+            onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi)}
           >
             Update My Data
           </Button>

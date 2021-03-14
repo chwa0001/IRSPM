@@ -31,7 +31,6 @@ class UserData(models.Model):
     fitness_level   = models.IntegerField(null=False, default=1)
     gender          = models.CharField(max_length=1, default='M')
     goal            = models.CharField(max_length=50, default='')
-    accomplishment  = models.CharField(max_length=50, default='')
     bmi             = models.IntegerField(null=False, default=0)
     intensity       = models.IntegerField(null=False, default=0)
     class Meta:
@@ -86,11 +85,9 @@ def generate_database():
                         pic_no = ex['PIC_NO'], link_url = ex['Link'])
         e.save()
 
-
 def save_routine_exercises ():
     # to add in how to write the server
     return 0
-
 
 def get_userid_from_userdb (username):
     queryset = User.objects.filter(username=username)
@@ -107,20 +104,20 @@ def get_userid_from_userdb (username):
         return -1
 
 ##currently not used yet
-def get_data_from_userdb (username,request_type):
-    print("was here")
-    queryset = User.objects.filter(username=username)
+# def get_data_from_userdb (username,request_type):
+#     print("was here")
+#     queryset = User.objects.filter(username=username)
 
-    if queryset.exists():
-        user = queryset[0]
-        print(f"get_data_from_userdb: {user.id}")
-        if user.username==username:
-            #status:0==> user credential verified okay
-            return_var = user.request_type
-            print(f"print user_id from get_userid_from_userdb function: {return_var}")
-            return return_var
-    else:
-        return -1
+#     if queryset.exists():
+#         user = queryset[0]
+#         print(f"get_data_from_userdb: {user.id}")
+#         if user.username==username:
+#             #status:0==> user credential verified okay
+#             return_var = user.request_type
+#             print(f"print user_id from get_userid_from_userdb function: {return_var}")
+#             return return_var
+#     else:
+#         return -1
 
 def get_alluserdata_from_userdb (username):
     print("was here")
@@ -129,5 +126,11 @@ def get_alluserdata_from_userdb (username):
     userdata = UserData.objects.filter(user_id=user.id)[0]
     if userdata.user_id==user.id:
         print(f"user from get_alluserdata_from_userdb function: {userdata.gender}")
+        print("{" + f""""gender":{userdata.gender},
+                            "fitness_level":{userdata.fitness_level},
+                            "goal":{userdata.goal},
+                            "intensity":{userdata.intensity},
+                            "bmi":{userdata.bmi}"""+"}")
+        print(userdata)
         return userdata
     return -1
