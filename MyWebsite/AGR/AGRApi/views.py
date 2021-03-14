@@ -209,9 +209,13 @@ class AlgoToLearn(APIView):
             qs = UserExerciseRating.objects.all()
             q = qs.values('user_id', 'exercise_id','user_score')
             df = pd.DataFrame.from_records(q)
-            exercise, usermatrix, itemid  = recommend_exercise(101, df , n=10, rating_scale=(1, 10))
+            # recommend exercise (individual)
+            exercise, usermatrix, itemid  = recommend_exercise(61, df , n=10, rating_scale=(1, 10))
+            # recommend exercise buddy
             nearestusers = nearestuser(20,3,usermatrix)
-            return Response({"Recommneded exercise":exercise,"Recommneded buddies":nearestusers}, status=status.HTTP_200_OK)
+            # recommend exercise for buddy/group
+            group_exercises = recommend_exercise_n_users([1,2,3], df , n=10, rating_scale=(1, 10))
+            return Response({"Recommneded exercise":exercise,"Recommneded buddies":nearestusers,"Recommneded buddy/group exercise":group_exercises}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
