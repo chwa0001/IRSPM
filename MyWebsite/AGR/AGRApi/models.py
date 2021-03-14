@@ -31,6 +31,10 @@ class UserData(models.Model):
     fitness_level   = models.IntegerField(null=False, default=1)
     gender          = models.CharField(max_length=1, default='M')
     goal            = models.CharField(max_length=50, default='')
+<<<<<<< HEAD
+=======
+    accomplishment  = models.CharField(max_length=50, default='')
+>>>>>>> parent of cec25ce3 (remove gitignore files)
     bmi             = models.IntegerField(null=False, default=0)
     intensity       = models.IntegerField(null=False, default=0)
     class Meta:
@@ -54,7 +58,11 @@ class Exercise(models.Model):
         db_table = 'EXERCISE'
 
 class UserExerciseRating(models.Model): 
+<<<<<<< HEAD
     user            = models.ForeignKey('AGRApi.UserData',on_delete=models.CASCADE)
+=======
+    user       = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
+>>>>>>> parent of cec25ce3 (remove gitignore files)
     exercise        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     user_score      = models.FloatField(default=5)
     exercise_count  = models.IntegerField(default=1)
@@ -85,10 +93,18 @@ def generate_database():
                         pic_no = ex['PIC_NO'], link_url = ex['Link'])
         e.save()
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 def save_routine_exercises ():
     # to add in how to write the server
     return 0
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 def get_userid_from_userdb (username):
     queryset = User.objects.filter(username=username)
 
@@ -126,11 +142,14 @@ def get_alluserdata_from_userdb (username):
     userdata = UserData.objects.filter(user_id=user.id)[0]
     if userdata.user_id==user.id:
         print(f"user from get_alluserdata_from_userdb function: {userdata.gender}")
+<<<<<<< HEAD
         print("{" + f""""gender":{userdata.gender},
                             "fitness_level":{userdata.fitness_level},
                             "goal":{userdata.goal},
                             "intensity":{userdata.intensity},
                             "bmi":{userdata.bmi}"""+"}")
         print(userdata)
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
         return userdata
     return -1

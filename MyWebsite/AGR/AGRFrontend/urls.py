@@ -7,6 +7,10 @@ urlpatterns = [
     path('SecondHome', index),
     path('SignUp', index),
     path('Reset', index),
+<<<<<<< HEAD
     path('UserData', index),
     path('ExerciseSet', index)
+=======
+    path('Test', index),
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 ]

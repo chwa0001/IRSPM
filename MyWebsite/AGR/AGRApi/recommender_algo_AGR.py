@@ -48,6 +48,7 @@ def recommend_exercise(user_id, db , n=10, rating_scale=(1, 10)):
     algo.fit(trainingSet)
     
     innertorawid = []
+<<<<<<< HEAD
     for innerid in range(0,trainingSet.n_users):
         innertorawid.append(trainingSet.to_raw_uid(innerid))
         
@@ -126,3 +127,16 @@ def recommend_exercise_n_users(user_id_array, db , n=10, rating_scale=(1, 10)):
 
 
 
+=======
+    for innerid in range(0,trainingSet.n_items):
+        innertorawid.append(trainingSet.to_raw_iid(innerid))
+        
+    print(trainingSet.to_raw_iid(0))
+    
+    testset = trainingSet.build_anti_testset()
+    predictions = algo.test(testset)
+
+    top_n, bottom_n = get_top_n(predictions, str(user_id), n=n)
+    
+    return [iid for (iid, _) in top_n], algo.qi, innertorawid
+>>>>>>> parent of cec25ce3 (remove gitignore files)

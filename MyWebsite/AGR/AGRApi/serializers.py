@@ -15,7 +15,11 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 class UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
+<<<<<<< HEAD
         fields = ('id','user','fitness_level','gender','goal','bmi','intensity')
+=======
+        fields = ('id','user','fitness_level','gender','goal','accomplishment','bmi','intensity')
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
