@@ -204,8 +204,9 @@ class AlgoToLearn(APIView):
             qs = UserExerciseRating.objects.all()
             q = qs.values('user_id', 'exercise_id','user_score')
             df = pd.DataFrame.from_records(q)
-            exercise, val, itemid  = recommend_exercise(101, df , n=1, rating_scale=(1, 10))
-            return Response({"status":exercise}, status=status.HTTP_200_OK)
+            exercise, usermatrix, itemid  = recommend_exercise(101, df , n=10, rating_scale=(1, 10))
+            nearestusers = nearestuser(20,3,usermatrix)
+            return Response({"Recommneded exercise":exercise,"Recommneded buddies":nearestusers}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 

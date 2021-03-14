@@ -48,14 +48,25 @@ def recommend_exercise(user_id, db , n=10, rating_scale=(1, 10)):
     algo.fit(trainingSet)
     
     innertorawid = []
-    for innerid in range(0,trainingSet.n_items):
-        innertorawid.append(trainingSet.to_raw_iid(innerid))
+    for innerid in range(0,trainingSet.n_users):
+        innertorawid.append(trainingSet.to_raw_uid(innerid))
         
-    print(trainingSet.to_raw_iid(0))
+    # print(trainingSet.to_raw_iid(0))
     
     testset = trainingSet.build_anti_testset()
     predictions = algo.test(testset)
 
     top_n, bottom_n = get_top_n(predictions, str(user_id), n=n)
     
-    return [iid for (iid, _) in top_n], algo.qi, innertorawid
+    return [iid for (iid, _) in top_n], algo.pu, innertorawid
+
+from scipy.spatial import distance
+
+def nearestuser(user, n_users, usermatrix):
+    user_similarity = np.ndarray((usermatrix.shape[0],2),dtype = object)
+    for i_user in range(0,usermatrix.shape[0]):
+        user_similarity[i_user][0] = str(int(i_user + 1))
+        user_similarity[i_user][1] = distance.euclidean(usermatrix[i_user],usermatrix[user-1])
+    user_similarity = user_similarity[user_similarity[:,1].argsort()] 
+    
+    return user_similarity[1:n_users+1,0]

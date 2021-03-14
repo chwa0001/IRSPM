@@ -54,7 +54,7 @@ class Exercise(models.Model):
         db_table = 'EXERCISE'
 
 class UserExerciseRating(models.Model): 
-    userdata        = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
+    user            = models.ForeignKey('AGRApi.UserData',on_delete=models.CASCADE)
     exercise        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     user_score      = models.FloatField(default=5)
     exercise_count  = models.IntegerField(default=1)
