@@ -13,8 +13,12 @@ import ResetPassword from './ResetPassword';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import UserDataPage from './UserData';
 import ExerciseSetPage from './ExerciseSet';
+=======
+import TestWebpage from './Test';
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 import TestWebpage from './Test';
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -49,8 +53,12 @@ export default class App extends Component {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Route exact path="/UserData" component={UserDataPage}/>
             <Route exact path="/ExerciseSet" component={ExerciseSetPage}/>
+=======
+            <Route exact path="/Test" component={TestWebpage}/>
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
             <Route exact path="/Test" component={TestWebpage}/>
 >>>>>>> parent of cec25ce3 (remove gitignore files)

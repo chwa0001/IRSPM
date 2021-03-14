@@ -5,7 +5,10 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
@@ -16,6 +19,9 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of cec25ce3 (remove gitignore files)
+=======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -37,6 +43,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   !*** ./src/UserData.js ***!
   \*************************/
 
@@ -48,6 +55,11 @@
   !*** ./src/ExerciseSet.js ***!
   \****************************/
 
+=======
+  !*** ./src/tileData.js ***!
+  \*************************/
+
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
   !*** ./src/tileData.js ***!
   \*************************/

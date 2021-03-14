@@ -18,7 +18,11 @@ class UserDataSerializer(serializers.ModelSerializer):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         fields = ('id','user','fitness_level','gender','goal','bmi','intensity')
+=======
+        fields = ('id','user','fitness_level','gender','goal','accomplishment','bmi','intensity')
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
         fields = ('id','user','fitness_level','gender','goal','accomplishment','bmi','intensity')
 >>>>>>> parent of cec25ce3 (remove gitignore files)
