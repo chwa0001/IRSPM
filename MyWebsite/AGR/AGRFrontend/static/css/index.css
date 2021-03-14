@@ -18,3 +18,11 @@ body {
   height: 100%;
   display: flex;
 }
+
+#grid-container {
+  display: grid;
+  height: 10%;
+  justify-content: end;
+  align-content: center;
+  grid-template-columns: auto auto auto auto;
+}
