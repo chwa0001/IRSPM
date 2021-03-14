@@ -51,6 +51,10 @@ class SetUserData(APIView):
             intensity = request.data.get("intensity")
             bmi = request.data.get("bmi")
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            accomplishment = request.data.get("accomplishment")
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
             accomplishment = request.data.get("accomplishment")
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -74,6 +78,12 @@ class SetUserData(APIView):
                         print(f"print intensity {intensity}")
                         user.intensity = int(intensity)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                    if (accomplishment != ""):
+                        print(f"print accomplishment {accomplishment}")
+                        user.accomplishment = accomplishment
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
                     if (accomplishment != ""):
                         print(f"print accomplishment {accomplishment}")
@@ -97,7 +107,10 @@ class SetUserData(APIView):
                 return Response({"status":2}, status=status.HTTP_200_OK)
         except Exception as error:
 <<<<<<< HEAD
+<<<<<<< HEAD
             print("Exception in SetUserData")
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
@@ -113,6 +126,11 @@ class GetUserData(APIView):
             print(username)
             userdata = get_alluserdata_from_userdb(username)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            fitnesslevel = userdata.fitness_level
+            print(fitnesslevel)
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
             fitnesslevel = userdata.fitness_level
             print(fitnesslevel)
@@ -122,6 +140,10 @@ class GetUserData(APIView):
                             "goal":userdata.goal,
                             "intensity":userdata.intensity,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                            "accomplishment":userdata.accomplishment,
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
                             "accomplishment":userdata.accomplishment,
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -174,8 +196,13 @@ class CreateUserView(APIView):
         except Exception as error:
             print(error)
 <<<<<<< HEAD
+<<<<<<< HEAD
             return Response({"Bad Request": str(error), "status":1}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Bad Request": "Unknown data", "status":2 }, status=status.HTTP_400_BAD_REQUEST)
+=======
+            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
@@ -216,11 +243,14 @@ class ModelToLearn(APIView):
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #empty class
 class ExerciseSetView(APIView):
     def get(self, request, format=None):
         return 0 
 
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
 

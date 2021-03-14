@@ -32,6 +32,10 @@ class UserData(models.Model):
     gender          = models.CharField(max_length=1, default='M')
     goal            = models.CharField(max_length=50, default='')
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    accomplishment  = models.CharField(max_length=50, default='')
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
     accomplishment  = models.CharField(max_length=50, default='')
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -59,7 +63,11 @@ class Exercise(models.Model):
 
 class UserExerciseRating(models.Model): 
 <<<<<<< HEAD
+<<<<<<< HEAD
     userdata        = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
+=======
+    user       = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
     user       = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -94,6 +102,10 @@ def generate_database():
         e.save()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -102,6 +114,10 @@ def save_routine_exercises ():
     return 0
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -143,12 +159,15 @@ def get_alluserdata_from_userdb (username):
     if userdata.user_id==user.id:
         print(f"user from get_alluserdata_from_userdb function: {userdata.gender}")
 <<<<<<< HEAD
+<<<<<<< HEAD
         print("{" + f""""gender":{userdata.gender},
                             "fitness_level":{userdata.fitness_level},
                             "goal":{userdata.goal},
                             "intensity":{userdata.intensity},
                             "bmi":{userdata.bmi}"""+"}")
         print(userdata)
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
         return userdata
