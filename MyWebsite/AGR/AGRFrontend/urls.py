@@ -11,11 +11,15 @@ urlpatterns = [
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> main
     path('UserData', index),
     path('ExerciseSet', index)
 =======
     path('Test', index),
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+<<<<<<< HEAD
 =======
     path('Test', index),
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -25,4 +29,6 @@ urlpatterns = [
 =======
     path('Test', index),
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+=======
+>>>>>>> main
 ]

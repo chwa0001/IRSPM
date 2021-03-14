@@ -35,6 +35,7 @@ class UserData(models.Model):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     accomplishment  = models.CharField(max_length=50, default='')
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -44,6 +45,8 @@ class UserData(models.Model):
 =======
     accomplishment  = models.CharField(max_length=50, default='')
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+=======
+>>>>>>> main
 =======
     accomplishment  = models.CharField(max_length=50, default='')
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -74,6 +77,7 @@ class UserExerciseRating(models.Model):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     userdata        = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
 =======
     user       = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
@@ -84,6 +88,9 @@ class UserExerciseRating(models.Model):
 =======
     user       = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+=======
+    user            = models.ForeignKey('AGRApi.UserData',on_delete=models.CASCADE)
+>>>>>>> main
 =======
     user       = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -121,6 +128,7 @@ def generate_database():
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -130,6 +138,8 @@ def generate_database():
 =======
 
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+=======
+>>>>>>> main
 =======
 
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -141,6 +151,7 @@ def save_routine_exercises ():
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -150,6 +161,8 @@ def save_routine_exercises ():
 =======
 
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+=======
+>>>>>>> main
 =======
 
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -194,6 +207,9 @@ def get_alluserdata_from_userdb (username):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> main
         print("{" + f""""gender":{userdata.gender},
                             "fitness_level":{userdata.fitness_level},
                             "goal":{userdata.goal},
@@ -202,11 +218,14 @@ def get_alluserdata_from_userdb (username):
         print(userdata)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+<<<<<<< HEAD
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+=======
+>>>>>>> main
         return userdata
     return -1

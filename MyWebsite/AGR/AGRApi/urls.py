@@ -4,10 +4,14 @@ from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,SetUserDat
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> main
 from .views import AlgoToLearn,ExerciseSetView
 =======
 from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,AlgoToLearn
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+<<<<<<< HEAD
 =======
 from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,AlgoToLearn
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -17,6 +21,8 @@ from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,AlgoToLear
 =======
 from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,AlgoToLearn
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+=======
+>>>>>>> main
 
 urlpatterns = [
     path('User', UserView.as_view()),
@@ -30,6 +36,7 @@ urlpatterns = [
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     path('ExerciseSet',ExerciseSetView.as_view())
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -39,4 +46,9 @@ urlpatterns = [
 >>>>>>> parent of cec25ce3 (remove gitignore files)
 =======
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+=======
+    path('ExerciseSet',ExerciseSetView.as_view())
+=======
+>>>>>>> parent of cec25ce3 (remove gitignore files)
+>>>>>>> main
 ]

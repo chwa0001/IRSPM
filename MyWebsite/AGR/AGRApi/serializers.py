@@ -19,10 +19,14 @@ class UserDataSerializer(serializers.ModelSerializer):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> main
         fields = ('id','user','fitness_level','gender','goal','bmi','intensity')
 =======
         fields = ('id','user','fitness_level','gender','goal','accomplishment','bmi','intensity')
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+<<<<<<< HEAD
 =======
         fields = ('id','user','fitness_level','gender','goal','accomplishment','bmi','intensity')
 >>>>>>> parent of cec25ce3 (remove gitignore files)
@@ -32,6 +36,8 @@ class UserDataSerializer(serializers.ModelSerializer):
 =======
         fields = ('id','user','fitness_level','gender','goal','accomplishment','bmi','intensity')
 >>>>>>> parent of cec25ce3 (remove gitignore files)
+=======
+>>>>>>> main
 
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
