@@ -2,7 +2,8 @@ from django.shortcuts import render
 from rest_framework import generics, status
 from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
 from .models import User,UserData,Routine,RoutineExercises
-from .models import get_userid_from_userdb,get_alluserdata_from_userdb
+from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb
+from .models import User, UserExerciseRating
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
@@ -49,6 +50,7 @@ class SetUserData(APIView):
             goal = request.data.get("goal")
             intensity = request.data.get("intensity")
             bmi = request.data.get("bmi")
+            accomplishment = request.data.get("accomplishment")
 
             user_id = get_userid_from_userdb(username)
             queryset = UserData.objects.filter(user_id=user_id)
@@ -68,6 +70,9 @@ class SetUserData(APIView):
                     if (intensity != ""):
                         print(f"print intensity {intensity}")
                         user.intensity = int(intensity)
+                    if (accomplishment != ""):
+                        print(f"print accomplishment {accomplishment}")
+                        user.accomplishment = accomplishment
                     if (bmi != None and bmi != ""):
                         print(f"print bmi {bmi}")
                         user.bmi = int(bmi)
@@ -85,7 +90,6 @@ class SetUserData(APIView):
                 user_data.save()
                 return Response({"status":2}, status=status.HTTP_200_OK)
         except Exception as error:
-            print("Exception in SetUserData")
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
 #currently not used yet 
@@ -97,13 +101,14 @@ class GetUserData(APIView):
                 self.request.session.create()
             username = request.data.get("username")
             print(username)
-            print(get_alluserdata_from_userdb(username))
             userdata = get_alluserdata_from_userdb(username)
-            print(userdata.gender)
+            fitnesslevel = userdata.fitness_level
+            print(fitnesslevel)
             return Response({"gender":userdata.gender,
                             "fitness_level":userdata.fitness_level,
                             "goal":userdata.goal,
                             "intensity":userdata.intensity,
+                            "accomplishment":userdata.accomplishment,
                             "bmi":userdata.bmi}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
@@ -152,8 +157,8 @@ class CreateUserView(APIView):
                         return Response({"status":0}, status=status.HTTP_200_OK)
         except Exception as error:
             print(error)
-            return Response({"Bad Request": str(error), "status":1}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"Bad Request": "Unknown data", "status":2 }, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"Bad Request": "Unknown data"}, status=status.HTTP_400_BAD_REQUEST)
         
 class RoutineView(APIView):
     serializer_class = UpdateUserSerializer
@@ -188,3 +193,25 @@ class ModelToLearn(APIView):
                 return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
+
+
+from AGRApi.recommender_algo_AGR import *
+from django_pandas.io import read_frame
+from django_pandas.managers import DataFrameManager
+
+
+class AlgoToLearn(APIView):
+    # serializer_class = UpdateUserSerializer
+
+    def post(self, request, format=None):
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+        try:
+            qs = UserExerciseRating.objects.all()
+            q = qs.values('user_id', 'exercise_id','user_score')
+            df = pd.DataFrame.from_records(q)
+            exercise, val, itemid  = recommend_exercise(101, df , n=1, rating_scale=(1, 10))
+            return Response({"status":exercise}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
+
