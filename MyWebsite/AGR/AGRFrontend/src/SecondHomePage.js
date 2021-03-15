@@ -21,6 +21,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import tileData from './tileData';
+import ExerciseContainer from './components/ExerciseContainer';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -30,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   gridList: {
-    width: 500,
-    height: 450,
+    width: 2000,
+    height: 2000,
   },
   title: {
     display: 'none',
@@ -272,11 +273,9 @@ export default function PrimarySearchAppBar() {
           GetUserDataTest
       </Button>
       </Grid>
-      <GridList cellHeight={160} className={classes.gridList} cols={3}>
+      <GridList cellHeight={800} className={classes.gridList} cols={10}>
         {tileData.map((tile) => (
-          <GridListTile key={tile.img} cols={tile.cols || 1}>
-            <img src={tile.img} alt={tile.title} />
-          </GridListTile>
+          <ExerciseContainer image={tile.img} title={tile.title}/>
         ))}
       </GridList>
       {renderMobileMenu}

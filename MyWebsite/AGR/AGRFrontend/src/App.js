@@ -12,6 +12,7 @@ import SignIn from "./SignIn";
 import ResetPassword from './ResetPassword';
 import UserDataPage from './UserData';
 import ExerciseSetPage from './ExerciseSet';
+import ExerciseContainer from './components/ExerciseContainer';
 
 
 export default class App extends Component {
@@ -36,6 +37,7 @@ export default class App extends Component {
             <Route exact path="/Reset" component={ResetPassword}/>
             <Route exact path="/UserData" component={UserDataPage}/>
             <Route exact path="/ExerciseSet" component={ExerciseSetPage}/>
+            <Route exact path="/ExerciseContainer" component={ExerciseContainer}/>
           </Switch>
         </Suspense>
       </MuiThemeProvider>
