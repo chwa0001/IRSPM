@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'row',
-    minWidth: 450,
+    minWidth: 800,
+    maxWidth: '90%',
   },
   details: {
     display: 'flex',
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 0 auto',
   },
   cover: {
-    width: '50%',
+    width: '30%',
   },
   controls: {
     display: 'flex',
@@ -53,58 +54,70 @@ export default function ExerciseContainer(props) {
   const theme = useTheme();
 
   return (
-    <div>
-    <Card className={classes.root}>
+    <Grid alignContent="center" alignItems="center" justify="center">
+      <Card className={classes.root}>
         <Grid
         container
         direction="column"
         justify="flex-start"
         alignItems="center"
         >
-          <CardMedia className={classes.cover}
-          image= {props.image}
-          title={props.title}
-          />
           <CardContent>
-            <Typography component="h5" variant="h5">
-              Live From Space
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              Mac Miller
+            <Typography component="h2" variant="h2">
+              {props.exercise_name}
             </Typography>
           </CardContent>
-          <div className="flexcontainer">
-            <div className="flexitemleft">1</div>
-            <div className="flexitemright">2</div>
-          </div>
         </Grid>
-    </Card>
-    <Card className={classes.root}>
-    <CardMedia
+      </Card>
+      <Card className={classes.root}>
+        <CardMedia
         className={classes.cover}
-        image={props.image}
-        title={props.title}
-      />
-      <div className={classes.details}>
-      <CardContent className={classes.content}>
-        <Typography component="h5" variant="h5">
-          Live From Space
-        </Typography>
-        <Typography variant="subtitle1" color="textSecondary">
-          Mac Miller
-        </Typography>
-      </CardContent>
-      <div className={classes.controls}>
-        <Typography component="h5" variant="h5">
-          Live From Space 2
-        </Typography>
-        <Typography variant="subtitle1" color="textSecondary">
-          Mac Miller 2
-        </Typography>
+        image={props.img1}
+        />
+        <CardMedia
+        className={classes.cover}
+        image={props.img2}
+        />
+        <div className={classes.details}>
+          <CardContent className={classes.content}>
+            <Typography component="h4" variant="h4">
+              Main Muscle: {props.main_muscle}
+            </Typography>
+            <Typography variant="h5" color="textSecondary">
+              Detail Muscle: {props.detail_muscle}
+            </Typography>
+            <Typography variant="h5" color="textSecondary">
+              Other Muscle: {props.other_muscle}
+            </Typography>
+            <Typography variant="h5" color="textSecondary">
+              Type: {props.type}
+            </Typography>
+            <Typography variant="h5" color="textSecondary">
+              Mechanics: {props.mechanics}
+            </Typography>
+            <Typography variant="h5" color="textSecondary">
+              Equipment: {props.equipment}
+            </Typography>
+            <Typography variant="h5" color="textSecondary">
+              Difficulty: {props.difficulty}
+            </Typography>
+            <Typography variant="h5" color="textSecondary">
+              Exercise Guide: 
+            </Typography>
+            <Typography variant="body" color="textSecondary">
+              {props.Instructions}
+            </Typography>
+          </CardContent>
+        <div className={classes.controls}>
+          <Typography component="h5" variant="h5">
+            Live From Space 2
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            Mac Miller 2
+          </Typography>
+        </div>
       </div>
-    </div>
-    
-  </Card>
-  </div>
+    </Card>
+  </Grid>
   );
 }

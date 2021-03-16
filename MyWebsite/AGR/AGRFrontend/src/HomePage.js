@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import {makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
-import tileData from './tileData';
+import tileData from './_ExData';
 import ExerciseContainer from './components/ExerciseContainer';
 import MenuBar from './components/MenuBar'
 
@@ -51,7 +51,7 @@ export default function HomePage() {
       </Grid>
       <GridList cellHeight='auto' cols={2} spacing={5} >
         {tileData.map((tile) => (
-          <ExerciseContainer image={tile.img} title={tile.title}/>
+          <ExerciseContainer img1= {tile.img1} img2= {tile.img2} exercise_name= {tile.exercise_name} main_muscle= {tile.main_muscle} detail_muscle= {tile.detail_muscle} other_muscle= {tile.other_muscle} type= {tile.type} mechanics= {tile.mechanics} equipment= {tile.equipment} difficulty= {tile.difficulty} Instructions= {tile.Instructions}/>
         ))}
       </GridList>
     </div>
