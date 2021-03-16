@@ -1,1 +1,5 @@
 This is chwacx/r/n
+npm install
+npm i webpack webpack-cli --save-dev
+npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
+npm i react react-dom --save-dev
