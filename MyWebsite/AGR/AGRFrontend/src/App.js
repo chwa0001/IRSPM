@@ -3,7 +3,7 @@ import { MuiThemeProvider, CssBaseline } from "@material-ui/core";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { render } from "react-dom";
 
-import SecondHomePage from "./SecondHomePage";
+import HomePage from "./HomePage";
 import SignUp from "./SignUp";
 import theme from "./styles/theme";
 import GlobalStyles from "./styles/GlobalStyles";
@@ -12,7 +12,6 @@ import SignIn from "./SignIn";
 import ResetPassword from './ResetPassword';
 import UserDataPage from './UserData';
 import ExerciseSetPage from './ExerciseSet';
-
 
 export default class App extends Component {
   constructor(props) {
@@ -31,7 +30,7 @@ export default class App extends Component {
             <Route exact path="/">
               <SignIn />
             </Route>
-            <Route exact path="/SecondHome" component={SecondHomePage}/>
+            <Route exact path="/Home" component={HomePage}/>
             <Route exact path="/SignUp" component={SignUp}/>
             <Route exact path="/Reset" component={ResetPassword}/>
             <Route exact path="/UserData" component={UserDataPage}/>

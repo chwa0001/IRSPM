@@ -64,7 +64,7 @@ export default function SignIn() {
     {
       setUserStatus(-1);
       Cookies.set('username', username)
-      history.push('/SecondHome');
+      history.push('/Home');
     }
     else if (userStatus===1)
     {
