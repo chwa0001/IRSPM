@@ -9,5 +9,4 @@ urlpatterns = [
     path('Reset', index),
     path('UserData', index),
     path('ExerciseSet', index),
-    path('ExerciseContainer',index),
 ]

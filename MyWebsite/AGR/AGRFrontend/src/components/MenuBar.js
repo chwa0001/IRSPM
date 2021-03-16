@@ -2,8 +2,6 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import {useLocation,useHistory} from "react-router-dom";
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import {fade, makeStyles } from '@material-ui/core/styles';
@@ -18,10 +16,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import tileData from './tileData';
-import ExerciseContainer from './components/ExerciseContainer';
+
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -31,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   gridList: {
-    width: 2000,
-    height: 2000,
+    width: 800,
+    height: 800,
   },
   title: {
     display: 'none',
@@ -91,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function MenuBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -122,20 +117,7 @@ export default function PrimarySearchAppBar() {
     {
       Cookies.remove('username')
       history.push('/')
-    }
-  const GetModel =(username)=> {
-    if (username!=''){
-    fetch(`/AGR/AskModelToLearn?username=${username}`)
-        .then(response => response.json())
-        .then(
-          (data) => {console.log(data)},
-          (error) => {alert(error)}
-        )
-        }
-    else{
-      if(username==''){alert('Username is not detected!')}
-    }
-    }
+    };
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
@@ -263,21 +245,6 @@ export default function PrimarySearchAppBar() {
           </div>
         </Toolbar>
       </AppBar>
-      <Grid container={5}>
-      <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={() =>GetModel(username) }
-        >
-          GetUserDataTest
-      </Button>
-      </Grid>
-      <GridList cellHeight={800} className={classes.gridList} cols={10}>
-        {tileData.map((tile) => (
-          <ExerciseContainer image={tile.img} title={tile.title}/>
-        ))}
-      </GridList>
       {renderMobileMenu}
       {renderMenu}
     </div>
