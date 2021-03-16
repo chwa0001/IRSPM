@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   gridList: {
-    width: 800,
-    height: 800,
+    width: '100%',
+    height: '100%',
   },
 }));
 
@@ -30,26 +30,26 @@ export default function HomePage() {
           (data) => {console.log(data)},
           (error) => {alert(error)}
         )
-        }
+      }
     else{
       if(username==''){alert('Username is not detected!')}
     }
-    }
+  }
 
   return (
     <div className={classes.grow}>
       <MenuBar/>
       <Grid container={5}>
-      <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={() =>GetModel(username) }
-        >
-          GetUserDataTest
-      </Button>
+        <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={() =>GetModel(username) }
+          >
+            GetUserDataTest
+        </Button>
       </Grid>
-      <GridList cellHeight={800} className={classes.gridList} cols={10}>
+      <GridList cellHeight='auto' cols={2} spacing={5} >
         {tileData.map((tile) => (
           <ExerciseContainer image={tile.img} title={tile.title}/>
         ))}
