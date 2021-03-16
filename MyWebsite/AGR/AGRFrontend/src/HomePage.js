@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import {makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
-import tileData from './tileData';
+import tileData from './_ExData';
 import ExerciseContainer from './components/ExerciseContainer';
 import MenuBar from './components/MenuBar'
 
@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   gridList: {
-    width: 800,
-    height: 800,
+    width: '100%',
+    height: '100%',
   },
 }));
 
@@ -30,28 +30,28 @@ export default function HomePage() {
           (data) => {console.log(data)},
           (error) => {alert(error)}
         )
-        }
+      }
     else{
       if(username==''){alert('Username is not detected!')}
     }
-    }
+  }
 
   return (
     <div className={classes.grow}>
       <MenuBar/>
       <Grid container={5}>
-      <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={() =>GetModel(username) }
-        >
-          GetUserDataTest
-      </Button>
+        <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={() =>GetModel(username) }
+          >
+            GetUserDataTest
+        </Button>
       </Grid>
-      <GridList cellHeight={800} className={classes.gridList} cols={10}>
+      <GridList cellHeight='auto' cols={2} spacing={5} >
         {tileData.map((tile) => (
-          <ExerciseContainer image={tile.img} title={tile.title}/>
+          <ExerciseContainer img1= {tile.img1} img2= {tile.img2} exercise_name= {tile.exercise_name} main_muscle= {tile.main_muscle} detail_muscle= {tile.detail_muscle} other_muscle= {tile.other_muscle} type= {tile.type} mechanics= {tile.mechanics} equipment= {tile.equipment} difficulty= {tile.difficulty} Instructions= {tile.Instructions}/>
         ))}
       </GridList>
     </div>
