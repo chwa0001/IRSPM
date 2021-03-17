@@ -7,23 +7,34 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+
+// import { Scrollbars } from "react-custom-scrollbars";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'row',
-    minWidth: 800,
-    maxWidth: '90%',
+    minWidth: 1000,
+    maxWidth: '100%',
+    alignContent: "center",
   },
   details: {
     display: 'flex',
     flexDirection: 'column',
+    maxWidth: '30%'
   },
   content: {
     flex: '1 0 auto',
   },
   cover: {
-    width: '30%',
+    width: '35%',
   },
   controls: {
     display: 'flex',
@@ -31,30 +42,38 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
-  flexcontainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    fontWize: 30,
-    textAlign: 'center',
-  },
-  flexitemleft: {
-    backgroundcolor: '#f1f1f1',
-    padding: 10,
-    flex: '50%',
-  },
-  flexitemright: {
-    backgroundcolor: 'dodgerblue',
-    padding: 10,
-    flex: '50%',
+  table: {
+    minWidth: 300,
   },
 }));
+
 
 export default function ExerciseContainer(props) {
   const classes = useStyles();
   const theme = useTheme();
+  
+  function createData(name, details) {
+    return { name, details };
+  }
+  const rows = [
+    createData('Main Muscle', props.main_muscle),
+    createData('Detail Muscle', props.detail_muscle),
+    createData('Other Muscle', props.other_muscle),
+    createData('Type', props.type),
+    createData('Mechanics', props.mechanics),
+    createData('Equipment', props.equipment),
+    createData('Difficulty', props.difficulty),
+    createData('Exercise Guide', props.Instructions),
+  ]
+
+  // handleScroll = ({ target }) => {
+  //   const { scrollTop } = target;
+
+  //   this.listRef.current.scrollTo(scrollTop);
+  // };
 
   return (
-    <Grid alignContent="center" alignItems="center" justify="center">
+    <Grid alignContent="center" alignItems="center" justify="center" paddingBottom={30}>
       <Card className={classes.root}>
         <Grid
         container
@@ -63,7 +82,7 @@ export default function ExerciseContainer(props) {
         alignItems="center"
         >
           <CardContent>
-            <Typography component="h2" variant="h2">
+            <Typography component="h1" variant="h1">
               {props.exercise_name}
             </Typography>
           </CardContent>
@@ -79,45 +98,46 @@ export default function ExerciseContainer(props) {
         image={props.img2}
         />
         <div className={classes.details}>
-          <CardContent className={classes.content}>
-            <Typography component="h4" variant="h4">
+          {/* <CardContent className={classes.content}> */}
+            {/* <Typography component="h4" variant="h4">
               Main Muscle: {props.main_muscle}
-            </Typography>
-            <Typography variant="h5" color="textSecondary">
-              Detail Muscle: {props.detail_muscle}
-            </Typography>
-            <Typography variant="h5" color="textSecondary">
-              Other Muscle: {props.other_muscle}
-            </Typography>
-            <Typography variant="h5" color="textSecondary">
-              Type: {props.type}
-            </Typography>
-            <Typography variant="h5" color="textSecondary">
+            </Typography> */}
+            {/* <Typography variant="h5" color="textSecondary">
               Mechanics: {props.mechanics}
-            </Typography>
-            <Typography variant="h5" color="textSecondary">
-              Equipment: {props.equipment}
-            </Typography>
-            <Typography variant="h5" color="textSecondary">
-              Difficulty: {props.difficulty}
-            </Typography>
-            <Typography variant="h5" color="textSecondary">
-              Exercise Guide: 
-            </Typography>
-            <Typography variant="body" color="textSecondary">
-              {props.Instructions}
-            </Typography>
-          </CardContent>
-        <div className={classes.controls}>
-          <Typography component="h5" variant="h5">
-            Live From Space 2
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            Mac Miller 2
-          </Typography>
-        </div>
+            </Typography> */}
+          {/* </CardContent> */}
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="custom pagination table">
+            <TableBody>
+              {(rows).map((row) => (
+                <TableRow key={row.name}>
+                  <TableCell style={{ fontSize: 16 }} variant="head" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell style={{ fontSize: 13 }} align="left">
+                    {row.details}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </Card>
+    <Card className={classes.root}>
+        <Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="center"
+        >
+          <CardContent>
+            <Typography component="h2" variant="h2">
+              _________________________________________________________________________________
+            </Typography>
+          </CardContent>
+        </Grid>
+      </Card>
   </Grid>
   );
 }
