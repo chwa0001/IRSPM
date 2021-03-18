@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
 
 import Radio from '@material-ui/core/Radio';
+import Button from '@material-ui/core/Button';
 
 // import RadioGroup from '@material-ui/core/RadioGroup';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -49,14 +50,53 @@ const Red2Radio = withStyles({
     },
     checked: {},
 })((props) => <Radio color="default" {...props} />);
+
+
+
   
-  
-export default function FiveRadioButtons() {
+export default function FiveRadioButtons(props) {
   const [selectedValue, setSelectedValue] = React.useState('3');
+  const username = props.username
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
+
+  const [disablebutton, setDisablebutton] =React.useState(false)
+
+
+  function ExerciseRaiting(username) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username:username,
+        }),
+    };
+    console.log(requestOptions)
+    if (username!=''){
+    fetch('/AGR/ExerciseRating', requestOptions)
+        .then(function(response){
+            console.log(response)
+          if (!response.ok){
+            throw new Error('Response not OK');
+          }
+          else{
+            return response.json();
+          }
+        }).then(
+          (data) => {
+            setUserStatus(data.status);
+          },
+          (error) => {alert(error)}
+        )
+      }
+    else{
+      if(username=='') {alert('All field must be field!')}
+      else if (username==''){alert('All field must be field!')}
+    }
+  }
+
 
   return (
     <div
@@ -74,6 +114,7 @@ export default function FiveRadioButtons() {
         value="1"
         name="radio-button-demo"
         inputProps={{ 'aria-label': '1' }}
+        disabled= {disablebutton}
       />
       <Red2Radio
         checked={selectedValue === '2'}
@@ -104,7 +145,15 @@ export default function FiveRadioButtons() {
         name="radio-button-demo"
         inputProps={{ 'aria-label': '5' }}
       />
-        Great! 
+        Great!
+        <Button
+        variant="contained"
+        padding={50}
+        margin= {1}
+        // onClick={() => ExerciseRaiting(username)}
+        >
+            Submit Rating!
+        </Button>
         {/* <FormControl component="fieldset">
             <RadioGroup row aria-label="position" name="position" defaultValue="top">
                 <FormControlLabel

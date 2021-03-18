@@ -73,7 +73,6 @@ export default function HomePage() {
           <p>Choose the radio button below with red (left) as need improvement and Green (right) as great!  </p>
         </div>
       </Grid>
-      <Scrollbars style={{ width: '100%', height: '100%' }}>
         <div 
         display= 'flex'
         fullWidth 
@@ -109,7 +108,6 @@ export default function HomePage() {
             </Table>
           </TableContainer>
         </div>
-      </Scrollbars>
     </div>
   );
 }
