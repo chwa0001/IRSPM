@@ -30,7 +30,9 @@
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
     "react-app-polyfill": "^2.0.0",
+    "react-custom-scroll": "^4.2.2",
     "react-custom-scrollbars": "^4.2.1",
+    "react-custom-scroller": "^1.0.0",
     "react-router-dom": "^5.2.0"
   }
 }
