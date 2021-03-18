@@ -15,32 +15,26 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-// import { Scrollbars } from "react-custom-scrollbars";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'row',
-    minWidth: 1000,
+    // minWidth: 600,
     maxWidth: '100%',
     alignContent: "center",
   },
   details: {
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '30%'
+    width: '30%',
+    maxWidth: 600,
   },
   content: {
     flex: '1 0 auto',
   },
-  cover: {
+  pictures: {
+    minWidth: 150,
     width: '35%',
-  },
-  controls: {
-    display: 'flex',
-    alignItems: 'center',
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
   },
   table: {
     minWidth: 300,
@@ -66,20 +60,22 @@ export default function ExerciseContainer(props) {
     createData('Exercise Guide', props.Instructions),
   ]
 
-  // handleScroll = ({ target }) => {
-  //   const { scrollTop } = target;
-
-  //   this.listRef.current.scrollTo(scrollTop);
-  // };
-
   return (
-    <Grid alignContent="center" alignItems="center" justify="center" paddingBottom={30}>
+    <Grid 
+    alignContent="center" 
+    alignItems="center" 
+    justify="center" 
+    paddingBottom={30}
+    justify-content='center'
+    flex-direction= 'row'
+    >
       <Card className={classes.root}>
         <Grid
         container
         direction="column"
         justify="flex-start"
         alignItems="center"
+        flex-grow= {2}
         >
           <CardContent>
             <Typography component="h1" variant="h1">
@@ -90,11 +86,11 @@ export default function ExerciseContainer(props) {
       </Card>
       <Card className={classes.root}>
         <CardMedia
-        className={classes.cover}
+        className={classes.pictures}
         image={props.img1}
         />
         <CardMedia
-        className={classes.cover}
+        className={classes.pictures}
         image={props.img2}
         />
         <div className={classes.details}>
@@ -111,7 +107,7 @@ export default function ExerciseContainer(props) {
             <TableBody>
               {(rows).map((row) => (
                 <TableRow key={row.name}>
-                  <TableCell style={{ fontSize: 16 }} variant="head" scope="row">
+                  <TableCell style={{ width: 30, fontSize: 16 }} variant="head" scope="row">
                     {row.name}
                   </TableCell>
                   <TableCell style={{ fontSize: 13 }} align="left">
