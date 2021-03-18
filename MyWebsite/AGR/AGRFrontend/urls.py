@@ -7,5 +7,5 @@ urlpatterns = [
     path('SignUp', index),
     path('Reset', index),
     path('UserData', index),
-    path('ExerciseSet', index),
+    path('ExerciseRating', index),
 ]

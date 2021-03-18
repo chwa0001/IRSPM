@@ -189,7 +189,7 @@ class ModelToLearn(APIView):
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
 #empty class
-class ExerciseSetView(APIView):
+class ExerciseRatingView(APIView):
     def get(self, request, format=None):
         return 0 
 

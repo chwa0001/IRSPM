@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 export default function UserDataPage() {
   const classes = useStyles();
   const username = Cookies.get('username')
-
+  
   // function noop() {};
   // function GetUserData_fromUsername(username) {
   //   GetUserData_fromUsername = noop;
@@ -121,6 +121,7 @@ export default function UserDataPage() {
   const [intensity,setIntensity] = useState(' ');
   let history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
+  
   
 
   useEffect(() => {

@@ -8,6 +8,11 @@ import tileData from './_ExData';
 import ExerciseContainer from './components/ExerciseContainer';
 import MenuBar from './components/MenuBar'
 
+import { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { Scrollbars } from 'react-custom-scrollbars';
+
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -49,11 +54,20 @@ export default function HomePage() {
             GetUserDataTest
         </Button>
       </Grid>
-      <GridList cellHeight='auto' cols={2} spacing={5} >
-        {tileData.map((tile) => (
-          <ExerciseContainer img1= {tile.img1} img2= {tile.img2} exercise_name= {tile.exercise_name} main_muscle= {tile.main_muscle} detail_muscle= {tile.detail_muscle} other_muscle= {tile.other_muscle} type= {tile.type} mechanics= {tile.mechanics} equipment= {tile.equipment} difficulty= {tile.difficulty} Instructions= {tile.Instructions}/>
-        ))}
-      </GridList>
+      <Scrollbars style={{ width: '100%', height: '100%' }}>
+        {/* !! not sure how to make it centered yet */}
+        <GridList 
+          fullWidth 
+          cellHeight='auto' 
+          display= 'grid'
+          justify-content='center' 
+          align-content= 'center'
+          >
+          {tileData.map((tile) => (
+            <ExerciseContainer img1= {tile.img1} img2= {tile.img2} exercise_name= {tile.exercise_name} main_muscle= {tile.main_muscle} detail_muscle= {tile.detail_muscle} other_muscle= {tile.other_muscle} type= {tile.type} mechanics= {tile.mechanics} equipment= {tile.equipment} difficulty= {tile.difficulty} Instructions= {tile.Instructions}/>
+          ))}
+        </GridList>
+      </Scrollbars>
     </div>
   );
 }
