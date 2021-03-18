@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import moment from 'moment';
 import { useHistory } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 function Copyright() {
   return (
@@ -61,6 +62,7 @@ export default function SignUp() {
     {
       setUserStatus(-1);
       alert('Account is signup successfully!');
+      Cookies.set('username', username);
       history.push('/');
     }
     else if (userStatus===1)
