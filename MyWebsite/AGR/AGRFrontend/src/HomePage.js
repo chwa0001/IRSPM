@@ -6,7 +6,7 @@ import {makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import tileData from './tileData';
 import ExerciseContainer from './components/ExerciseContainer';
-import MenuBar from './components/MenuBar'
+import MenuBar from './components/MenuBar';
 
 const useStyles = makeStyles((theme) => ({
   grow: {

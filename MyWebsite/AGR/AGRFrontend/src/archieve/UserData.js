@@ -37,7 +37,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -67,18 +67,6 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
-  },
-  scrollBar: {
-    '&::-webkit-scrollbar': {
-      width: '0.4em'
-    },
-    '&::-webkit-scrollbar-track': {
-      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)'
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'rgba(0,0,0,.1)',
-      outline: '1px solid slategrey'
-    }
   },
 }));
 
@@ -221,18 +209,23 @@ export default function UserDataPage() {
   };
 
   return (
-      <div className={classes.grow}>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
         <MenuBar/>
-        <CssBaseline />
-        <div className={classes.paper}>
-        <Container component="main" maxWidth="xs">
+        <Avatar className={classes.avatar}>
+          <AccountBoxIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          {username}'s Profile 
+        </Typography>
         <form className={classes.form} noValidate>
           <Grid container 
           spacing={2}
           className={classes.text}
           >
             <Grid item xs={12}>
-              <Typography component="h5">
+              <Typography component="body2">
                 <i>Getting to know more about you </i>
               </Typography>
             </Grid>
@@ -353,10 +346,18 @@ export default function UserDataPage() {
           >
             Update My Data
           </Button>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Link href="/SecondHome" variant="body2">
+                Return HOME
+              </Link>
+            </Grid>
+          </Grid>
         </form>
-        </Container>
-        </div>
       </div>
-      
+      <Box mt={5}>
+        <Copyright />
+      </Box>
+    </Container>
   );
 }
