@@ -12,6 +12,7 @@ import { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
 
+import CustomScroller from 'react-custom-scroller';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -54,7 +55,7 @@ export default function HomePage() {
             GetUserDataTest
         </Button>
       </Grid>
-      <Scrollbars style={{ width: '100%', height: '100%' }}>
+      <CustomScroller style={{ width: '100%', height: '100%' }}>
         {/* !! not sure how to make it centered yet */}
         <GridList 
           fullWidth 
@@ -67,7 +68,7 @@ export default function HomePage() {
             <ExerciseContainer img1= {tile.img1} img2= {tile.img2} exercise_name= {tile.exercise_name} main_muscle= {tile.main_muscle} detail_muscle= {tile.detail_muscle} other_muscle= {tile.other_muscle} type= {tile.type} mechanics= {tile.mechanics} equipment= {tile.equipment} difficulty= {tile.difficulty} Instructions= {tile.Instructions}/>
           ))}
         </GridList>
-      </Scrollbars>
+      </CustomScroller>
     </div>
   );
 }
