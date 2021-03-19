@@ -1,4 +1,4 @@
-import React ,{useState,useEffect} from 'react';
+import React ,{ useState , useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -76,57 +76,56 @@ export default function UserDataPage() {
   const classes = useStyles();
   const username = Cookies.get('username')
   
-  // function noop() {};
-  // function GetUserData_fromUsername(username) {
-  //   GetUserData_fromUsername = noop;
-  //   const requestOptions = {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({
-  //         username:username,
-  //       }),
-  //   };
-  //   if (username!=''){
-  //   fetch('/AGR/GetUserData', requestOptions)
-  //       .then(function(response){
-  //         console.log(response)
-  //         if (!response.ok){
-  //           throw new Error('Response not OK');
-  //         }
-  //         else{
-  //           return response.json();
-  //         }
-  //       }).then(
-  //         (data) => {
-  //           Cookies.set('fitness_level', data.fitness_level)
-  //           console.log(Cookies.get('fitness_level'))
-  //           // setGoal(data.goal);
-  //           // setGender(data.gender);
-  //           // setIntensity(data.intensity);
-  //           // setBmi(data.bmi);
-  //         },
-  //         // (error) => {alert(error)}
-  //       )
-  //     }
-  //   else{
-  //     // if(username=='') {alert('Username cannot be blank!')}
-  //     // else if (fitness_level==''){alert('Full name cannot be blank!')}
-  //   }
-  // }
-
-  // const userdata = GetUserData_fromUsername(username);
-
-
 
   const [fitnesslevel,setFitnesslevel] = useState(' ');
-  const [gender,setGender] = useState(' ');
+  const [gender,setGender] = React.useState(' ');
   const [goal,setGoal] = useState(' ');
   const [bmi,setBmi] = useState(' ');
   const [intensity,setIntensity] = useState(' ');
   let history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
   
-  
+
+  React.useEffect(()=> {
+
+    console.log("response")
+
+      const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username:username,
+        }),
+      };
+      if (username!=''){
+      fetch('/AGR/GetUserData', requestOptions)
+          .then(function(response){
+            console.log(response)
+            if (!response.ok){
+              throw new Error('Response not OK');
+            }
+            else{
+              return response.json();
+            }
+          }).then(
+            (data) => {
+              console.log(data.gender)
+              console.log(data.fitness_level)
+              console.log(data.goal)
+              console.log(data.intensity)
+              console.log(data.bmi)
+              setGender(data.gender);
+              setFitnesslevel(data.fitness_level);
+              setGoal(data.goal);
+              setIntensity(data.intensity);
+              setBmi(data.bmi);
+            },
+            // (error) => {alert(error)}
+          )
+        }
+
+  }, []);  
+   
 
   useEffect(() => {
     if(userStatus===0)

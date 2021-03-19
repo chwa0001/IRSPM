@@ -100,7 +100,7 @@ export default function HomePage() {
                       {tile.exercise_name}
                     </TableCell>
                     <TableCell style={{ fontSize: 13 }} align="center">
-                      <FiveRadioButtons/>
+                      <FiveRadioButtons username={username} exercise_id= {tile.exercise_id} exercise_name= {tile.exercise_name}/>
                     </TableCell>
                   </TableRow>
                 ))}
