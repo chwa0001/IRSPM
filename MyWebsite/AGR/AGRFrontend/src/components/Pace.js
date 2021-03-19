@@ -13,6 +13,7 @@ const styles = {
     ".pace .pace-progress": {
       background: props => props.color || null,
       position: "fixed",
+      display: "flex",
       zIndex: 2000,
       top: 0,
       right: "100%",

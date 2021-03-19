@@ -338,7 +338,7 @@ export default function UserDataPage() {
             variant="contained"
             className={classes.submit}
             startIcon={<CloudUploadIcon />}
-            onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi)}
+            onClick={() => RateExercises(username)}
           >
             Update My Data
           </Button>
