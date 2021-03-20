@@ -7,11 +7,6 @@ import GridList from '@material-ui/core/GridList';
 import tileData from './_ExData';
 import ExerciseContainer from './components/ExerciseContainer';
 import MenuBar from './components/MenuBar';
-
-import { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Scrollbars } from 'react-custom-scrollbars';
-
 import CustomScroller from 'react-custom-scroller';
 
 const useStyles = makeStyles((theme) => ({

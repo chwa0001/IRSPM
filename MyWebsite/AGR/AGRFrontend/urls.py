@@ -8,4 +8,5 @@ urlpatterns = [
     path('Reset', index),
     path('UserData', index),
     path('ExerciseRating', index),
+    path('AccountData',index),
 ]

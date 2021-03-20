@@ -108,6 +108,10 @@ export default function MenuBar() {
     setMobileMoreAnchorEl(null);
   };
 
+  const handleUserDataProfile = ()=>{
+    history.push('/UserData');
+  };
+
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
@@ -134,7 +138,7 @@ export default function MenuBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleUserDataProfile}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem onClick={GoBack}>Logout</MenuItem>
     </Menu>

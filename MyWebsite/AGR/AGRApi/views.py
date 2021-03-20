@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
+from .serializers import UserSerializer,AccountDataSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
 from .models import User,UserData,Routine,RoutineExercises
 from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb
 from .models import User, UserExerciseRating
@@ -106,6 +106,17 @@ class GetUserData(APIView):
                             "bmi":userdata.bmi}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+
+class GetAccountData(APIView):
+    def get(self, request, format=None):
+        username = request.GET.get('username')
+        queryset = User.objects.filter(username=username)
+        try:
+            if username!=None:
+                user = queryset[0]
+                return Response(AccountDataSerializer(user).data, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
 class CreateUserView(APIView):
     serializer_class = UpdateUserSerializer
