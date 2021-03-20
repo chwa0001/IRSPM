@@ -14,30 +14,44 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { sizing } from '@material-ui/system';
+
+
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  title: {
     display: 'flex',
     flexDirection: 'row',
     // minWidth: 600,
     maxWidth: '100%',
     alignContent: "center",
+    justifyContent: "center",
+  },root: {
+    display: 'flex',
+    flexDirection: 'row',
+    // minWidth: 600,
+    maxWidth: '100%',
+    // height: '60%',
+    alignContent: "center",
+    justifyContent: "center",
   },
   details: {
     display: 'flex',
     flexDirection: 'column',
     width: '30%',
-    maxWidth: 600,
+    // maxWidth: 600,
   },
   content: {
     flex: '1 0 auto',
   },
   pictures: {
-    minWidth: 150,
+    // minWidth: 150,
     width: '35%',
+    // paddingTop: '0%', // 16:9
   },
   table: {
-    minWidth: 300,
+    // minWidth: 300,
   },
 }));
 
@@ -65,11 +79,11 @@ export default function ExerciseContainer(props) {
     alignContent="center" 
     alignItems="center" 
     justify="center" 
-    paddingBottom={30}
+    paddingBottom={1}
     justify-content='center'
     flex-direction= 'row'
     >
-      <Card className={classes.root}>
+      <Card className={classes.title}>
         <Grid
         container
         direction="column"
@@ -84,6 +98,7 @@ export default function ExerciseContainer(props) {
           </CardContent>
         </Grid>
       </Card>
+
       <Card className={classes.root}>
         <CardMedia
         className={classes.pictures}
@@ -93,7 +108,7 @@ export default function ExerciseContainer(props) {
         className={classes.pictures}
         image={props.img2}
         />
-        <div className={classes.details}>
+        <CardContent className={classes.details}>
           {/* <CardContent className={classes.content}> */}
             {/* <Typography component="h4" variant="h4">
               Main Muscle: {props.main_muscle}
@@ -118,7 +133,7 @@ export default function ExerciseContainer(props) {
             </TableBody>
           </Table>
         </TableContainer>
-      </div>
+      </CardContent>
     </Card>
     <Card className={classes.root}>
         <Grid

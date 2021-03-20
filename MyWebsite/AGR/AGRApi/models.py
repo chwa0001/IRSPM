@@ -1,7 +1,7 @@
 from django.db import models
 import string
 import random
-
+import pandas as pd
 
 def generate_unique_code():
     length = 6
@@ -28,10 +28,10 @@ class User(models.Model):
 
 class UserData(models.Model):
     user            = models.ForeignKey(User,on_delete=models.CASCADE)
-    fitness_level   = models.IntegerField(null=False, default=1)
-    gender          = models.CharField(max_length=1, default='M')
-    goal            = models.CharField(max_length=50, default='')
-    bmi             = models.IntegerField(null=False, default=0)
+    fitness_level   = models.IntegerField(null=False, default=0)
+    gender          = models.CharField(max_length=1, default='')
+    goal            = models.IntegerField(null=False, default=0)
+    bmi             = models.IntegerField(null=False, default=20)
     intensity       = models.IntegerField(null=False, default=0)
     class Meta:
         db_table = "USER_DATABASE"
@@ -65,18 +65,20 @@ class Routine(models.Model):
     userdata        = models.ForeignKey('AGRApi.UserData',on_delete=models.CASCADE)
     set_id          = models.IntegerField()
     date            = models.DateField()
+    rate            = models.BooleanField(default=False)
     class Meta: 
         db_table = 'ROUTINE'
 
 class RoutineExercises(models.Model):
     set_id          = models.ForeignKey(Routine, on_delete=models.CASCADE)
-    exercise_id        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    exercise_id     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     class Meta: 
         db_table = 'ROUTINE_EXERICSE'
 
-
 def generate_database(): 
-    ex_db = pd.read_excel("ExerciseDataBase2.xlsx",index_col=0).dropna(axis=1, thresh=90).drop_duplicates()
+    print("initiating database checkpoint 2")
+    ex_db = pd.read_excel("./ExerciseDataBase.xlsx")
+    print("initiating database checkpoint 3")
     for ind,ex in ex_db.iterrows():
         e = Exercise(exercise_name = ex['Exercise Name'], main_musclegroup = ex['MainMuscleGroup'], 
                         detailed_musclegroup = ex['DetailedMuscleGroup'], other_musclegroups = ex['OtherMuscleGroups'],
@@ -84,6 +86,7 @@ def generate_database():
                         difficulty = ex['Difficulty'], instruction_text = ex['InstructionText'], 
                         pic_no = ex['PIC_NO'], link_url = ex['Link'])
         e.save()
+        print(f"save {ind}")
 
 
 def save_routine_exercises ():
@@ -135,3 +138,20 @@ def get_alluserdata_from_userdb (username):
         print(userdata)
         return userdata
     return -1
+
+def get_set_to_review (username):
+    print("was here - get_set_to_review")
+    print(username)
+    user = User.objects.filter(username=username)[0]
+    print(f"user id from get_alluserdata_from_userdb: {user.id}")
+    routine_set = Routine.objects.filter(user_id=user.id,rate=False)
+    if routine_set.user_id==user.id:
+        print(f"user from get_alluserdata_from_userdb function: {routine_set.user_id}")
+        print("{" + f""""user_id":{routine_set.user_id},
+                            "set_id":{routine_set.set_id},
+                            "date":{routine_set.date},
+                            "rate":{routine_set.rate}"""+"}")
+        print(routine_set)
+        return routine_set
+    return -1
+

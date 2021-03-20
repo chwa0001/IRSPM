@@ -13,10 +13,6 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
-  gridList: {
-    width: '100%',
-    height: '100%',
-  },
 }));
 
 export default function HomePage() {
@@ -40,7 +36,7 @@ export default function HomePage() {
   return (
     <div className={classes.grow}>
       <MenuBar/>
-      <Grid container={5}>
+      <Grid>
         <Button
             fullWidth
             variant="contained"
@@ -54,7 +50,7 @@ export default function HomePage() {
         {/* !! not sure how to make it centered yet */}
         <GridList 
           fullWidth 
-          cellHeight='auto' 
+          // cellHeight='auto' 
           display= 'grid'
           justify-content='center' 
           align-content= 'center'
