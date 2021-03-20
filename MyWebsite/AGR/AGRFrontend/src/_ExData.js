@@ -2,6 +2,7 @@ const tileData = [
     {
       img1: '/AGRFrontend/static/images/8.jpg',
       img2: '/AGRFrontend/static/images/9.jpg',
+      exercide_id:1,
       exercise_name: 'String Pull',
       main_muscle: 'Absss',
       detail_muscle: 'Abs',
@@ -25,6 +26,7 @@ const tileData = [
     {
       img1: '/AGRFrontend/static/images/4.jpg',
       img2: '/AGRFrontend/static/images/5.jpg',
+      exercide_id:2,
       exercise_name: 'Breakfast',
       main_muscle: 'Absss',
       detail_muscle: 'Abs',
@@ -48,6 +50,7 @@ const tileData = [
     {
       img1: '/AGRFrontend/static/images/24.jpg',
       img2: '/AGRFrontend/static/images/25.jpg',
+      exercide_id:3,
       exercise_name: 'Breakfast',
       main_muscle: 'Absss',
       detail_muscle: 'Abs',
@@ -71,6 +74,7 @@ const tileData = [
     {
       img1: '/AGRFrontend/static/images/8.jpg',
       img2: '/AGRFrontend/static/images/9.jpg',
+      exercide_id:4,
       exercise_name: 'String Pull',
       main_muscle: 'Absss',
       detail_muscle: 'Abs',
@@ -94,6 +98,7 @@ const tileData = [
     {
       img1: '/AGRFrontend/static/images/28.jpg',
       img2: '/AGRFrontend/static/images/29.jpg',
+      exercide_id:5,
       exercise_name: 'Breakfast',
       main_muscle: 'Absss',
       detail_muscle: 'Abs',

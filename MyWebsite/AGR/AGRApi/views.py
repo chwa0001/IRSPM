@@ -203,7 +203,10 @@ class ModelToLearn(APIView):
 class ExerciseRating(APIView):
     def get(self, request, format=None):
         username = request.GET.get('username')
-        return 0 
+        exercise_id = request.GET.get('exercise_id')
+        score = request.GET.get('score')
+        print(f"exercise id: {exercis_id}, score: {score}")
+        return Response({"status":1}) 
 
 
 from AGRApi.recommender_algo_AGR import *

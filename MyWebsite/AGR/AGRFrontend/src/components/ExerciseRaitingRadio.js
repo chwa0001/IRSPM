@@ -56,21 +56,25 @@ const Red2Radio = withStyles({
   
 export default function FiveRadioButtons(props) {
   const [selectedValue, setSelectedValue] = React.useState('3');
-  const username = props.username
+  const [userStatus, setUserStatus] = useState(-1);
+
+  const username = props.username;
+  const exercise_id = props.exercise_id;
+  const exercise_name = props.exercise_name;
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
 
-  const [disablebutton, setDisablebutton] =React.useState(false)
 
-
-  function ExerciseRaiting(username) {
+  function ExerciseRaiting(username,selectedValue,exercise_id) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username:username,
+          username: username,
+          score: selectedValue, 
+          exercise_id: exercise_id,
         }),
     };
     console.log(requestOptions)
@@ -91,10 +95,6 @@ export default function FiveRadioButtons(props) {
           (error) => {alert(error)}
         )
       }
-    else{
-      if(username=='') {alert('All field must be field!')}
-      else if (username==''){alert('All field must be field!')}
-    }
   }
 
 
@@ -112,7 +112,7 @@ export default function FiveRadioButtons(props) {
         checked={selectedValue === '1'}
         onChange={handleChange}
         value="1"
-        name="radio-button-demo"
+        name="rating"
         inputProps={{ 'aria-label': '1' }}
         disabled= {disablebutton}
       />
@@ -120,7 +120,7 @@ export default function FiveRadioButtons(props) {
         checked={selectedValue === '2'}
         onChange={handleChange}
         value="2"
-        name="radio-button-demo"
+        name="rating"
         inputProps={{ 'aria-label': '2' }}
       />
       <Radio
@@ -128,21 +128,21 @@ export default function FiveRadioButtons(props) {
         onChange={handleChange}
         value="3"
         color="default"
-        name="radio-button-demo"
+        name="rating"
         inputProps={{ 'aria-label': '3' }}
       />
       <Green2Radio
         checked={selectedValue === '4'}
         onChange={handleChange}
         value="4"
-        name="radio-button-demo"
+        name="rating"
         inputProps={{ 'aria-label': '4' }}
       />
       <GreenRadio
         checked={selectedValue === '5'}
         onChange={handleChange}
         value="5"
-        name="radio-button-demo"
+        name="rating"
         inputProps={{ 'aria-label': '5' }}
       />
         Great!
@@ -150,7 +150,7 @@ export default function FiveRadioButtons(props) {
         variant="contained"
         padding={50}
         margin= {1}
-        // onClick={() => ExerciseRaiting(username)}
+        // onClick={() => ExerciseRaiting(username,selectedValue,exercise_id)}
         >
             Submit Rating!
         </Button>
