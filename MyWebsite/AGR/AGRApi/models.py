@@ -85,6 +85,7 @@ def generate_database():
                         pic_no = ex['PIC_NO'], link_url = ex['Link'])
         e.save()
 
+
 def save_routine_exercises ():
     # to add in how to write the server
     return 0
