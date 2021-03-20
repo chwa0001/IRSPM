@@ -2,14 +2,17 @@ from django.shortcuts import render
 from rest_framework import generics, status
 from .serializers import UserSerializer,AccountDataSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
 from .models import User,UserData,Routine,RoutineExercises
-from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb
+from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb,get_set_to_review
 from .models import User, UserExerciseRating
 from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer, ExerciseSerializer
 from .models import User,UserData,Routine,RoutineExercises, Exercise
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
-
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 # Create your views here.
 
 
@@ -45,6 +48,12 @@ class SetUserData(APIView):
         try:
             if not self.request.session.exists(self.request.session.session_key):
                 self.request.session.create()
+
+            # print("reach here")
+            # if len(Exercise.objects.all()) < 1 : 
+            #     print("initiating database")
+            #     generate_database()
+
             print(f"requestdata : {request.data}")
             username = request.data.get("username")
             fitness_level = request.data.get("fitness_level")
@@ -212,6 +221,27 @@ class ExerciseRating(APIView):
         print(f"exercise id: {exercis_id}, score: {score}")
         return Response({"status":1}) 
 
+class GetSetToRate(APIView):
+    def post(self, request, format=None):
+        try:
+            print("debug part 1")
+            if not self.request.session.exists(self.request.session.session_key):
+                print("AGRApi no session")
+                self.request.session.create()
+            print("debug part 2")
+            username = request.GET.get('username')
+            print("debug part 3")
+            queryset = User.objects.filter(username=username)
+            print("debug part 4")
+            setToReview = get_set_to_review(username)
+            print("debug part 5")
+            if len(setToReview) > 0 :
+                return Response(UserSerializer(setToReview[0]).data, status=status.HTTP_200_OK)
+            else : 
+                return Response({"Bad Request":"No Exercise to rate"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response({"Bad Request":"Unable to run"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 from AGRApi.recommender_algo_AGR import *
 from django_pandas.io import read_frame
@@ -233,10 +263,6 @@ class AlgoToLearn(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
-import pandas as pd
-import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 class FirstReco(APIView):
     def get(self, request, format=None):
         username = request.GET.get('username')
