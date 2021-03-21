@@ -7,6 +7,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'code', 'fullname','DOB','username', 'password', 'created_at')
 
+class AccountDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id','fullname','DOB','username')
+
 class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

@@ -1,13 +1,18 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
+from .serializers import UserSerializer,AccountDataSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
 from .models import User,UserData,Routine,RoutineExercises
-from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb
+from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb,get_set_to_review
 from .models import User, UserExerciseRating
+from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer, ExerciseSerializer
+from .models import User,UserData,Routine,RoutineExercises, Exercise
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
-
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 # Create your views here.
 
 
@@ -43,6 +48,12 @@ class SetUserData(APIView):
         try:
             if not self.request.session.exists(self.request.session.session_key):
                 self.request.session.create()
+
+            # print("reach here")
+            # if len(Exercise.objects.all()) < 1 : 
+            #     print("initiating database")
+            #     generate_database()
+
             print(f"requestdata : {request.data}")
             username = request.data.get("username")
             fitness_level = request.data.get("fitness_level")
@@ -106,6 +117,17 @@ class GetUserData(APIView):
                             "bmi":userdata.bmi}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+
+class GetAccountData(APIView):
+    def get(self, request, format=None):
+        username = request.GET.get('username')
+        queryset = User.objects.filter(username=username)
+        try:
+            if username!=None:
+                user = queryset[0]
+                return Response(AccountDataSerializer(user).data, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
 class CreateUserView(APIView):
     serializer_class = UpdateUserSerializer
@@ -185,13 +207,40 @@ class ModelToLearn(APIView):
                 f.write("This is %s/r/n"%username)
                 f.close()
                 return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+            else:
+                return Response({"Bad Request": "No Username"}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
 #empty class
-class ExerciseSetView(APIView):
+class ExerciseRating(APIView):
     def get(self, request, format=None):
-        return 0 
+        username = request.GET.get('username')
+        exercise_id = request.GET.get('exercise_id')
+        score = request.GET.get('score')
+        print(f"exercise id: {exercis_id}, score: {score}")
+        return Response({"status":1}) 
+
+class GetSetToRate(APIView):
+    def post(self, request, format=None):
+        try:
+            print("debug part 1")
+            if not self.request.session.exists(self.request.session.session_key):
+                print("AGRApi no session")
+                self.request.session.create()
+            print("debug part 2")
+            username = request.GET.get('username')
+            print("debug part 3")
+            queryset = User.objects.filter(username=username)
+            print("debug part 4")
+            setToReview = get_set_to_review(username)
+            print("debug part 5")
+            if len(setToReview) > 0 :
+                return Response(UserSerializer(setToReview[0]).data, status=status.HTTP_200_OK)
+            else : 
+                return Response({"Bad Request":"No Exercise to rate"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response({"Bad Request":"Unable to run"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 from AGRApi.recommender_algo_AGR import *
@@ -219,3 +268,76 @@ class AlgoToLearn(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
+class FirstReco(APIView):
+    def get(self, request, format=None):
+        username = request.GET.get('username')
+        exercise_id = request.GET.get('exercise_id')
+        print(Exercise.objects.filter(id= exercise_id).exists())
+        if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists():
+            exercise_data = Exercise.objects.all() #get all data from db according to models.py format
+            df = pd.DataFrame.from_records(exercise_data.values())
+            # exercisesArr = []
+            # i = 0
+            # while i < len(exercise_data):
+            #     exercisesArr.append(ExerciseSerializer(exercise_data[i]).data) #convert into list of json format
+            #     i += 1
+            # df = pd.DataFrame(exercisesArr) #convert into dataframe
+            # print("here", len(df))
+
+            #Select features to find similarity
+            features = ['other_musclegroups', 'exercise_type', 'mechanics', 'equipment', 'exercise_name'] #type change to exercise type because type is special keyword
+            for feature in features:
+                df[feature] = df[feature].fillna('')
+            #print(df[feature])
+
+            #Create combined features column
+            def combined_features(row):
+                return row['other_musclegroups']+" "+row['exercise_type']+" "+row['mechanics']+" "+row['exercise_name']+" "+row['equipment']
+            df["combined_features"] = df.apply(combined_features, axis =1)
+            #print(df["combined_features"])
+
+            #Use CountVectorizer to convert words into word count for cosine similarity
+            cv = CountVectorizer()
+            count_matrix = cv.fit_transform(df["combined_features"])
+            #print("Count Matrix:", count_matrix.toarray())
+
+            #Cosine similarity
+            cosine_sim = cosine_similarity(count_matrix)
+            # print("here", len(cosine_sim))
+
+            exercise_index = int(exercise_id) #user input in exercise_id
+
+            #Place similar exercises in list and sort in descending similarity score
+            similar_exercises = list(enumerate(cosine_sim[exercise_index]))
+            #print(similar_exercises)
+            sorted_similar_exercises = sorted(similar_exercises, key=lambda x:x[1], reverse=True)
+
+            #Store top 6 similar exercise_id in list
+            recoList = []
+            i=0
+            for exercise in sorted_similar_exercises:
+                recoList.append(exercise[0])
+                i=i+1
+                if i>5:
+                    break
+                
+            print(recoList)
+
+
+            # Creating json
+            data = {}
+            data["recoList"] = recoList
+
+            recoEx = Exercise.objects.filter(id__in = recoList) #filter for Exercise db for recommended exercise according to models.py format
+            recoExArray = []
+            i = 0
+            while i < len(recoEx):
+                recoExArray.append(ExerciseSerializer(recoEx[i]).data) #serialize into json format
+                i += 1
+            data['recoExList'] = recoExArray
+
+
+            return Response(data, status=status.HTTP_200_OK)
+            
+        else:
+            return Response({"Bad Request": "No Username and/or exercise_id out of range"}, status=status.HTTP_400_BAD_REQUEST)

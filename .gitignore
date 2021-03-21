@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # js
-/node_modules
+node_modules/
 package-lock.json
 MyWebsite/AGR/AGRFrontend/static/frontend/main.js

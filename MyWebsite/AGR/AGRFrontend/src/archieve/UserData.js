@@ -1,7 +1,6 @@
-import React ,{ useState , useEffect } from 'react';
+import React ,{useState,useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -21,7 +20,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Cookies from 'js-cookie';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuBar from './components/MenuBar';
 
 function Copyright() {
@@ -39,7 +37,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -49,27 +47,22 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    // backgroundColor: '#8eb8ad',
+    backgroundColor: '#8eb8ad',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
-  backbutton: {
-    backgroundColor: '#f20a40',
-    color: 'white',
-    height: 36,
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+    backgroundColor: '#8eb8ad',
   },
   text: {
-    // outlineColor: '#8eb8ad',
+    outlineColor: '#8eb8ad',
   },
-  submitbutton:{
-    backgroundColor:"#0a57f2",
-    color: 'white',
-    height: 36,
-  },
-  buttongrouping:{
-    padding: '90px 15px',
+  button: {
+    display: 'block',
+    marginTop: theme.spacing(2),
   },
   formControl: {
     margin: theme.spacing(1),
@@ -82,57 +75,57 @@ const useStyles = makeStyles((theme) => ({
 export default function UserDataPage() {
   const classes = useStyles();
   const username = Cookies.get('username')
-  
+
+  // function noop() {};
+  // function GetUserData_fromUsername(username) {
+  //   GetUserData_fromUsername = noop;
+  //   const requestOptions = {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         username:username,
+  //       }),
+  //   };
+  //   if (username!=''){
+  //   fetch('/AGR/GetUserData', requestOptions)
+  //       .then(function(response){
+  //         console.log(response)
+  //         if (!response.ok){
+  //           throw new Error('Response not OK');
+  //         }
+  //         else{
+  //           return response.json();
+  //         }
+  //       }).then(
+  //         (data) => {
+  //           Cookies.set('fitness_level', data.fitness_level)
+  //           console.log(Cookies.get('fitness_level'))
+  //           // setGoal(data.goal);
+  //           // setGender(data.gender);
+  //           // setIntensity(data.intensity);
+  //           // setBmi(data.bmi);
+  //         },
+  //         // (error) => {alert(error)}
+  //       )
+  //     }
+  //   else{
+  //     // if(username=='') {alert('Username cannot be blank!')}
+  //     // else if (fitness_level==''){alert('Full name cannot be blank!')}
+  //   }
+  // }
+
+  // const userdata = GetUserData_fromUsername(username);
+
+
 
   const [fitnesslevel,setFitnesslevel] = useState(' ');
-  const [gender,setGender] = React.useState(' ');
+  const [gender,setGender] = useState(' ');
   const [goal,setGoal] = useState(' ');
   const [bmi,setBmi] = useState(' ');
   const [intensity,setIntensity] = useState(' ');
-  const history = useHistory();
+  let history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
   
-
-  React.useEffect(()=> {
-
-    console.log("response")
-
-      const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username:username,
-        }),
-      };
-      if (username!=''){
-      fetch('/AGR/GetUserData', requestOptions)
-          .then(function(response){
-            console.log(response)
-            if (!response.ok){
-              throw new Error('Response not OK');
-            }
-            else{
-              return response.json();
-            }
-          }).then(
-            (data) => {
-              console.log(data.gender)
-              console.log(data.fitness_level)
-              console.log(data.goal)
-              console.log(data.intensity)
-              console.log(data.bmi)
-              setGender(data.gender);
-              setFitnesslevel(data.fitness_level);
-              setGoal(data.goal);
-              setIntensity(data.intensity);
-              setBmi(data.bmi);
-            },
-            // (error) => {alert(error)}
-          )
-        }
-
-  }, []);  
-   
 
   useEffect(() => {
     if(userStatus===0)
@@ -216,18 +209,23 @@ export default function UserDataPage() {
   };
 
   return (
-      <div className={classes.grow}>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
         <MenuBar/>
-        <CssBaseline />
-        <div className={classes.paper}>
-        <Container component="main" maxWidth="xs">
+        <Avatar className={classes.avatar}>
+          <AccountBoxIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          {username}'s Profile 
+        </Typography>
         <form className={classes.form} noValidate>
           <Grid container 
           spacing={2}
           className={classes.text}
           >
             <Grid item xs={12}>
-              <Typography component="h5">
+              <Typography component="body2">
                 <i>Getting to know more about you </i>
               </Typography>
             </Grid>
@@ -267,7 +265,7 @@ export default function UserDataPage() {
                     <em>None</em>
                   </MenuItem>
                   <MenuItem value={1}>Beginer</MenuItem>
-                  <MenuItem value={2}>Intermediate</MenuItem>
+                  <MenuItem value={2}>Inter</MenuItem>
                   <MenuItem value={3}>Advance</MenuItem>
                 </Select>
               </FormControl>
@@ -329,8 +327,7 @@ export default function UserDataPage() {
                   min="15"
                   max="30"
                   margin="normal"
-                  defaultValue={bmi}
-                  value={bmi}
+                  defaultValue="20"
                   fullWidth
                   onChange={e => setBmi(e.target.value)}
                   InputLabelProps={{
@@ -340,33 +337,27 @@ export default function UserDataPage() {
               </FormControl>
             </Grid>
           </Grid>
-          <ButtonGroup 
-          disableElevation 
-          variant="contained" 
-          fullWidth
-          className={classes.buttongrouping}
+          <Button
+            fullWidth
+            variant="contained"
+            className={classes.submit}
+            startIcon={<CloudUploadIcon />}
+            onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi)}
           >
-            <Button
-              className={classes.backbutton}
-              startIcon={<ArrowBackIcon />}
-              backgroundColor="secondary"
-              onClick={() => {history.goBack();}}
-            >
-              Go Back
-            </Button>
-            <Button
-              className={classes.submitbutton}
-              endIcon={<CloudUploadIcon />}
-              color="secondary"
-              onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi)}
-            >
-              Update My Data
-            </Button>
-          </ButtonGroup>
+            Update My Data
+          </Button>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Link href="/SecondHome" variant="body2">
+                Return HOME
+              </Link>
+            </Grid>
+          </Grid>
         </form>
-        </Container>
-        </div>
       </div>
-      
+      <Box mt={5}>
+        <Copyright />
+      </Box>
+    </Container>
   );
 }

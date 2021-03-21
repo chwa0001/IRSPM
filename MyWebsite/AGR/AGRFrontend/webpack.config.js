@@ -3,6 +3,7 @@ const webpack = require("webpack");
 
 module.exports = {
   entry: "./src/index.js",
+  stats:{errorDetails: true},
   output: {
     path: path.resolve(__dirname, "./static/frontend"),
     filename: "[name].js",
