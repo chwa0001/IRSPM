@@ -1,7 +1,7 @@
 import React ,{ useState , useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -21,6 +21,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Cookies from 'js-cookie';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuBar from './components/MenuBar';
 
 function Copyright() {
@@ -48,22 +49,27 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: '#8eb8ad',
+    // backgroundColor: '#8eb8ad',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-    backgroundColor: '#8eb8ad',
+  backbutton: {
+    backgroundColor: '#f20a40',
+    color: 'white',
+    height: 36,
   },
   text: {
-    outlineColor: '#8eb8ad',
+    // outlineColor: '#8eb8ad',
   },
-  button: {
-    display: 'block',
-    marginTop: theme.spacing(2),
+  submitbutton:{
+    backgroundColor:"#0a57f2",
+    color: 'white',
+    height: 36,
+  },
+  buttongrouping:{
+    padding: '90px 15px',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -83,7 +89,7 @@ export default function UserDataPage() {
   const [goal,setGoal] = useState(' ');
   const [bmi,setBmi] = useState(' ');
   const [intensity,setIntensity] = useState(' ');
-  let history = useHistory();
+  const history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
   
 
@@ -323,7 +329,8 @@ export default function UserDataPage() {
                   min="15"
                   max="30"
                   margin="normal"
-                  defaultValue="20"
+                  defaultValue={bmi}
+                  value={bmi}
                   fullWidth
                   onChange={e => setBmi(e.target.value)}
                   InputLabelProps={{
@@ -333,15 +340,29 @@ export default function UserDataPage() {
               </FormControl>
             </Grid>
           </Grid>
-          <Button
-            fullWidth
-            variant="contained"
-            className={classes.submit}
-            startIcon={<CloudUploadIcon />}
-            onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi)}
+          <ButtonGroup 
+          disableElevation 
+          variant="contained" 
+          fullWidth
+          className={classes.buttongrouping}
           >
-            Update My Data
-          </Button>
+            <Button
+              className={classes.backbutton}
+              startIcon={<ArrowBackIcon />}
+              backgroundColor="secondary"
+              onClick={() => {history.goBack();}}
+            >
+              Go Back
+            </Button>
+            <Button
+              className={classes.submitbutton}
+              endIcon={<CloudUploadIcon />}
+              color="secondary"
+              onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi)}
+            >
+              Update My Data
+            </Button>
+          </ButtonGroup>
         </form>
         </Container>
         </div>

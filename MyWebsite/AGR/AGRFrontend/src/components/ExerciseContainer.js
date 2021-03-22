@@ -24,7 +24,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  title: {
     display: 'flex',
     flexDirection: 'column',
     // minWidth: 600,

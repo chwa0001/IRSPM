@@ -43,7 +43,7 @@ export default function HomePage() {
   return (
     <div className={classes.grow}>
       <MenuBar/>
-      <Grid container={5}>
+      <Grid>
         <Button
             fullWidth
             variant="contained"
