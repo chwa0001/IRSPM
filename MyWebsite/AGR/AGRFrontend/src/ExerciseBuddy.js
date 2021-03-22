@@ -8,7 +8,7 @@ import tileData from './_ExData';
 import ExerciseContainer from './components/ExerciseContainer';
 import MenuBar from './components/MenuBar';
 import CustomScroller from 'react-custom-scroller';
-import { DataGrid, GridToolbar } from '@material-ui/data-grid';
+// import { DataGrid, GridToolbar } from '@material-ui/data-grid';
 
 
 const useStyles = makeStyles((theme) => ({
