@@ -8,14 +8,17 @@ import tileData from './_ExData';
 import ExerciseContainer from './components/ExerciseContainer';
 import MenuBar from './components/MenuBar';
 import CustomScroller from 'react-custom-scroller';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import CardMedia from '@material-ui/core/CardMedia';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
   gridList: {
-    width: '100%',
-    height: '100%',
+    width: 500,
+    height: 450,
   },
 }));
 
@@ -50,20 +53,15 @@ export default function HomePage() {
             GetUserDataTest
         </Button>
       </Grid>
+      <Container component="main" maxWidth="md" style={{maxHeight: '100%', overflow: 'auto'}}>
       <CustomScroller style={{ width: '100%', height: '100%' }}>
-        {/* !! not sure how to make it centered yet */}
-        <GridList 
-          fullWidth 
-          cellHeight='auto' 
-          display= 'grid'
-          justify-content='center' 
-          align-content= 'center'
-          >
+      <CssBaseline />
           {tileData.map((tile) => (
             <ExerciseContainer img1= {tile.img1} img2= {tile.img2} exercise_name= {tile.exercise_name} main_muscle= {tile.main_muscle} detail_muscle= {tile.detail_muscle} other_muscle= {tile.other_muscle} type= {tile.type} mechanics= {tile.mechanics} equipment= {tile.equipment} difficulty= {tile.difficulty} Instructions= {tile.Instructions}/>
           ))}
-        </GridList>
       </CustomScroller>
+      </Container>
+
     </div>
   );
 }
