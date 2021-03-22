@@ -29,15 +29,15 @@ export default function ExerciseBuddytest() {
     <div className={classes.grow}>
         <MenuBar/>
         <Button variant="contained" color="primary">
-            Hello World
+            Hello World!!
         </Button>
-        <DataGrid
+        {/* <DataGrid
         {...data}
         filterModel={riceFilterModel}
         components={{
           Toolbar: GridToolbar,
         }}
-        />
+        /> */}
     </div>
         
       );
