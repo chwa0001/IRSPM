@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import UserSerializer,AccountDataSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
+from .serializers import UserSerializer,AccountDataSerializer,UpdateUserSerializer, RoutineExercisesSerializer
 from .models import User,UserData,Routine,RoutineExercises
-from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb,get_set_to_review
+from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb,get_set_to_review,get_set_exercises
 from .models import User, UserExerciseRating
 from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer, ExerciseSerializer
-from .models import User,UserData,Routine,RoutineExercises, Exercise
+from .models import User,UserData,Routine,RoutineExercises,Exercise
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
@@ -68,21 +68,16 @@ class SetUserData(APIView):
                 user = queryset[0]
                 if user.user_id==user_id:
                     #status:0==> user credential verified okay
-                    if (fitness_level != ""):
-                        print(f"print fitness {fitness_level}")
-                        user.fitness_level=int(fitness_level)
-                    if (goal != ""):
-                        print(f"print goal {goal}")
-                        user.goal = goal
-                    if (gender != ""):
-                        print(f"print gender {gender}")
-                        user.gender = gender
-                    if (intensity != ""):
-                        print(f"print intensity {intensity}")
-                        user.intensity = int(intensity)
-                    if (bmi != None and bmi != ""):
-                        print(f"print bmi {bmi}")
-                        user.bmi = int(bmi)
+                    print(f"print fitness {fitness_level}")
+                    user.fitness_level=int(fitness_level)
+                    print(f"print goal {goal}")
+                    user.goal = goal
+                    print(f"print gender {gender}")
+                    user.gender = gender
+                    print(f"print intensity {intensity}")
+                    user.intensity = int(intensity)
+                    print(f"print bmi {bmi}")
+                    user.bmi = int(bmi)
                     print(f"print fitness {fitness_level}")
                     user.save()
                     print(user.user_id+5)
@@ -100,7 +95,6 @@ class SetUserData(APIView):
             print("Exception in SetUserData")
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
-#currently not used yet 
 class GetUserData(APIView):
     def post(self, request, format=None):
         try:
@@ -212,35 +206,80 @@ class ModelToLearn(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
-#empty class
+#antonia 03/23/21 initiate to test 
 class ExerciseRating(APIView):
     def get(self, request, format=None):
         username = request.GET.get('username')
         exercise_id = request.GET.get('exercise_id')
         score = request.GET.get('score')
-        print(f"exercise id: {exercis_id}, score: {score}")
+        print(f"exercise id: {exercise_id}, score: {score}")
         return Response({"status":1}) 
 
+#antonia 03/23/21 working
 class GetSetToRate(APIView):
+    
     def post(self, request, format=None):
+        print(f"requestdata : {request.data}")
         try:
+            if not self.request.session.exists(self.request.session.session_key):
+                self.request.session.create()
+
+            # print("reach here")
+            # if len(Exercise.objects.all()) < 1 : 
+            #     print("initiating database")
+            #     generate_database()
+
             print("debug part 1")
             if not self.request.session.exists(self.request.session.session_key):
                 print("AGRApi no session")
                 self.request.session.create()
             print("debug part 2")
-            username = request.GET.get('username')
+            username = request.data.get("username")
             print("debug part 3")
-            queryset = User.objects.filter(username=username)
+            # queryset = User.objects.filter(username=username)
             print("debug part 4")
+            print(username)
             setToReview = get_set_to_review(username)
             print("debug part 5")
-            if len(setToReview) > 0 :
-                return Response(UserSerializer(setToReview[0]).data, status=status.HTTP_200_OK)
-            else : 
+            if setToReview == "nothing":
                 return Response({"Bad Request":"No Exercise to rate"}, status=status.HTTP_400_BAD_REQUEST)
+            else :
+                exercises = get_set_exercises(setToReview)
+                print(exercises)
+                return Response({"status":"good", "user_id":setToReview.userdata_id ,  
+                                "date":setToReview.date , "set_id":setToReview.id , 
+                                "exercises": exercises , "exercise1" : exercises[0],
+                                "exercise2" : exercises[1], "exercise3" : exercises[2],
+                                "exercise4" : exercises[3], "exercise5" : exercises[4],
+                                "exercise6" : exercises[5],
+                                }, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request":"Unable to run"}, status=status.HTTP_400_BAD_REQUEST)
+
+#antonia 03/23/21 initiate to test 
+class CreateSet(APIView):
+    def post(self, request, format=None):
+        try:
+            username = request.data.get("username")
+            user_id = get_userid_from_userdb(username)
+            routine = Routine(userdata=user_id, date=date.today())
+            routine.save()
+            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
+
+#antonia 03/23/21 initiate to test 
+class CreateSetExercises(APIView):
+    def post(self, request, format=None):
+        try:
+            routine = request.data.get("routine")
+            exercise_ids = request.data.get("exercise_ids")
+            for exercise_id in exercise_ids:
+                re = RoutineExercises(routine=routine, exercise=exercise_id)
+                re.save()
+            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 from AGRApi.recommender_algo_AGR import *

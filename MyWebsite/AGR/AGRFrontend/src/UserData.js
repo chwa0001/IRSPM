@@ -82,7 +82,8 @@ const useStyles = makeStyles((theme) => ({
 export default function UserDataPage() {
   const classes = useStyles();
   const username = Cookies.get('username')
-  
+  console.log(username)
+  console.log(Cookies.get())
 
   const [fitnesslevel,setFitnesslevel] = useState(' ');
   const [gender,setGender] = React.useState(' ');
@@ -95,17 +96,17 @@ export default function UserDataPage() {
 
   React.useEffect(()=> {
 
-    console.log("response")
+    console.log("react response - UseEffect")
 
       const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username:username,
-        }),
-      };
-      if (username!=''){
-      fetch('/AGR/GetUserData', requestOptions)
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username:username,
+          }),
+        };
+        if (username!=''){
+        fetch('/AGR/GetUserData', requestOptions)
           .then(function(response){
             console.log(response)
             if (!response.ok){

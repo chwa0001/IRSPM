@@ -1,4 +1,5 @@
 import React ,{ useState , useEffect } from 'react';
+import Cookies from 'js-cookie';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup'
@@ -17,7 +18,6 @@ import { useHistory } from "react-router-dom";
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import Cookies from 'js-cookie';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuBar from './components/MenuBar';
@@ -131,28 +131,39 @@ const useStyles = makeStyles((theme) => ({
 export default function ExerciseRatingPage() {
   const classes = useStyles();
   const username = Cookies.get('username') // cookies not working
+  console.log(Cookies.get())
+  console.log(username)
+
   const [score, setScore] = useState('')
   const [userId, setUserId] = useState('')
   const [setId, setSetId] = useState('')
   const [date, setDate] = useState('')
   const [exercises, setExercises] = useState('')
+  const [exercise1, setExercise1] = useState('')
+  const [exercise2, setExercise2] = useState('')
+  const [exercise3, setExercise3] = useState('')
+  const [exercise4, setExercise4] = useState('')
+  const [exercise5, setExercise5] = useState('')
+  const [exercise6, setExercise6] = useState('')
 
   const history = useHistory();
   
 
   React.useEffect(()=> {
 
-    console.log("response")
+    console.log("react response - UseEffect")
 
       const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username:username,
-        }),
-      };
-      if (username!=''){
-      fetch('/AGR/GetSetToRate', requestOptions)
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username:username,
+          }),
+        };
+        console.log(username)
+        console.log(requestOptions)
+        if (username!=''){
+          fetch('/AGR/GetSetToRate', requestOptions)
           .then(function(response){
             console.log(response)
             if (!response.ok){
@@ -166,10 +177,20 @@ export default function ExerciseRatingPage() {
               console.log(data.user_id)
               console.log(data.set_id)
               console.log(data.date)
-              console.log(data.rate)
+              console.log(data.exercises)
+              console.log(data.exercise1)
+              console.log(data.exercise6)
               setUserId(data.user_id);
               setSetId(data.set_id);
               setDate(data.date);
+              setExercises(data.exercises);
+              setExercise1(data.exercise1);
+              setExercise2(data.exercise2);
+              setExercise3(data.exercise3);
+              setExercise4(data.exercise4);
+              setExercise5(data.exercise5);
+              setExercise6(data.exercise6);
+
             },
             // (error) => {alert(error)}
           )

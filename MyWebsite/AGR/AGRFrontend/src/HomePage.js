@@ -53,7 +53,7 @@ export default function HomePage() {
             GetUserDataTest
         </Button>
       </Grid>
-      <Container component="main" maxWidth="md" style={{maxHeight: '100%', overflow: 'auto'}}>
+      <Container component="main" maxWidth="md" style={{maxHeight: '80%', overflow: 'auto'}}>
       <CustomScroller style={{ width: '100%', height: '100%' }}>
       <CssBaseline />
           {tileData.map((tile) => (
