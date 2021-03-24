@@ -25,6 +25,7 @@ const xs = 0;
 const spacing = 8;
 
 const theme = createMuiTheme({
+  
   palette: {
     primary: { main: primary },
     secondary: { main: secondary },
@@ -60,6 +61,11 @@ const theme = createMuiTheme({
       xs
     }
   },
+  mixins: {
+    toolbar: {
+        minHeight: "10%"
+    }
+  },  
   border: {
     borderColor: borderColor,
     borderWidth: borderWidth

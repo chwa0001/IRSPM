@@ -132,7 +132,7 @@ export default function AccountData() {
   return (
     <div className={classes.grow}>
       <MenuBar/>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
