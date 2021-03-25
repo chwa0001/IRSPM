@@ -208,12 +208,57 @@ class ModelToLearn(APIView):
 
 #antonia 03/23/21 initiate to test 
 class ExerciseRating(APIView):
-    def get(self, request, format=None):
-        username = request.GET.get('username')
-        exercise_id = request.GET.get('exercise_id')
-        score = request.GET.get('score')
-        print(f"exercise id: {exercise_id}, score: {score}")
-        return Response({"status":1}) 
+    def post(self, request, format=None):
+        try:
+            if not self.request.session.exists(self.request.session.session_key):
+                self.request.session.create()
+            
+            username = request.data.get('username')
+            set_id = request.data.get('set_id')
+            score = int(request.data.get('score'))
+            print(f"username: {username}, set_id: {set_id}, score: {score}")
+            user_id = get_userid_from_userdb(username)
+
+            if user_id == None :
+                return Response({"Bad Request":"Username doesnt exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+            # print(f"score: {score}")
+            # print(f"exercise_id: {exercise_id}")
+            # print(f"set_id {set_id}")
+            routine = Routine.objects.get(id=set_id)
+            # print(f"routine, {routine}, routine id: {routine.id}")
+            _,__,eids = get_set_exercises(routine)
+            # print(f"eids : {eids}")
+            for eid in eids: 
+                exrate = UserExerciseRating.objects.filter(user=user_id, exercise_id=eid)
+                if exrate.exists() : 
+                    uer = exrate[0]
+                    print(f"Exercise {eid}. count {uer.exercise_count}, score: {uer.user_score}")
+                    
+                    score_average = ( uer.user_score + score ) / 2
+                    print(f"score_average : {score_average}")
+                    count = uer.user_score + 1
+
+                    # uer = UserExerciseRating(user_id=user_id, exercise_id=eid, user_score=score_average,exercise_count= count)
+                    # uer.save()
+                    uer.user_score = score_average
+                    uer.exercise_count += 1
+                    uer.save()
+                    print(f"data saved! {uer.id}")
+
+                else : 
+                    print(f"this is the first time user raiting exercise {eid}")
+                    #create a UserExerciseRating (uer) object 
+                    uer = UserExerciseRating(user_id=user_id, exercise_id=eid, user_score=score,exercise_count=1)
+                    uer.save()
+                    print("data saved!")
+
+
+            routine.rate = True
+            routine.save()
+            return Response({"status":0}, status=status.HTTP_200_OK) 
+        except Exception as error:
+            return Response({"status":0, "Bad Request":"Unable to run"}, status=status.HTTP_400_BAD_REQUEST)
 
 #antonia 03/23/21 working
 class GetSetToRate(APIView):
@@ -229,32 +274,27 @@ class GetSetToRate(APIView):
             #     print("initiating database")
             #     generate_database()
 
-            print("debug part 1")
             if not self.request.session.exists(self.request.session.session_key):
                 print("AGRApi no session")
                 self.request.session.create()
-            print("debug part 2")
             username = request.data.get("username")
-            print("debug part 3")
             # queryset = User.objects.filter(username=username)
-            print("debug part 4")
             print(username)
             setToReview = get_set_to_review(username)
-            print("debug part 5")
-            if setToReview == "nothing":
-                return Response({"Bad Request":"No Exercise to rate"}, status=status.HTTP_400_BAD_REQUEST)
+            if setToReview == "no exercise to rate":
+                return Response({"status":3 , "Bad Request":"No Exercise to rate"}, status=status.HTTP_200_OK)
             else :
-                exercises = get_set_exercises(setToReview)
+                exercises,edic,_ = get_set_exercises(setToReview)
                 print(exercises)
                 return Response({"status":"good", "user_id":setToReview.userdata_id ,  
                                 "date":setToReview.date , "set_id":setToReview.id , 
-                                "exercises": exercises , "exercise1" : exercises[0],
+                                "exercises": edic , "exercise1" : exercises[0],
                                 "exercise2" : exercises[1], "exercise3" : exercises[2],
                                 "exercise4" : exercises[3], "exercise5" : exercises[4],
                                 "exercise6" : exercises[5],
                                 }, status=status.HTTP_200_OK)
         except Exception as error:
-            return Response({"Bad Request":"Unable to run"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status":2, "Bad Request":"Unable to run"}, status=status.HTTP_400_BAD_REQUEST)
 
 #antonia 03/23/21 initiate to test 
 class CreateSet(APIView):

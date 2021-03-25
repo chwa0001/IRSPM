@@ -160,14 +160,15 @@ def get_alluserdata_from_userdb (username):
 def get_set_to_review (username):
     print("was here - get_set_to_review")
     print(username)
-    user = User.objects.filter(username=username)[0]
+    user = User.objects.get(username=username)
     print(f"user id from get_alluserdata_from_userdb: {user.id}")
     # return "nothing"
     routine_set = Routine.objects.filter(userdata = user.id, rate = False).order_by('-date')
-    print(f"routine_set:")
+    print(f"routine_set len: {len(routine_set)}")
     print(f"routine_set:{routine_set}")
 
-    if len(routine_set) > 1:
+    if len(routine_set) > 0 :
+        print(f"routine_set:{routine_set}")
         routine = routine_set[0]
         print(f"user from get_alluserdata_from_userdb function: {routine.userdata_id}")
         print("{" + f""""user_id":{routine.userdata_id},
@@ -176,7 +177,10 @@ def get_set_to_review (username):
                             "rate":{routine.rate}"""+"}")
         print(routine)
         return routine
-    return "nothing"
+    else :
+        print("no exercise to rate")
+        return "no exercise to rate"    
+
 
 #antonia 03/24/21
 #from routine object, get all the exercises associated with that routine set
@@ -184,11 +188,21 @@ def get_set_exercises (routine):
     print("was here - get_set_exercises")
     exercises = RoutineExercises.objects.filter(routine = routine.id)
 
+    edic = []
+    enames = []
     eids = []
     for exercise in exercises:
-        eids.append(exercise.exercise_id)
+        temp_dic = {}
+        e = Exercise.objects.get(id = exercise.exercise_id)
+        print(f"ename: {e.exercise_name}")
         print(f"exercise.exercise_id : {exercise.exercise_id}")
-    return eids
+        temp_dic["id"] = e.id
+        temp_dic["name"] = e.exercise_name
+        edic.append(temp_dic)
+        enames.append(e.exercise_name)
+        eids.append(e.id)
+    print(edic)
+    return enames,edic,eids
 
 #antonia 03/24/21 not used -- to delete in the future if not used
 def get_set_exercises_output_in_str (eids):

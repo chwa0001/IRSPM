@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
   backbutton: {
     backgroundColor: '#f20a40',
     color: 'white',
-    height: 36,
+    height: 42,
   },
   text: {
     // outlineColor: '#8eb8ad',
@@ -115,10 +115,10 @@ const useStyles = makeStyles((theme) => ({
   submitbutton:{
     backgroundColor:"#0a57f2",
     color: 'white',
-    height: 36,
+    height: 42,
   },
   buttongrouping:{
-    padding: '90px 15px',
+    padding: '60px 3px',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -131,23 +131,25 @@ const useStyles = makeStyles((theme) => ({
 export default function ExerciseRatingPage() {
   const classes = useStyles();
   const username = Cookies.get('username') // cookies not working
-  console.log(Cookies.get())
-  console.log(username)
+  // console.log(Cookies.get())
+  // console.log(username)
 
   const [score, setScore] = useState('')
   const [userId, setUserId] = useState('')
   const [setId, setSetId] = useState('')
   const [date, setDate] = useState('')
   const [exercises, setExercises] = useState('')
-  const [exercise1, setExercise1] = useState('')
-  const [exercise2, setExercise2] = useState('')
-  const [exercise3, setExercise3] = useState('')
-  const [exercise4, setExercise4] = useState('')
-  const [exercise5, setExercise5] = useState('')
-  const [exercise6, setExercise6] = useState('')
+  const [exercise1, setExercise1] = useState('Set exercise 1')
+  const [exercise2, setExercise2] = useState('Set exercise 2')
+  const [exercise3, setExercise3] = useState('Set exercise 3')
+  const [exercise4, setExercise4] = useState('Set exercise 4')
+  const [exercise5, setExercise5] = useState('Set exercise 5')
+  const [exercise6, setExercise6] = useState('Set exercise 6')
 
+  const [userStatus, setUserStatus] = useState(-1)
   const history = useHistory();
-  
+  const [refresh, setRefresh] = useState(0)
+
 
   React.useEffect(()=> {
 
@@ -166,7 +168,10 @@ export default function ExerciseRatingPage() {
           fetch('/AGR/GetSetToRate', requestOptions)
           .then(function(response){
             console.log(response)
-            if (!response.ok){
+            if (response.status === 418){
+              setUserStatus(3)
+            }
+            else if (!response.ok){
               throw new Error('Response not OK');
             }
             else{
@@ -190,92 +195,140 @@ export default function ExerciseRatingPage() {
               setExercise4(data.exercise4);
               setExercise5(data.exercise5);
               setExercise6(data.exercise6);
-
+              setUserStatus(data.status);
             },
-            // (error) => {alert(error)}
+            (error) => {
+              userStatus(-5)
+              alert(error)
+            }
           )
         }
 
-  }, []);  
+  }, [refresh]);  
    
 
-  // useEffect(() => {
-  //   if(userStatus===0)
-  //   {
-  //     setUserStatus(-1);
-  //     alert('Account has been updated!');
-  //     history.push('/Home');
-  //   }
-  //   else if (userStatus===1)
-  //   {
-  //     setUserStatus(-1);
-  //     // setAlertShow('visible');
-  //     // setAlertText('Username has been used!');
-  //     alert('Username has been used!')
-  //   }
-  //   else if (userStatus===2){
-  //     setUserStatus(-1);
-  //     // setAlertShow('visible');
-  //     // setAlertText('Not sure but cannot signup!');
-  //     alert('Not sure but cannot signup!')
-  //   }
-  // }, [userStatus])
+  useEffect(() => {
+    if(userStatus===0)
+    {
+      setUserStatus(-1);
+      setRefresh(refresh + 1);
+      history.push('/ExerciseRating');
+    }
+    else if (userStatus===1)
+    {
+      setUserStatus(-1);
+      alert('Rating was not save, try refreshing!')
+    }
+    else if (userStatus===2){
+      setUserStatus(-1);
+      alert('Not sure but cannot signup!')
+    }
+    else if (userStatus===3){
+      setUserStatus(-1);
+      alert('No exercise to rate! Come back later')
+      history.push('/Home');
+    }
+    else if (userStatus===-5){
+      setUserStatus(-1);
+      alert('You have not sign in, please sign in!')
+      history.push('/');
+    }
 
-  // function SaveUserRating(username,setId,score) {
-  //   const requestOptions = {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({
-  //         username:username,
-  //         set_id:set_id,
-  //         score:score,
-  //       }),
-  //   };
-  //   if (username!='' && score!='' && set_id!=''){
-  //   fetch('/AGR/ExerciseRating', requestOptions)
-  //       .then(function(response){
-  //         if (!response.ok){
-  //           throw new Error('Response not OK');
-  //         }
-  //         else{
-  //           return response.json();
-  //         }
-  //       }).then(
-  //         (data) => {
-  //           setUserStatus(data.status);
-  //         },
-  //         (error) => {alert(error)}
-  //       )
-  //     }
-  //   else{
-  //   }
-  // }
+  }, [userStatus])
+
+  useEffect(() => {
+    if(username==='undefined')
+    {
+      alert('U have not sign in, please sign in!')
+      history.push('/');
+    }
+    else if(username==='')
+    {
+      alert('U have not sign in, please sign in!')
+      history.push('/');
+    }
+  }, [username])
+
+  function SaveUserRating(username,setId,score) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username:username,
+          set_id:setId,
+          score:score,
+        }),
+    };
+    console.log(requestOptions);
+    if (username!='' && score!='' && setId!=''){
+    fetch('/AGR/ExerciseRating', requestOptions)
+        .then(function(response){
+          if (!response.ok){
+            throw new Error('Response not OK');
+          }
+          else{
+            return response.json();
+          }
+        }).then(
+          (data) => {
+            setUserStatus(data.status);
+          },
+          (error) => {alert(error)}
+        )
+      }
+    else{
+    }
+  }
   
   const scoreHandleChange = (event) => {
     setScore(event.target.value);
   };
 
+  // const ExerciseList = () => (
+  //   <div>
+  //     <ul>{exercises.map(ex => <li key={ex.id}> {ex.name} </li>)}</ul>
+  //   </div>
+  // );
+  // const ExerciseList = exercises.map((ex) =>
+  // <li key={ex.id}>
+  //   {ex.name}
+  // </li>
+  // );
+
+  
   return (
       <div className={classes.grow}>
         <MenuBar/>
         <CssBaseline />
         <div className={classes.paper}>
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" alignContent="center" justifyContent="center">
         <form className={classes.form} noValidate>
           <Grid container 
           spacing={2}
           className={classes.text}
           >
             <Grid item xs={12}>
-              <Typography component="h4">
-                Exercise Set Raiting
+              <Typography variant="h2" component="h3">
+                <b>Exercise Set Raiting</b>
               </Typography>
-              <Typography component="subtitle">
+              <Typography variant="caption">
                 <i>Get better recommendation by rating your previous exercises!</i>
               </Typography>
+              <Typography variant="body1" component="body1">
+                <p><b>Exercise Date:</b> {date}</p>
+                <b>Exercise List</b>
+              </Typography>
+              <Typography variant="body2" component="body2">
+                <li>{exercise1}</li>
+                <li>{exercise2}</li>
+                <li>{exercise3}</li>
+                <li>{exercise4}</li>
+                <li>{exercise5}</li>
+                <li>{exercise6}</li>
+              </Typography>
             </Grid>
-            <Grid item xs={12}>
-              <FormControl component="fieldset">
+            <Grid item xs={12} alignItems="center" alignContent="center" justifyContent="center" fullWidth>
+              <FormControl component="fieldset" alignContent="center" justifyContent="center">
                 <FormLabel component="legend">Set Rating</FormLabel>
 
                 <RadioGroup 
@@ -350,4 +403,5 @@ export default function ExerciseRatingPage() {
       </div>
       
   );
+  
 }
