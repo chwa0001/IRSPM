@@ -96,54 +96,52 @@ export default function ExerciseContainer(props) {
           {props.exercise_name}
         </Typography>
       </CardContent>
-    <TableContainer component={Paper} className={classes.container}>
-      <Table className={classes.root} aria-label="collapsible table">
-        <TableBody>
-          {(rows).map((row) => (
-              <React.Fragment>
-                <TableRow key={row.name}>
-                  <TableCell />
-                  <TableCell style={{ width: 50, fontSize: 16 }} variant="head" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell style={{ width: 600, fontSize: 13 }} align="left">
-                    {row.details}
-                  </TableCell>
-                </TableRow>
-                </React.Fragment>
-              ))}
-          <TableRow>
-            <TableCell scope="row" align="left" size="small" width={5} alignContent="left">
-                <IconButton width={5} aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                </IconButton>
-            </TableCell>
-            <TableCell />
-            <TableCell />
-          </TableRow>
-        </TableBody>
-        <TableFooter>
-        </TableFooter>
-      </Table>
-    </TableContainer>
-    <Collapse in={open} timeout="auto" unmountOnExit>
-    <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
-      <Grid item xs={12} sm={6}>
-        <CardMedia
-          style = {{ height: 100, paddingTop: '90%'}}
-          image={props.img1}
-          />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <CardMedia
-            style = {{ height: 100, paddingTop: '90%'}}
-            image={props.img2}
-            />
-      </Grid>
-    </Grid>
-    <CardContent className={{marginBottom:'10%'}}></CardContent>
-    </Collapse>
-  </Card>
+      <TableContainer component={Paper} className={classes.container}>
+        <Table className={classes.root} aria-label="collapsible table">
+          <TableBody>
+            {(rows).map((row) => (
+                <React.Fragment>
+                  <TableRow key={row.name}>
+                    <TableCell />
+                    <TableCell style={{ width: 100, fontSize: 16 }} variant="head">
+                      {row.name}
+                    </TableCell>
+                    <TableCell style={{ width: 600, fontSize: 13 }} align="left">
+                      {row.details}
+                    </TableCell>
+                  </TableRow>
+                  </React.Fragment>
+                ))}
+            <TableRow>
+              <TableCell scope="row" align="left" size="small" width={5} alignContent="left">
+                  <IconButton width={5} aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+                      {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                  </IconButton>
+              </TableCell>
+              <TableCell />
+              <TableCell />
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
+          <Grid item xs={12} sm={6}>
+            <CardMedia
+              style = {{ height: 100, paddingTop: '90%'}}
+              image={props.img1}
+              />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <CardMedia
+                style = {{ height: 100, paddingTop: '90%'}}
+                image={props.img2}
+                />
+          </Grid>
+        </Grid>
+        <CardContent className={{marginBottom:'10%'}}></CardContent>
+      </Collapse>
+    </Card>
 
   );
 }

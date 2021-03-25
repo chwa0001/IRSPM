@@ -31,7 +31,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
 class RoutineSerializer (serializers.ModelSerializer):
     class Meta:
         model = Routine
-        fields = ('id','userdata','set_id','date')
+        fields = ('id','userdata_id','rate','date')
 
 class RoutineExercisesSerializer (serializers.ModelSerializer):
     class Meta: 
