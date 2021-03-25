@@ -26,34 +26,10 @@ export default function HomePage() {
   const classes = useStyles();
   const username = Cookies.get('username');
 
-  const GetModel =(username)=> {
-    if (username!=''){
-    fetch(`/AGR/AskModelToLearn?username=${username}`)
-        .then(response => response.json())
-        .then(
-          (data) => {console.log(data)},
-          (error) => {alert(error)}
-        )
-      }
-    else{
-      if(username==''){alert('Username is not detected!')}
-    }
-  }
-
   return (
     <div className={classes.grow}>
       <MenuBar/>
-      <Grid>
-        <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={() =>GetModel(username) }
-          >
-            GetUserDataTest
-        </Button>
-      </Grid>
-      <Container component="main" maxWidth="md" style={{maxHeight: '80%', overflow: 'auto'}}>
+      <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
       <CustomScroller style={{ width: '100%', height: '100%' }}>
       <CssBaseline />
           {tileData.map((tile) => (

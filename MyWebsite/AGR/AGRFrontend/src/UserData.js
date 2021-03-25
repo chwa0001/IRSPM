@@ -220,8 +220,9 @@ export default function UserDataPage() {
       <div className={classes.grow}>
         <MenuBar/>
         <CssBaseline />
+        
+        <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
         <div className={classes.paper}>
-        <Container component="main" maxWidth="xs">
         <form className={classes.form} noValidate>
           <Grid container 
           spacing={2}
@@ -364,9 +365,11 @@ export default function UserDataPage() {
               Update My Data
             </Button>
           </ButtonGroup>
+          
         </form>
-        </Container>
         </div>
+        </Container>
+        
       </div>
       
   );
