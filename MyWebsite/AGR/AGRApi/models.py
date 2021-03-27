@@ -38,6 +38,7 @@ class UserData(models.Model):
     goal            = models.IntegerField(null=False, default=0)
     bmi             = models.IntegerField(null=False, default=20)
     intensity       = models.IntegerField(null=False, default=0)
+    location        = models.IntegerField(null=False, default =0) ## not yet implemented yet. need to add into the page. 
 
     class Meta:
         db_table = "USER_DATABASE"
@@ -76,6 +77,7 @@ class Routine(models.Model):
     userdata        = models.ForeignKey('AGRApi.UserData',on_delete=models.CASCADE)
     date            = models.DateField()
     rate            = models.BooleanField(default=False)
+    mode            = models.IntegerField(default=0) #1 general #2 muscle #3 endurence 
     class Meta: 
         db_table = 'ROUTINE'
 
