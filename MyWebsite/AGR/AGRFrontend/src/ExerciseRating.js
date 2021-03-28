@@ -250,7 +250,7 @@ export default function ExerciseRatingPage() {
                 Exercise Set Raiting
               </Typography>
               <Typography component="subtitle">
-                <i>Get better recommendation by rating your previous exercises!!!!!</i>
+                <i>Get better recommendation by rating your previous exercises!</i>
               </Typography>
             </Grid>
             <Grid item xs={12}>

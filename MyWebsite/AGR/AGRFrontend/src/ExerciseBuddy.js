@@ -6,38 +6,128 @@ import {makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import tileData from './_ExData';
 import ExerciseContainer from './components/ExerciseContainer';
+import ComplexGrid from './components/BuddyContainerv2';
 import MenuBar from './components/MenuBar';
 import CustomScroller from 'react-custom-scroller';
 // import { DataGrid, GridToolbar } from '@material-ui/data-grid';
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import TabPanel from '@material-ui/lab/TabPanel';
+import PhoneIcon from '@material-ui/icons/Phone';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import PersonPinIcon from '@material-ui/icons/PersonPin';
+import PersonIcon from '@material-ui/icons/Person';
+import PeopleIcon from '@material-ui/icons/People';
+
+
+function IconLabelTabs() {
+  const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Paper square className={classes.root}>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        variant="fullWidth"
+        indicatorColor="secondary"
+        textColor="secondary"
+        aria-label="icon label tabs example"
+      >
+        <Tab icon={<PersonIcon />} label="RECENTS" />
+        <Tab icon={<FavoriteIcon />} label="FAVORITES" />
+        <Tab icon={<PersonPinIcon />} label="NEARBY" />
+      </Tabs>
+    </Paper>
+  );
+}
 
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
+  root: {
+    flexGrow: 1,
+    maxWidth: 500,
+
+  },
+  card: {
+    flexGrow: 1,
+    maxWidth: 1000,
+
+  },
 }));
 
-const riceFilterModel = {
-    items: [{ columnField: 'commodity', operatorValue: 'contains', value: 'rice' }],
-  };
 
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 export default function ExerciseBuddytest() {
     const classes = useStyles();
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+    };
 
     return (
     <div className={classes.grow}>
         <MenuBar/>
         <Button variant="contained" color="primary">
-            Hello World!!
+            Hello World!!!!
         </Button>
-        {/* <DataGrid
-        {...data}
-        filterModel={riceFilterModel}
-        components={{
-          Toolbar: GridToolbar,
-        }}
-        /> */}
+        <CustomScroller style={{ width: '100%', height: '100%' }}>
+        <Grid container xs={12} justify="center"  spacing={3}>
+          <Grid container item xs={12} justify="center">
+            <Paper square className={classes.root}>
+              <Tabs
+              value={value}
+              onChange={handleChange}
+              variant="fullWidth"
+              indicatorColor="secondary"
+              textColor="secondary"
+              aria-label="simple tabs example"
+              >
+              <Tab icon={<PersonIcon />} label="Find A Buddy" {...a11yProps(0)}/>
+              <Tab icon={<PeopleIcon />} label="Exercise Group" {...a11yProps(1)}/>
+              </Tabs>
+            </Paper>
+          </Grid>
+          
+        {/* <TabPanel value={value} index={0}> */}
+        <Grid container item xs={12} justify="center">
+        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
+        
+        <Grid container item xs={12} justify="center">
+        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
+
+        <Grid container item xs={12} justify="center">
+        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
+        {/* </TabPanel> */}
+        {/* <TabPanel value={value} index={1}> */}
+        <Grid container item xs={12} justify="center">
+        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
+        
+        <Grid container item xs={12} justify="center">
+        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
+
+        <Grid container item xs={12} justify="center">
+        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
+        {/* </TabPanel> */}
+        
+        </Grid>
+        </CustomScroller>
+        
     </div>
         
       );
