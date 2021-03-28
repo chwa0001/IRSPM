@@ -1,23 +1,15 @@
 import React ,{ useState , useEffect } from 'react';
 import Cookies from 'js-cookie';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import moment from 'moment';
 import { useHistory } from "react-router-dom";
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuBar from './components/MenuBar';
@@ -88,10 +80,11 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(10),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    margin: theme.spacing(4),
   },
   grow: {
     flexGrow: 1,
@@ -131,20 +124,11 @@ const useStyles = makeStyles((theme) => ({
 export default function ExerciseRatingPage() {
   const classes = useStyles();
   const username = Cookies.get('username') // cookies not working
-  // console.log(Cookies.get())
-  // console.log(username)
-
   const [score, setScore] = useState('')
   const [userId, setUserId] = useState('')
   const [setId, setSetId] = useState('')
   const [date, setDate] = useState('')
-  const [exercises, setExercises] = useState('')
-  const [exercise1, setExercise1] = useState('Set exercise 1')
-  const [exercise2, setExercise2] = useState('Set exercise 2')
-  const [exercise3, setExercise3] = useState('Set exercise 3')
-  const [exercise4, setExercise4] = useState('Set exercise 4')
-  const [exercise5, setExercise5] = useState('Set exercise 5')
-  const [exercise6, setExercise6] = useState('Set exercise 6')
+  const [exercises, setExercises] = useState([{'id':1,'name':''}])
 
   const [userStatus, setUserStatus] = useState(-1)
   const history = useHistory();
@@ -188,13 +172,12 @@ export default function ExerciseRatingPage() {
               setUserId(data.user_id);
               setSetId(data.set_id);
               setDate(data.date);
-              setExercises(data.exercises);
-              setExercise1(data.exercise1);
-              setExercise2(data.exercise2);
-              setExercise3(data.exercise3);
-              setExercise4(data.exercise4);
-              setExercise5(data.exercise5);
-              setExercise6(data.exercise6);
+              if (data.exercises){
+                setExercises(data.exercises);
+              }
+              else{
+                setExercises([{'id':1,'name':''}]);
+              }
               setUserStatus(data.status);
             },
             (error) => {
@@ -283,52 +266,51 @@ export default function ExerciseRatingPage() {
   const scoreHandleChange = (event) => {
     setScore(event.target.value);
   };
-
-  // const ExerciseList = () => (
-  //   <div>
-  //     <ul>{exercises.map(ex => <li key={ex.id}> {ex.name} </li>)}</ul>
-  //   </div>
-  // );
-  // const ExerciseList = exercises.map((ex) =>
-  // <li key={ex.id}>
-  //   {ex.name}
-  // </li>
-  // );
-
   
   return (
       <div className={classes.grow}>
         <MenuBar/>
+        <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}} alignContent="center" justifyContent="center">
         <CssBaseline />
         <div className={classes.paper}>
-        <Container component="main" maxWidth="xs" alignContent="center" justifyContent="center">
-        <form className={classes.form} noValidate>
-          <Grid container 
-          spacing={2}
-          className={classes.text}
-          >
-            <Grid item xs={12}>
-              <Typography variant="h2" component="h3">
-                <b>Exercise Set Raiting</b>
-              </Typography>
-              <Typography variant="caption">
-                <i>Get better recommendation by rating your previous exercises!</i>
-              </Typography>
-              <Typography variant="body1" component="body1">
-                <p><b>Exercise Date:</b> {date}</p>
-                <b>Exercise List</b>
-              </Typography>
-              <Typography variant="body2" component="body2">
-                <li>{exercise1}</li>
-                <li>{exercise2}</li>
-                <li>{exercise3}</li>
-                <li>{exercise4}</li>
-                <li>{exercise5}</li>
-                <li>{exercise6}</li>
-              </Typography>
-            </Grid>
-            <Grid item xs={12} alignItems="center" alignContent="center" justifyContent="center" fullWidth>
-              <FormControl component="fieldset" alignContent="center" justifyContent="center">
+        
+          <Grid container direction="column" justify="space-between" alignItems="flex-start" spacing={3}>
+              <Grid item xs={12}>
+                <Typography variant="h4" component="h4">
+                  <b>Exercise Set Rating</b>
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h5" component="h5">
+                  <i>Get better recommendation by rating your previous exercises!</i>
+                </Typography>
+              </Grid>
+          </Grid>
+
+          <Grid container direction="column" justify="space-between" alignItems="flex-start" spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="h6" component="h6">
+                  <p><b>Exercise Date:</b></p> 
+                </Typography>
+                <Typography variant="body1" component="body1">
+                  <p>{date}</p>
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="h6" component="h6"> 
+                  <b>Exercise List</b>
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body1" component="body1">
+                  {exercises.map((exercise) => (
+                  <li key={exercise.id}>{exercise.name}</li>
+                ))}
+                </Typography>
+              </Grid>
+          </Grid>
+        <Grid xs={12}>
+          <FormControl component="fieldset" alignContent="center" justifyContent="center">
                 <FormLabel component="legend">Set Rating</FormLabel>
 
                 <RadioGroup 
@@ -372,7 +354,6 @@ export default function ExerciseRatingPage() {
                   />
                 </RadioGroup>
             </FormControl>
-            </Grid>
           </Grid>
           <ButtonGroup 
           disableElevation 
@@ -397,9 +378,9 @@ export default function ExerciseRatingPage() {
               Save Rating
             </Button>
           </ButtonGroup>
-        </form>
-        </Container>
         </div>
+        </Container>
+
       </div>
       
   );

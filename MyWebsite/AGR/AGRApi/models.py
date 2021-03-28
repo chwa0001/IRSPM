@@ -204,7 +204,7 @@ def get_set_exercises (routine):
         enames.append(e.exercise_name)
         eids.append(e.id)
     print(edic)
-    return enames,edic,eids
+    return enames,edic,eids 
 
 #antonia 03/24/21 not used -- to delete in the future if not used
 def get_set_exercises_output_in_str (eids):

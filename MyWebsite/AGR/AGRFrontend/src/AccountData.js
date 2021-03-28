@@ -60,30 +60,58 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AccountData() {
   const classes = useStyles();
+  const originalUsername = Cookies.get('username');
   const [fullname,setFullname] = useState('');
-  const [username,setUsername] = useState('');
+  const [username,setUsername] = useState(originalUsername);
   const [password,setPassword] = useState('');
   const [dob,setDOB] = useState('');
   const [required, setRequired] = useState(false);
   const [variant,setVariant] = useState('filled');
   let history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
+
+  React.useEffect(()=> {
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        };
+        if (username!=''){
+        fetch(`/AGR/AccountData?username=${username}`, requestOptions)
+          .then(function(response){
+            console.log(response)
+            if (!response.ok){
+              throw new Error('Response not OK');
+            }
+            else{
+              return response.json();
+            }
+          }).then(
+            (data) => {
+              console.log(data.DOB);
+              console.log(data.fullname);
+              setFullname(data.fullname);
+              setUsername(data.username);
+              setDOB(data.DOB);
+              setPassword(data.password);
+            },
+            (error) => {console.log(error)}
+          )
+        }
+
+  }, []);
+
+
   useEffect(() => {
     if(userStatus===0)
     {
       setUserStatus(-1);
-      alert('Account is signup successfully!');
+      alert('Account is updated successfully!');
       Cookies.set('username', username);
-      history.push('/');
-    }
-    else if (userStatus===1)
-    {
-      setUserStatus(-1);
-      alert('Username has been used!')
+      history.goBack();
     }
     else if (userStatus===2){
       setUserStatus(-1);
-      alert('Not sure but cannot signup!')
+      alert('Username is not found!')
     }
   }, [userStatus])
 
@@ -96,19 +124,22 @@ export default function AccountData() {
     }
   }, [required])
 
-  function SetAccountData(fullname,username,dob) {
+  function SetAccountData(fullname,username,dob,password,originalUsername) {
     const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username:username,
-          fullname:fullname,
-          DOB:dob,
-        }),
-    };
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: originalUsername,
+        newUsername: username,
+        password: password,
+        fullname:fullname,
+        DOB:dob,
+        CreateUser:2,
+      }),
+  };
     const boolDateValue = moment(dob,'DDMMYYYY',true).isValid();
-    if (fullname!='' && username!='' && boolDateValue==true){
-    fetch('/AGR/SetAccountData', requestOptions)
+    if (fullname!='' && username!='' && boolDateValue==true && password!=''){
+    fetch('/AGR/CreateUser', requestOptions)
         .then(function(response){
           if (!response.ok){
             throw new Error('Response not OK');
@@ -127,6 +158,7 @@ export default function AccountData() {
       if(fullname=='') {alert('Username cannot be blank!')}
       else if (username==''){alert('Full name cannot be blank!')}
       else if(boolDateValue==false){alert('Date of Birth cannot be blank or incorrect format!')}
+      else if(password==''){alert('Password cannot be blank!')}
     }
     }
   return (
@@ -153,6 +185,7 @@ export default function AccountData() {
                   fullWidth
                   id="fullname"
                   label="Full Name"
+                  value={fullname}
                   autoFocus
                   onChange={e => setFullname(e.target.value)}
                 />
@@ -166,6 +199,7 @@ export default function AccountData() {
                   id="username"
                   label="Username"
                   name="username"
+                  value={username}
                   autoComplete="off"
                   onChange={e => setUsername(e.target.value)}
                 />
@@ -179,6 +213,7 @@ export default function AccountData() {
                   id="DOB"
                   label="Date of Birth(DDMMYYYY)"
                   name="DOB"
+                  value={dob}
                   autoComplete="off"
                   onChange={e => setDOB(e.target.value)}
                 />
@@ -193,6 +228,7 @@ export default function AccountData() {
                   label="Password"
                   type="password"
                   id="password"
+                  value={password}
                   autoComplete="off"
                   onChange={e => setPassword(e.target.value)}
                 />
@@ -225,7 +261,7 @@ export default function AccountData() {
                 className={classes.submitbutton}
                 endIcon={<CloudUploadIcon />}
                 color="secondary"
-                onClick={() => console.log('test')}
+                onClick={() => SetAccountData(fullname,username,dob,password,originalUsername)}
               >
                 Update My Data
               </Button>

@@ -148,7 +148,20 @@ class CreateUserView(APIView):
                         #incorrect data of birth
                         return Response({"status":1}, status=status.HTTP_200_OK)
                 else:
-                    #incorrect data of birth
+                    #Cannot find the username
+                    return Response({"status":2}, status=status.HTTP_200_OK)
+            elif CreateUser==2:
+                if queryset.exists():
+                    user = queryset[0]
+                    user.username = request.data.get("newUsername")
+                    user.password = password
+                    user.DOB = request.data.get("DOB")
+                    user.fullname = request.data.get("fullname")
+                    user.save(update_fields=["username", "password","DOB","fullname"])
+                    # return Response(UserSerializer(user).data, status=status.HTTP_200_OK) 
+                    return Response({"status":0}, status=status.HTTP_200_OK)
+                else:
+                    #incorrect username
                     return Response({"status":2}, status=status.HTTP_200_OK)
             else:
                 if queryset.exists():
