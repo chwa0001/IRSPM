@@ -90,6 +90,8 @@ export default function UserDataPage() {
   const [goal,setGoal] = useState(' ');
   const [bmi,setBmi] = useState(' ');
   const [intensity,setIntensity] = useState(' ');
+  const [location,setLocation] = useState(' ');
+
   const history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
   
@@ -122,11 +124,14 @@ export default function UserDataPage() {
               console.log(data.goal)
               console.log(data.intensity)
               console.log(data.bmi)
+              console.log(data.location)
+
               setGender(data.gender);
               setFitnesslevel(data.fitness_level);
               setGoal(data.goal);
               setIntensity(data.intensity);
               setBmi(data.bmi);
+              setLocation(data.location);
             },
             // (error) => {alert(error)}
           )
@@ -169,6 +174,7 @@ export default function UserDataPage() {
           goal:goal,
           bmi:bmi,
           intensity:intensity,
+          location:location,
         }),
     };
     if (username!='' && fitnesslevel!='' && gender!='' && goal!='' && intensity!='' && bmi!=''){
@@ -214,6 +220,10 @@ export default function UserDataPage() {
   
   const bmiHandleChange = (event) => {
     setBmi(event.target.value);
+  };
+
+  const locationHandleChange = (event) => {
+    setLocation(event.target.value);
   };
 
   return (
@@ -323,6 +333,26 @@ export default function UserDataPage() {
               fullWidth='true'
               className={classes.formControl}
               >
+                <InputLabel id="location">Exercise Location</InputLabel>
+                <Select
+                  labelId="location"
+                  id="location"
+                  value={location}
+                  onChange={locationHandleChange}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={1}>Home</MenuItem>
+                  <MenuItem value={2}>Gym</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl 
+              fullWidth='true'
+              className={classes.formControl}
+              >
                 <TextField
                   id="bmi"
                   label="BMI"
@@ -330,7 +360,6 @@ export default function UserDataPage() {
                   step=".01"
                   min="15"
                   max="30"
-                  margin="normal"
                   defaultValue={bmi}
                   value={bmi}
                   fullWidth
@@ -360,7 +389,7 @@ export default function UserDataPage() {
               className={classes.submitbutton}
               endIcon={<CloudUploadIcon />}
               color="secondary"
-              onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi)}
+              onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi,location)}
             >
               Update My Data
             </Button>

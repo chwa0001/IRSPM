@@ -38,7 +38,7 @@ class UserData(models.Model):
     goal            = models.IntegerField(null=False, default=0)
     bmi             = models.IntegerField(null=False, default=20)
     intensity       = models.IntegerField(null=False, default=0)
-    location        = models.IntegerField(null=False, default =0) ## not yet implemented yet. need to add into the page. 
+    location        = models.IntegerField(null=False, default =0) #1 home, 2 gym 
 
     class Meta:
         db_table = "USER_DATABASE"

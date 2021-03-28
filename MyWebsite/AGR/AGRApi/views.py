@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import UserSerializer,AccountDataSerializer,UpdateUserSerializer, RoutineExercisesSerializer
 from .models import User,UserData,Routine,RoutineExercises
 from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb,get_set_to_review,get_set_exercises
 from .models import User, UserExerciseRating
-from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer, ExerciseSerializer
+from .serializers import UserSerializer,UserDataSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer, ExerciseSerializer, AccountDataSerializer
 from .models import User,UserData,Routine,RoutineExercises,Exercise
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -49,11 +48,6 @@ class SetUserData(APIView):
             if not self.request.session.exists(self.request.session.session_key):
                 self.request.session.create()
 
-            # print("reach here")
-            # if len(Exercise.objects.all()) < 1 : 
-            #     print("initiating database")
-            #     generate_database()
-
             print(f"requestdata : {request.data}")
             username = request.data.get("username")
             fitness_level = request.data.get("fitness_level")
@@ -61,6 +55,7 @@ class SetUserData(APIView):
             goal = request.data.get("goal")
             intensity = request.data.get("intensity")
             bmi = request.data.get("bmi")
+            location = request.data.get("location")
 
             user_id = get_userid_from_userdb(username)
             queryset = UserData.objects.filter(user_id=user_id)
@@ -79,8 +74,10 @@ class SetUserData(APIView):
                     print(f"print bmi {bmi}")
                     user.bmi = int(bmi)
                     print(f"print fitness {fitness_level}")
+                    user.location = int(location)
+
                     user.save()
-                    print(user.user_id+5)
+                    print(user.user_id)
 
                     return Response({"status":0}, status=status.HTTP_200_OK)
                 else:
@@ -95,6 +92,7 @@ class SetUserData(APIView):
             print("Exception in SetUserData")
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
+#impletmention done. connection done. no bug so far
 class GetUserData(APIView):
     def post(self, request, format=None):
         try:
@@ -104,11 +102,13 @@ class GetUserData(APIView):
             username = request.data.get("username")
             print(username)
             userdata = get_alluserdata_from_userdb(username)
-            return Response({"gender":userdata.gender,
-                            "fitness_level":userdata.fitness_level,
-                            "goal":userdata.goal,
-                            "intensity":userdata.intensity,
-                            "bmi":userdata.bmi}, status=status.HTTP_200_OK)
+            print(UserDataSerializer(userdata).data)
+            return Response(UserDataSerializer(userdata).data, status=status.HTTP_200_OK)
+            # return Response({"gender":userdata.gender,
+            #                 "fitness_level":userdata.fitness_level,
+            #                 "goal":userdata.goal,
+            #                 "intensity":userdata.intensity,
+            #                 "bmi":userdata.bmi}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 

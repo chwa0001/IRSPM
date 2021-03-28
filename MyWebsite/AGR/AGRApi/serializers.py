@@ -20,7 +20,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 class UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
-        fields = ('id','user','fitness_level','gender','goal','bmi','intensity')
+        fields = ('id','user','fitness_level','gender','goal','bmi','intensity','location')
 
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
