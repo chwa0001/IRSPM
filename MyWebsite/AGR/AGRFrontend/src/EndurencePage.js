@@ -129,8 +129,6 @@ export default function UserDataPage() {
   const [exercise2,setExercise2] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
   const [exercise3,setExercise3] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
   const [exercise4,setExercise4] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
-  const [preferedExerciseId,setPreferedExerciseId] = useState('-1')
-
 
   const history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
@@ -216,39 +214,6 @@ export default function UserDataPage() {
       if(muscle==' ') {alert('Choose a mucle group to get started!')}
     }
   }
-
-  function getMyFirstMuscleBuildingExercise(preference,listExercise) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: username,
-          exercise_id: preferedExerciseId,
-        }),
-    };
-    console.log(requestOptions);
-    if (muscle!=' '){
-    fetch('/AGR/FirstReco', requestOptions)
-        .then(function(response){
-          if (!response.ok){
-            throw new Error('Response not OK');
-          }
-          else{
-            return response.json();
-          }
-        }).then(
-          (data) => {
-            console.log(data.exercises);
-            console.log(listExercise);
-            // console.log(listExercise[0].id);
-          },
-          (error) => {alert(error)}
-        )
-      }
-    else{
-      if(muscle==' ') {alert('Choose a mucle group to get started!')}
-    }
-  }
   
   const muscleHandleChange = (event) => {
     setMuscle(event.target.value);
@@ -257,7 +222,14 @@ export default function UserDataPage() {
 
   const preferenceHandleChange = (event) => {
     setPreference(event.target.value);
-    setPreferedExerciseId(listExercise[event.target.value].id);
+    console.log(exercise1.id)
+    console.log(exercise1.exercise_name)
+    console.log(exercise2.id)
+    console.log(exercise2.exercise_name)
+    console.log(exercise3.id)
+    console.log(exercise3.exercise_name)
+    console.log(exercise4.id)
+    console.log(exercise4.exercise_name)
   }
 
   return (
@@ -332,7 +304,7 @@ export default function UserDataPage() {
                 orientation='vertical'
                 >
                   <FormControlLabel
-                  value='1'
+                  value={exercise1.id}
                   control={<Radio/>}
                   label={exercise1.exercise_name}
                   labelPlacement="right"
@@ -349,19 +321,19 @@ export default function UserDataPage() {
                   </Collapse> */}
 
                   <FormControlLabel
-                  value='2'
+                  value={exercise2.id}
                   control={<Radio/>}
                   label={exercise2.exercise_name}
                   labelPlacement="right"
                   />
                   <FormControlLabel
-                  value='3'
+                  value={exercise3.id}
                   control={<Radio/>}
                   label={exercise3.exercise_name}
                   labelPlacement="right"
                   />
                   <FormControlLabel
-                  value='4'
+                  value={exercise4.id}
                   control={<Radio/>}
                   label={exercise4.exercise_name}
                   labelPlacement="right"
@@ -412,7 +384,7 @@ export default function UserDataPage() {
               className={classes.submitbutton}
               endIcon={<CloudUploadIcon />}
               color="secondary"
-              onClick={() => getMyFirstMuscleBuildingExercise(preference,listExercise)}
+              onClick={() => getExercise4Muscle(muscle)}
             >
               See my Exercise Set!
             </Button>

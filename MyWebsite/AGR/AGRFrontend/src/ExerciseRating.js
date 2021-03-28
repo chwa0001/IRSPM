@@ -340,7 +340,7 @@ export default function ExerciseRatingPage() {
                 labelPlacement="bottom"
                 alignItems='center'
                 >
-                    <FormControlLabel
+                  <FormControlLabel
                   value="1"
                   control={<RedRadio/>}
                   label="1"
