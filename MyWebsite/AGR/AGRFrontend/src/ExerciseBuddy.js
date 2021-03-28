@@ -72,7 +72,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ExerciseBuddytest() {
+function ExerciseBuddytest() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
