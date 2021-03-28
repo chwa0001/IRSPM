@@ -119,6 +119,10 @@ const tileData = [
       
       5.) Alternate legs and repeat.`,
     },
+    {
+
+
+    },
   ];
   
   export default tileData;

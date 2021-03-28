@@ -4,8 +4,6 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -13,7 +11,6 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import moment from 'moment';
 import { useHistory } from "react-router-dom";
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -69,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     height: 36,
   },
   buttongrouping:{
-    padding: '90px 15px',
+    padding: '30px 15px',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -158,12 +155,12 @@ export default function UserDataPage() {
       setUserStatus(-1);
       // setAlertShow('visible');
       // setAlertText('Not sure but cannot signup!');
-      alert('Not sure but cannot signup!')
+      alert('Data not updated, help us to improve by reporting the bug!')
     }
   }, [userStatus])
 
   // function SetUserData(username,fitnesslevel,gender,goal,bmi,intensity) {
-  function SetUserData(username,fitnesslevel,goal,intensity,gender,bmi) {
+  function SetUserData(username,fitnesslevel,goal,intensity,gender,bmi,location) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -394,12 +391,14 @@ export default function UserDataPage() {
               Update My Data
             </Button>
           </ButtonGroup>
-          
-        </form>
+          <Box mt={8}>
+            <Copyright />
+          </Box>
+          </form>
         </div>
-        </Container>
+      </Container>
         
-      </div>
+    </div>
       
   );
 }

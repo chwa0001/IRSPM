@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from datetime import date
 import pandas as pd
 import numpy as np
+import random
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 # Create your views here.
@@ -304,7 +305,7 @@ class CreateSet(APIView):
             user_id = get_userid_from_userdb(username)
             routine = Routine(userdata=user_id, date=date.today())
             routine.save()
-            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status":"good"}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -317,9 +318,42 @@ class CreateSetExercises(APIView):
             for exercise_id in exercise_ids:
                 re = RoutineExercises(routine=routine, exercise=exercise_id)
                 re.save()
-            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status":"good"}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+#antonia 03/28/21 to get list of exercise in an array
+class GetExercise4Muscle(APIView):
+    def post(self, request, format=None):
+        try:
+            muscle = request.data.get("muscle")
+            print(f"muscle: {muscle}")
+            exercises = Exercise.objects.filter(main_musclegroup=muscle)
+            
+            if (len(exercises)>0):
+                renderExercise = []
+                print(f"len(exercises): {len(exercises)}")
+                print(f"exercises: {exercises}")
+                random4 = random.sample(range(len(exercises)-1),4)
+                print(random4)
+                for ran in random4: 
+                    exercise = exercises[ran]
+                    renderExercise.append(ExerciseSerializer(exercise).data)
+
+                print(f"renderExercise: {renderExercise}")
+
+            return Response({"exercises":renderExercise , "status":"good"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
 
 
 from AGRApi.recommender_algo_AGR import *

@@ -13,6 +13,7 @@ import ResetPassword from './ResetPassword';
 import UserDataPage from './UserData';
 import ExerciseRatingPage from './ExerciseRating';
 import AccountData from './AccountData';
+import MuscleBuildingPage from './MuscleBuildingPage';
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +37,8 @@ export default class App extends Component {
             <Route exact path="/UserData" component={UserDataPage}/>
             <Route exact path="/ExerciseRating" component={ExerciseRatingPage}/>
             <Route exact path="/AccountData" component={AccountData}/>
+            <Route exact path="/MuscleBuilding" component={MuscleBuildingPage}/>
+            
           </Switch>
         </Suspense>
       </MuiThemeProvider>

@@ -30,12 +30,12 @@ export default function HomePage() {
     <div className={classes.grow}>
       <MenuBar/>
       <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
-      <CustomScroller style={{ width: '100%', height: '100%' }}>
-      <CssBaseline />
-          {tileData.map((tile) => (
-            <ExerciseContainer img1= {tile.img1} img2= {tile.img2} exercise_name= {tile.exercise_name} main_muscle= {tile.main_muscle} detail_muscle= {tile.detail_muscle} other_muscle= {tile.other_muscle} type= {tile.type} mechanics= {tile.mechanics} equipment= {tile.equipment} difficulty= {tile.difficulty} Instructions= {tile.Instructions}/>
-          ))}
-      </CustomScroller>
+        <CustomScroller style={{ width: '100%', height: '100%' }}>
+        <CssBaseline />
+            {tileData.map((tile) => (
+              <ExerciseContainer img1= {tile.img1} img2= {tile.img2} exercise_name= {tile.exercise_name} main_muscle= {tile.main_muscle} detail_muscle= {tile.detail_muscle} other_muscle= {tile.other_muscle} type= {tile.type} mechanics= {tile.mechanics} equipment= {tile.equipment} difficulty= {tile.difficulty} Instructions= {tile.Instructions}/>
+            ))}
+        </CustomScroller>
       </Container>
 
     </div>

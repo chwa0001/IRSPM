@@ -2,7 +2,7 @@ from django.urls import path
 from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,SetUserData,GetUserData
 from .views import AlgoToLearn,ExerciseRating,GetAccountData
 from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,FirstReco
-from .views import GetSetToRate,CreateSet,CreateSetExercises
+from .views import GetSetToRate,CreateSet,CreateSetExercises,GetExercise4Muscle
 urlpatterns = [
     path('User', UserView.as_view()),
     path('CreateUser',CreateUserView.as_view()),
@@ -17,4 +17,5 @@ urlpatterns = [
     path('GetSetToRate',GetSetToRate.as_view()),
     path('CreateSet',CreateSet.as_view()),
     path('CreateSetExercises',CreateSetExercises.as_view()),
+    path('GetExercise4Muscle',GetExercise4Muscle.as_view()),
 ]
