@@ -4,8 +4,6 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -13,7 +11,6 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import moment from 'moment';
 import { useHistory } from "react-router-dom";
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -69,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     height: 36,
   },
   buttongrouping:{
-    padding: '90px 15px',
+    padding: '30px 15px',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -90,6 +87,8 @@ export default function UserDataPage() {
   const [goal,setGoal] = useState(' ');
   const [bmi,setBmi] = useState(' ');
   const [intensity,setIntensity] = useState(' ');
+  const [location,setLocation] = useState(' ');
+
   const history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
   
@@ -122,11 +121,14 @@ export default function UserDataPage() {
               console.log(data.goal)
               console.log(data.intensity)
               console.log(data.bmi)
+              console.log(data.location)
+
               setGender(data.gender);
               setFitnesslevel(data.fitness_level);
               setGoal(data.goal);
               setIntensity(data.intensity);
               setBmi(data.bmi);
+              setLocation(data.location);
             },
             // (error) => {alert(error)}
           )
@@ -153,12 +155,12 @@ export default function UserDataPage() {
       setUserStatus(-1);
       // setAlertShow('visible');
       // setAlertText('Not sure but cannot signup!');
-      alert('Not sure but cannot signup!')
+      alert('Data not updated, help us to improve by reporting the bug!')
     }
   }, [userStatus])
 
   // function SetUserData(username,fitnesslevel,gender,goal,bmi,intensity) {
-  function SetUserData(username,fitnesslevel,goal,intensity,gender,bmi) {
+  function SetUserData(username,fitnesslevel,goal,intensity,gender,bmi,location) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -169,6 +171,7 @@ export default function UserDataPage() {
           goal:goal,
           bmi:bmi,
           intensity:intensity,
+          location:location,
         }),
     };
     if (username!='' && fitnesslevel!='' && gender!='' && goal!='' && intensity!='' && bmi!=''){
@@ -214,6 +217,10 @@ export default function UserDataPage() {
   
   const bmiHandleChange = (event) => {
     setBmi(event.target.value);
+  };
+
+  const locationHandleChange = (event) => {
+    setLocation(event.target.value);
   };
 
   return (
@@ -323,6 +330,26 @@ export default function UserDataPage() {
               fullWidth='true'
               className={classes.formControl}
               >
+                <InputLabel id="location">Exercise Location</InputLabel>
+                <Select
+                  labelId="location"
+                  id="location"
+                  value={location}
+                  onChange={locationHandleChange}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={1}>Home</MenuItem>
+                  <MenuItem value={2}>Gym</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl 
+              fullWidth='true'
+              className={classes.formControl}
+              >
                 <TextField
                   id="bmi"
                   label="BMI"
@@ -330,7 +357,6 @@ export default function UserDataPage() {
                   step=".01"
                   min="15"
                   max="30"
-                  margin="normal"
                   defaultValue={bmi}
                   value={bmi}
                   fullWidth
@@ -360,17 +386,19 @@ export default function UserDataPage() {
               className={classes.submitbutton}
               endIcon={<CloudUploadIcon />}
               color="secondary"
-              onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi)}
+              onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi,location)}
             >
               Update My Data
             </Button>
           </ButtonGroup>
-          
-        </form>
+          <Box mt={8}>
+            <Copyright />
+          </Box>
+          </form>
         </div>
-        </Container>
+      </Container>
         
-      </div>
+    </div>
       
   );
 }
