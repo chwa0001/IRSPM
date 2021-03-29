@@ -10,4 +10,6 @@ urlpatterns = [
     path('ExerciseRating', index),
     path('AccountData',index),
     path('MuscleBuilding',index),
+    path('ExerciseSet',index),
+
 ]

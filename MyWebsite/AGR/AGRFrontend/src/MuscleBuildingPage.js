@@ -27,6 +27,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -176,7 +177,14 @@ export default function UserDataPage() {
       alert('Account has been updated!');
       history.push('/Home');
     }
-  }, [userStatus])
+    else if(userStatus===3)
+    {
+      console.log("userStatus: 3")
+      setUserStatus(-1);
+      history.push('/ExerciseSet');
+    }
+
+  }, [userStatus]);
 
 
   function getExercise4Muscle(muscle) {
@@ -215,7 +223,7 @@ export default function UserDataPage() {
     else{
       if(muscle==' ') {alert('Choose a mucle group to get started!')}
     }
-  }
+  };
 
   function getMyFirstMuscleBuildingExercise(preference,listExercise) {
     const requestOptions = {
@@ -224,11 +232,12 @@ export default function UserDataPage() {
         body: JSON.stringify({
           username: username,
           exercise_id: preferedExerciseId,
+          mode: "2",
         }),
     };
     console.log(requestOptions);
     if (muscle!=' '){
-    fetch('/AGR/FirstReco', requestOptions)
+    fetch('/AGR/FirstRecommend', requestOptions)
         .then(function(response){
           if (!response.ok){
             throw new Error('Response not OK');
@@ -238,9 +247,13 @@ export default function UserDataPage() {
           }
         }).then(
           (data) => {
-            console.log(data.exercises);
-            console.log(listExercise);
-            // console.log(listExercise[0].id);
+            console.log(data);
+            Cookies.set('setId', data.set_id);
+            Cookies.set('setExData', data.set_exercise_details);
+            setUserStatus(data.status)
+            console.log(data.set_id);
+            console.log(data.set_exercise_details);
+
           },
           (error) => {alert(error)}
         )
@@ -281,6 +294,8 @@ export default function UserDataPage() {
               <Typography component="h5" variant="h5"> 
                 <i>1. To get started, choose a targeted muscle group</i>
               </Typography>
+            </Grid>
+            <Grid item xs={12}>
               <FormControl 
               fullWidth='true'
               className={classes.formControl}
@@ -317,9 +332,11 @@ export default function UserDataPage() {
               </ButtonGroup>
 
             </Grid>
+            <Grid container xs={12}>
               <Typography display='block' component="h5" variant="h5" > 
                 <p><i>2. Choose your preffered exercise</i></p>
               </Typography>
+            </Grid>
             <Grid container xs={12}>
               <FormControl component="fieldset" alignContent="center" justifyContent="center">
                 <FormLabel component="legend">Click on the exercises to get more details</FormLabel>
@@ -332,7 +349,7 @@ export default function UserDataPage() {
                 orientation='vertical'
                 >
                   <FormControlLabel
-                  value='1'
+                  value='0'
                   control={<Radio/>}
                   label={exercise1.exercise_name}
                   labelPlacement="right"
@@ -349,19 +366,19 @@ export default function UserDataPage() {
                   </Collapse> */}
 
                   <FormControlLabel
-                  value='2'
+                  value='1'
                   control={<Radio/>}
                   label={exercise2.exercise_name}
                   labelPlacement="right"
                   />
                   <FormControlLabel
-                  value='3'
+                  value='2'
                   control={<Radio/>}
                   label={exercise3.exercise_name}
                   labelPlacement="right"
                   />
                   <FormControlLabel
-                  value='4'
+                  value='3'
                   control={<Radio/>}
                   label={exercise4.exercise_name}
                   labelPlacement="right"
@@ -410,7 +427,7 @@ export default function UserDataPage() {
             </Button>
             <Button
               className={classes.submitbutton}
-              endIcon={<CloudUploadIcon />}
+              endIcon={<FitnessCenterIcon />}
               color="secondary"
               onClick={() => getMyFirstMuscleBuildingExercise(preference,listExercise)}
             >

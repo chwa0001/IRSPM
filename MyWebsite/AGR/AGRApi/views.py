@@ -315,8 +315,9 @@ class CreateSet(APIView):
     def post(self, request, format=None):
         try:
             username = request.data.get("username")
+            mode = int(request.data.get("mode"))
             user_id = get_userid_from_userdb(username)
-            routine = Routine(userdata=user_id, date=date.today())
+            routine = Routine(userdata=user_id, rate=False, mode=mode, date=date.today())
             routine.save()
             return Response({"status":"good"}, status=status.HTTP_200_OK)
         except Exception as error:
@@ -335,6 +336,23 @@ class CreateSetExercises(APIView):
         except Exception as error:
             return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
 
+def createSetExercises(username, mode, exercise_ids):
+    try:
+        user_id = get_userid_from_userdb(username)
+        print(username,user_id,mode,type(mode),exercise_ids)
+        print(user_id, mode, date.today())
+
+        routine = Routine(userdata_id=user_id, mode=mode, date=date.today())
+        print(username,user_id)
+
+        routine.save()
+        print(username,user_id)
+        for exercise_id in exercise_ids:
+            re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
+            re.save()
+        return (routine.id) #Set and Exercise Created
+    except Exception as error: 
+        return (-1) #error
 
 #antonia 03/28/21 to get list of exercise in an array
 class GetExercise4Muscle(APIView):
@@ -361,6 +379,42 @@ class GetExercise4Muscle(APIView):
             return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class GetSetDetails(APIView):
+    def post(self, request, format=None):
+        try:
+            username = request.data.get("username")
+            set_id = request.data.get("set_id")
+            print(f"username,set_id: {username}, {set_id}")
+            routine = Routine.objects.get(id=set_id)
+            print(f"routine: {routine}, {routine.id}")
+            
+            if (routine.mode) == 1:
+                set_type = 'General Fitness'
+            elif routine.mode == 2:
+                set_type = 'Muscle Building'
+            elif routine.mode == 3: 
+                set_type = 'Endurence'
+            else: 
+                set_type = 'unknown'
+
+            exercise_class = RoutineExercises.objects.filter(routine_id=set_id)
+            print(f"exercise_class: {exercise_class}")
+
+            exercises_details = []
+            for exercise_item in exercise_class:
+                print(f"exercise_item.exercise_id: {exercise_item.exercise_id}")
+                
+                item = Exercise.objects.get(id=exercise_item.exercise_id)
+                # print(f"item: {item}")
+
+                exercises_details.append(ExerciseSerializer(item).data)
+
+
+            print(f"exercises_details: {exercises_details}")
+
+            return Response({"set_date":routine.date, "set_type":set_type,"exercises_details":exercises_details , "status":1}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request":"unable to retrieved exercises"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -390,13 +444,15 @@ class AlgoToLearn(APIView):
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
 class FirstReco(APIView):
-    def get(self, request, format=None):
-        username = request.GET.get('username')
-        exercise_id = request.GET.get('exercise_id')
+    def post(self, request, format=None):
+        username = request.data.get('username')
+        exercise_id = int(request.data.get('exercise_id'))
+        mode = int(request.data.get('mode'))
         print(Exercise.objects.filter(id= exercise_id).exists())
         if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists():
             exercise_data = Exercise.objects.all() #get all data from db according to models.py format
             df = pd.DataFrame.from_records(exercise_data.values())
+        
             # exercisesArr = []
             # i = 0
             # while i < len(exercise_data):
@@ -458,7 +514,23 @@ class FirstReco(APIView):
             data['recoExList'] = recoExArray
 
 
-            return Response(data, status=status.HTTP_200_OK)
+            user_id = int(get_userid_from_userdb(username))
+            routine = Routine(userdata_id=user_id, date=date.today(), mode=mode)
+            routine.save()
+            for exercise_id in recoList:
+                re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
+                re.save()
+
+
+            set_id = createSetExercises(username, mode, recoList)
+            
+            if set_id >=0: 
+                data['set_id'] = set_id
+            else:
+                return Response({"Bad Request": "Set is not created"}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({"status":3 ,"set_exercise_id": data["recoList"], "set_exercise_details": data['recoExList'], "set_id": data['set_id']}, status=status.HTTP_200_OK)
             
         else:
+            print(f"username, exercise_id ,Exercise.objects.filter(id= exercise_id).exists(): {username, exercise_id ,Exercise.objects.filter(id= exercise_id).exists()}")
             return Response({"Bad Request": "No Username and/or exercise_id out of range"}, status=status.HTTP_400_BAD_REQUEST)
