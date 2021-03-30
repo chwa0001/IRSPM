@@ -454,15 +454,18 @@ class FirstReco(APIView):
         if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 1:
             exercise_data = Exercise.objects.all() #get all exercise data from db according to models.py format 
             df = pd.DataFrame.from_records(exercise_data.values())
-            print(df.tail)
+            #print("ALL: ", df.tail)
         
         elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 2:
             exercise_data = Exercise.objects.filter(main_musclegroup=muscle) #get exercise data filetered for muscle from db according to models.py format
             df = pd.DataFrame.from_records(exercise_data.values())
-            print(df.head)
+            #print("MUSLCE: ", df.head)
 
         elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 3:
-            exercise_data = Exercise.objects.filter(main_musclegroup= "cardio") #get exercise data filetered for cardio from db according to models.py format
+            muscle = "Cardio"
+            exercise_data = Exercise.objects.filter(main_musclegroup= muscle) #get exercise data filetered for cardio from db according to models.py format
+            df = pd.DataFrame.from_records(exercise_data.values())
+            #print("CARDIO: ", df.head)
 
         else:
             print(f"username, exercise_id ,Exercise.objects.filter(id= exercise_id).exists(): {username, exercise_id ,Exercise.objects.filter(id= exercise_id).exists()}")
