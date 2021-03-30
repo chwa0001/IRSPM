@@ -448,89 +448,100 @@ class FirstReco(APIView):
         username = request.data.get('username')
         exercise_id = int(request.data.get('exercise_id'))
         mode = int(request.data.get('mode'))
+        muscle = request.data.get("muscle")
         print(Exercise.objects.filter(id= exercise_id).exists())
-        if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists():
-            exercise_data = Exercise.objects.all() #get all data from db according to models.py format
+
+        if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 1:
+            exercise_data = Exercise.objects.all() #get all exercise data from db according to models.py format 
             df = pd.DataFrame.from_records(exercise_data.values())
         
-            # exercisesArr = []
-            # i = 0
-            # while i < len(exercise_data):
-            #     exercisesArr.append(ExerciseSerializer(exercise_data[i]).data) #convert into list of json format
-            #     i += 1
-            # df = pd.DataFrame(exercisesArr) #convert into dataframe
-            # print("here", len(df))
+        elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 2:
+            exercise_data = Exercise.objects.filter(main_musclegroup=muscle) #get exercise data filetered for muscle from db according to models.py format
+            df = pd.DataFrame.from_records(exercise_data.values())
 
-            #Select features to find similarity
-            features = ['other_musclegroups', 'exercise_type', 'mechanics', 'equipment', 'exercise_name'] #type change to exercise type because type is special keyword
-            for feature in features:
-                df[feature] = df[feature].fillna('')
-            #print(df[feature])
+        elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 3:
+            exercise_data = Exercise.objects.filter(main_musclegroup= "cardio") #get exercise data filetered for cardio from db according to models.py format
 
-            #Create combined features column
-            def combined_features(row):
-                return row['other_musclegroups']+" "+row['exercise_type']+" "+row['mechanics']+" "+row['exercise_name']+" "+row['equipment']
-            df["combined_features"] = df.apply(combined_features, axis =1)
-            #print(df["combined_features"])
-
-            #Use CountVectorizer to convert words into word count for cosine similarity
-            cv = CountVectorizer()
-            count_matrix = cv.fit_transform(df["combined_features"])
-            #print("Count Matrix:", count_matrix.toarray())
-
-            #Cosine similarity
-            cosine_sim = cosine_similarity(count_matrix)
-            # print("here", len(cosine_sim))
-
-            exercise_index = int(exercise_id) #user input in exercise_id
-
-            #Place similar exercises in list and sort in descending similarity score
-            similar_exercises = list(enumerate(cosine_sim[exercise_index]))
-            #print(similar_exercises)
-            sorted_similar_exercises = sorted(similar_exercises, key=lambda x:x[1], reverse=True)
-
-            #Store top 6 similar exercise_id in list
-            recoList = []
-            i=0
-            for exercise in sorted_similar_exercises:
-                recoList.append(exercise[0])
-                i=i+1
-                if i>5:
-                    break
-                
-            print(recoList)
-
-
-            # Creating json
-            data = {}
-            data["recoList"] = recoList
-
-            recoEx = Exercise.objects.filter(id__in = recoList) #filter for Exercise db for recommended exercise according to models.py format
-            recoExArray = []
-            i = 0
-            while i < len(recoEx):
-                recoExArray.append(ExerciseSerializer(recoEx[i]).data) #serialize into json format
-                i += 1
-            data['recoExList'] = recoExArray
-
-
-            user_id = int(get_userid_from_userdb(username))
-            routine = Routine(userdata_id=user_id, date=date.today(), mode=mode)
-            routine.save()
-            for exercise_id in recoList:
-                re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
-                re.save()
-
-
-            set_id = createSetExercises(username, mode, recoList)
-            
-            if set_id >=0: 
-                data['set_id'] = set_id
-            else:
-                return Response({"Bad Request": "Set is not created"}, status=status.HTTP_400_BAD_REQUEST)
-
-            return Response({"status":3 ,"set_exercise_id": data["recoList"], "set_exercise_details": data['recoExList'], "set_id": data['set_id']}, status=status.HTTP_200_OK)
-            
         else:
             print(f"username, exercise_id ,Exercise.objects.filter(id= exercise_id).exists(): {username, exercise_id ,Exercise.objects.filter(id= exercise_id).exists()}")
             return Response({"Bad Request": "No Username and/or exercise_id out of range"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # exercisesArr = []
+        # i = 0
+        # while i < len(exercise_data):
+        #     exercisesArr.append(ExerciseSerializer(exercise_data[i]).data) #convert into list of json format
+        #     i += 1
+        # df = pd.DataFrame(exercisesArr) #convert into dataframe
+        # print("here", len(df))
+
+        #Select features to find similarity
+        features = ['other_musclegroups', 'exercise_type', 'mechanics', 'equipment', 'exercise_name'] #type change to exercise type because type is special keyword
+        for feature in features:
+            df[feature] = df[feature].fillna('')
+        #print(df[feature])
+
+        #Create combined features column
+        def combined_features(row):
+            return row['other_musclegroups']+" "+row['exercise_type']+" "+row['mechanics']+" "+row['exercise_name']+" "+row['equipment']
+        df["combined_features"] = df.apply(combined_features, axis =1)
+        #print(df["combined_features"])
+
+        #Use CountVectorizer to convert words into word count for cosine similarity
+        cv = CountVectorizer()
+        count_matrix = cv.fit_transform(df["combined_features"])
+        #print("Count Matrix:", count_matrix.toarray())
+
+        #Cosine similarity
+        cosine_sim = cosine_similarity(count_matrix)
+        # print("here", len(cosine_sim))
+
+        exercise_index = int(exercise_id) #user input in exercise_id
+
+        #Place similar exercises in list and sort in descending similarity score
+        similar_exercises = list(enumerate(cosine_sim[exercise_index]))
+        #print(similar_exercises)
+        sorted_similar_exercises = sorted(similar_exercises, key=lambda x:x[1], reverse=True)
+
+        #Store top 6 similar exercise_id in list
+        recoList = []
+        i=0
+        for exercise in sorted_similar_exercises:
+            recoList.append(exercise[0])
+            i=i+1
+            if i>5:
+                break
+            
+        print(recoList)
+
+
+        # Creating json
+        data = {}
+        data["recoList"] = recoList
+
+        recoEx = Exercise.objects.filter(id__in = recoList) #filter for Exercise db for recommended exercise according to models.py format
+        recoExArray = []
+        i = 0
+        while i < len(recoEx):
+            recoExArray.append(ExerciseSerializer(recoEx[i]).data) #serialize into json format
+            i += 1
+        data['recoExList'] = recoExArray
+
+
+        user_id = int(get_userid_from_userdb(username))
+        routine = Routine(userdata_id=user_id, date=date.today(), mode=mode)
+        routine.save()
+        for exercise_id in recoList:
+            re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
+            re.save()
+
+
+        set_id = createSetExercises(username, mode, recoList)
+        
+        if set_id >=0: 
+            data['set_id'] = set_id
+        else:
+            return Response({"Bad Request": "Set is not created"}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"status":3 ,"set_exercise_id": data["recoList"], "set_exercise_details": data['recoExList'], "set_id": data['set_id']}, status=status.HTTP_200_OK)
+        
+
