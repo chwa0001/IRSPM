@@ -454,11 +454,12 @@ class FirstReco(APIView):
         if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 1:
             exercise_data = Exercise.objects.all() #get all exercise data from db according to models.py format 
             df = pd.DataFrame.from_records(exercise_data.values())
+            print(df.tail)
         
         elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 2:
             exercise_data = Exercise.objects.filter(main_musclegroup=muscle) #get exercise data filetered for muscle from db according to models.py format
             df = pd.DataFrame.from_records(exercise_data.values())
-            print(df.len)
+            print(df.head)
 
         elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 3:
             exercise_data = Exercise.objects.filter(main_musclegroup= "cardio") #get exercise data filetered for cardio from db according to models.py format
@@ -496,23 +497,26 @@ class FirstReco(APIView):
         cosine_sim = cosine_similarity(count_matrix)
         # print("here", len(cosine_sim))
 
-        exercise_index = int(exercise_id) #user input in exercise_id
+        exercise_index = df[df['id'] == exercise_id].index[0] #Convert exercise_id into row number in filtered db
+        print('ROW NUMBER HERE: ', exercise_index)
 
         #Place similar exercises in list and sort in descending similarity score
         similar_exercises = list(enumerate(cosine_sim[exercise_index]))
         #print(similar_exercises)
         sorted_similar_exercises = sorted(similar_exercises, key=lambda x:x[1], reverse=True)
+        #print("SORTED SIMILAR ", sorted_similar_exercises)
 
         #Store top 6 similar exercise_id in list
         recoList = []
         i=0
         for exercise in sorted_similar_exercises:
-            recoList.append(exercise[0])
+            reco_id = df.loc[exercise[0], 'id']
+            recoList.append(reco_id)
             i=i+1
             if i>5:
                 break
             
-        print(recoList)
+        print("RECOLIST HERE ", recoList)
 
 
         # Creating json
