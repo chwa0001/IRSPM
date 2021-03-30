@@ -444,11 +444,11 @@ class AlgoToLearn(APIView):
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
 class FirstReco(APIView):
-    def post(self, request, format=None):
-        username = request.data.get('username')
-        exercise_id = int(request.data.get('exercise_id'))
-        mode = int(request.data.get('mode'))
-        muscle = request.data.get("muscle")
+    def get(self, request, format=None):
+        username = request.GET.get('username')
+        exercise_id = int(request.GET.get('exercise_id'))
+        mode = int(request.GET.get('mode'))
+        muscle = request.GET.get("muscle")
         print(Exercise.objects.filter(id= exercise_id).exists())
 
         if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 1:
@@ -458,6 +458,7 @@ class FirstReco(APIView):
         elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 2:
             exercise_data = Exercise.objects.filter(main_musclegroup=muscle) #get exercise data filetered for muscle from db according to models.py format
             df = pd.DataFrame.from_records(exercise_data.values())
+            print(df.len)
 
         elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 3:
             exercise_data = Exercise.objects.filter(main_musclegroup= "cardio") #get exercise data filetered for cardio from db according to models.py format
