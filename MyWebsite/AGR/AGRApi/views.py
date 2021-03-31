@@ -451,17 +451,17 @@ class FirstReco(APIView):
         muscle = request.GET.get("muscle")
         print(Exercise.objects.filter(id= exercise_id).exists())
 
-        if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 1:
+        if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 1: #For general fitness
             exercise_data = Exercise.objects.all() #get all exercise data from db according to models.py format 
             df = pd.DataFrame.from_records(exercise_data.values())
             #print("ALL: ", df.tail)
         
-        elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 2:
+        elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 2: #For focused muscle building
             exercise_data = Exercise.objects.filter(main_musclegroup=muscle) #get exercise data filetered for muscle from db according to models.py format
             df = pd.DataFrame.from_records(exercise_data.values())
             #print("MUSLCE: ", df.head)
 
-        elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 3:
+        elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 3: #For cardio
             muscle = "Cardio"
             exercise_data = Exercise.objects.filter(main_musclegroup= muscle) #get exercise data filetered for cardio from db according to models.py format
             df = pd.DataFrame.from_records(exercise_data.values())
@@ -500,8 +500,8 @@ class FirstReco(APIView):
         cosine_sim = cosine_similarity(count_matrix)
         # print("here", len(cosine_sim))
 
-        exercise_index = df[df['id'] == exercise_id].index[0] #Convert exercise_id into row number in filtered db
-        print('ROW NUMBER HERE: ', exercise_index)
+        exercise_index = df[df['id'] == exercise_id].index[0] #Convert exercise_id into row number in filtered df
+        #print('ROW NUMBER HERE: ', exercise_index)
 
         #Place similar exercises in list and sort in descending similarity score
         similar_exercises = list(enumerate(cosine_sim[exercise_index]))
@@ -513,13 +513,13 @@ class FirstReco(APIView):
         recoList = []
         i=0
         for exercise in sorted_similar_exercises:
-            reco_id = df.loc[exercise[0], 'id']
+            reco_id = df.loc[exercise[0], 'id'] #Convert row number in filtered df back to exercise_id
             recoList.append(reco_id)
             i=i+1
             if i>5:
                 break
             
-        print("RECOLIST HERE ", recoList)
+        #print("RECOLIST HERE ", recoList)
 
 
         # Creating json
