@@ -11,7 +11,7 @@ const tileData = [
       mechanics: 'Compound 2',
       equipment: 'Body 2',
       difficulty: 'Intermediate 2',
-      Instructions: `Steps : 
+      instruction_text: `Steps : 
       \n\n
       1.) Start by laying on your back with arms at your sides , keeping one knee bent with your heel on the ground and the other leg pointed straight out in front of you in a 45 degree angle.
       \n\n
@@ -35,7 +35,7 @@ const tileData = [
       mechanics: 'Compound 2',
       equipment: 'Body 2',
       difficulty: 'Intermediate 2',
-      Instructions: `Steps : 
+      instruction_text: `Steps : 
 
       1.) Start by laying on your back with arms at your sides , keeping one knee bent with your heel on the ground and the other leg pointed straight out in front of you in a 45 degree angle.
       
@@ -59,7 +59,7 @@ const tileData = [
       mechanics: 'Compound 2',
       equipment: 'Body 2',
       difficulty: 'Intermediate 2',
-      Instructions: `Steps : 
+      instruction_text: `Steps : 
 
       1.) Start by laying on your back with arms at your sides , keeping one knee bent with your heel on the ground and the other leg pointed straight out in front of you in a 45 degree angle.
       
@@ -83,7 +83,7 @@ const tileData = [
       mechanics: 'Compound 2',
       equipment: 'Body 2',
       difficulty: 'Intermediate 2',
-      Instructions: `Steps : 
+      instruction_text: `Steps : 
       \n\n
       1.) Start by laying on your back with arms at your sides , keeping one knee bent with your heel on the ground and the other leg pointed straight out in front of you in a 45 degree angle.
       \n\n
@@ -107,7 +107,7 @@ const tileData = [
       mechanics: 'Compound 2',
       equipment: 'Body 2',
       difficulty: 'Intermediate 2',
-      Instructions: `Steps : 
+      instruction_text: `Steps : 
 
       1.) Start by laying on your back with arms at your sides , keeping one knee bent with your heel on the ground and the other leg pointed straight out in front of you in a 45 degree angle.
       

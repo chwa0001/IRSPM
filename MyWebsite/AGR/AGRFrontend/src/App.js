@@ -14,6 +14,8 @@ import UserDataPage from './UserData';
 import ExerciseRatingPage from './ExerciseRating';
 import AccountData from './AccountData';
 import MuscleBuildingPage from './MuscleBuildingPage';
+import ExerciseSetPage from './ExerciseSetPage';
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +40,8 @@ export default class App extends Component {
             <Route exact path="/ExerciseRating" component={ExerciseRatingPage}/>
             <Route exact path="/AccountData" component={AccountData}/>
             <Route exact path="/MuscleBuilding" component={MuscleBuildingPage}/>
-            
+            <Route exact path="/ExerciseSet" component={ExerciseSetPage}/>
+
           </Switch>
         </Suspense>
       </MuiThemeProvider>
