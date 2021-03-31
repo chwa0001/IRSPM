@@ -448,21 +448,23 @@ class FirstReco(APIView):
         username = request.GET.get('username')
         exercise_id = int(request.GET.get('exercise_id'))
         mode = int(request.GET.get('mode'))
+        fitness = request.GET.get('fitness')
+        location = request.GET.get('location') #may not be used due to ambuguity of exercises in db (barbell at home?)
         muscle = request.GET.get("muscle")
         print(Exercise.objects.filter(id= exercise_id).exists())
 
         if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 1: #For general fitness
-            exercise_data = Exercise.objects.all() #get all exercise data from db according to models.py format 
+            exercise_data = Exercise.objects.filter(difficulty=fitness) #get all exercise data from db according to models.py format filtered by difficulty and equipment
             df = pd.DataFrame.from_records(exercise_data.values())
             #print("ALL: ", df.tail)
         
         elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 2: #For focused muscle building
-            exercise_data = Exercise.objects.filter(main_musclegroup=muscle) #get exercise data filetered for muscle from db according to models.py format
+            exercise_data = Exercise.objects.filter(main_musclegroup=muscle, difficulty=fitness) #get exercise data filetered for muscle, difficulty and equipment from db according to models.py format
             df = pd.DataFrame.from_records(exercise_data.values())
             #print("MUSLCE: ", df.head)
 
         elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 3: #For cardio
-            muscle = "Cardio"
+            muscle = "Cardio" #set muscle to cardio
             exercise_data = Exercise.objects.filter(main_musclegroup= muscle) #get exercise data filetered for cardio from db according to models.py format
             df = pd.DataFrame.from_records(exercise_data.values())
             #print("CARDIO: ", df.head)
