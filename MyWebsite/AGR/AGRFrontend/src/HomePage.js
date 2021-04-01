@@ -56,6 +56,10 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
+  Images:{
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 function getSteps() {
@@ -317,17 +321,16 @@ export default function HomePage() {
           <TextField
             id="bmi"
             label="BMI"
-            type="number"
-            step=".01"
-            min="15"
-            max="30"
+            type="number"            
+            inputProps={{
+              step: 0.01,
+              min:15,
+              max:30,
+            }}
             defaultValue={bmi}
             value={bmi}
             fullWidth
             onChange={e => setBmi(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
           />
         </FormControl>
     </Grid>
@@ -337,11 +340,75 @@ export default function HomePage() {
   const renderFitnessMode = (
     <div className={classes.grow}>
       {RecommendMode===true?(
-      <Tabs value={FitnessMode} onChange={handleChangeFitnessMode} aria-label="simple tabs example" centered variant='fullWidth'>
-          <Tab label="General Fitness" icon={<DirectionsRunIcon />} value={1} id="simple-tab-1" aria-controls="simple-tabpanel-1"/>
-          <Tab label="Focused Muscle Building" icon={<FitnessCenterIcon />} value={2} id="simple-tab-2" aria-controls="simple-tabpanel-2"/>
-          <Tab label="Endurance Training" icon={<AccessibilityIcon />} value={3} id="simple-tab-3" aria-controls="simple-tabpanel-3" />
-      </Tabs>):(
+      <Grid container 
+      spacing={2}
+      >
+        <Grid item xs={12}>
+          <Tabs value={FitnessMode} onChange={handleChangeFitnessMode} aria-label="simple tabs example" centered variant='fullWidth'>
+              <Tab label="General Fitness" icon={<DirectionsRunIcon />} value={1} id="simple-tab-1" aria-controls="simple-tabpanel-1"/>
+              <Tab label="Focused Muscle Building" icon={<FitnessCenterIcon />} value={2} id="simple-tab-2" aria-controls="simple-tabpanel-2"/>
+              <Tab label="Endurance Training" icon={<AccessibilityIcon />} value={3} id="simple-tab-3" aria-controls="simple-tabpanel-3" />
+          </Tabs>
+        </Grid>
+        <Grid item xs={12}>
+          <div role="tabpanel" hidden={FitnessMode!==1} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
+            <Card>
+              <CardMedia 
+              component="img"
+              alt="General Fitness"
+              image="/AGRFrontend/static/images/GF.png"
+              title="General Fitness"
+              className={classes.Images}
+              style = {{ height: 250, width:250}}
+              />
+              <CardContent>
+                <Typography variant="h5" component="h2">
+                General Fitness Description
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
+        </Grid>
+        <Grid item xs={12}>
+        <div role="tabpanel" hidden={FitnessMode!==2} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
+          <Card>
+              <CardMedia 
+              component="img"
+              alt="Focused Muscle Building"
+              image="/AGRFrontend/static/images/MB.png"
+              title="Focused Muscle Building"
+              className={classes.Images}
+              style = {{ height: 250, width:250}}
+              /> 
+            <CardContent>
+              <Typography variant="h5" component="h2">
+              General Fitness Description
+              </Typography>
+            </CardContent>
+          </Card>
+          </div>
+        </Grid>
+        <Grid item xs={12}>
+          <div role="tabpanel" hidden={FitnessMode!==3} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
+            <Card>
+              <CardMedia 
+              component="img"
+              alt="Endurance Training"
+              image="/AGRFrontend/static/images/ET.png"
+              title="Endurance Training"
+              className={classes.Images}
+              style = {{ height: 250, width:250}}
+              />
+              <CardContent>
+                <Typography variant="h5" component="h2">
+                General Fitness Description
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
+        </Grid>
+      </Grid>
+          ):(
           <div>Glossary mode</div>
       )
       }

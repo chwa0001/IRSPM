@@ -353,17 +353,18 @@ export default function UserDataPage() {
                 <TextField
                   id="bmi"
                   label="BMI"
-                  type="number"
-                  step=".01"
-                  min="15"
-                  max="30"
+                  type="number"            
+                  inputProps={{
+                    step: 0.01,
+                    min:15,
+                    max:30,
+                  }}
                   defaultValue={bmi}
                   value={bmi}
                   fullWidth
+                  value={bmi}
+                  fullWidth
                   onChange={e => setBmi(e.target.value)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
                 />
               </FormControl>
             </Grid>
