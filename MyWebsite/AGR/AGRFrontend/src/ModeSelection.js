@@ -1,13 +1,37 @@
 import React from 'react';
 import Cookies from 'js-cookie';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import {makeStyles } from '@material-ui/core/styles';
 import {useHistory} from "react-router-dom";
+import GridList from '@material-ui/core/GridList';
 import Card from '@material-ui/core/Card';
 import MenuBar from './components/MenuBar';
 import CustomScroller from 'react-custom-scroller';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import CardMedia from '@material-ui/core/CardMedia';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import StepContent from '@material-ui/core/StepContent';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
+import Collapse from '@material-ui/core/Collapse';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
+import AccessibilityIcon from '@material-ui/icons/Accessibility';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +62,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function HomePage() {
+function getSteps() {
+  return ['Select Your Preferred Mode', 'Update Your Personal Data', 'Start Your Fitness'];
+}
+
+export default function ModeSelection() {
   const classes = useStyles();
   let history = useHistory()
   const username = Cookies.get('username');
@@ -387,49 +415,7 @@ export default function HomePage() {
       
     </div>
   )
-  React.useEffect(()=> {
 
-    console.log("react response - UseEffect")
-
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username:username,
-          }),
-        };
-        if (username!=''){
-        fetch('/AGR/GetUserData', requestOptions)
-          .then(function(response){
-            console.log(response)
-            if (!response.ok){
-              throw new Error('Response not OK');
-            }
-            else{
-              return response.json();
-            }
-          }).then(
-            (data) => {
-              console.log(data.gender)
-              console.log(data.fitness_level)
-              console.log(data.goal)
-              console.log(data.intensity)
-              console.log(data.bmi)
-              console.log(data.location)
-
-              setGender(data.gender);
-              setFitnesslevel(data.fitness_level);
-              setGoal(data.goal);
-              setIntensity(data.intensity);
-              setBmi(data.bmi);
-              setLocation(data.location);
-            },
-            // (error) => {alert(error)}
-          )
-        }
-
-  }, []);  
-  
   return (
     <div className={classes.grow}>
       <MenuBar/>
@@ -438,7 +424,52 @@ export default function HomePage() {
         <CssBaseline />
         <div className={classes.paper}>
           <Card>
-          
+          <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#34ebe8'}}>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+          </Stepper>
+          <CardContent>
+
+          <Grid container spacing={2}>
+          {activeStep === 0 ? (
+            <Grid item xs={12}>
+            {renderModeSelection}
+            </Grid>
+          ):(
+            <Grid item xs={12}>
+            {activeStep===1?renderUserData:renderFitnessMode}
+            </Grid>
+          )}
+          <Grid item xs={12}>
+          <div>
+            {activeStep === steps.length ? (
+              <div>
+                <Button onClick={handleReset}>Reset</Button>
+              </div>
+            ) : (
+                <div>
+                  <div>
+                    <Button
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      className={classes.backButton}
+                    >
+                      Back
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={handleNext}>
+                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                    </Button>
+                  </div>
+                </div>
+                )
+            }
+          </div>
+          </Grid>
+          </Grid>
+          </CardContent>
           </Card>
         </div>
       </CustomScroller>
