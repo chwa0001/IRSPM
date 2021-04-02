@@ -1,30 +1,20 @@
 import React ,{ useState , useEffect } from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
-import Paper from '@material-ui/core/Paper';
 import Collapse from '@material-ui/core/Collapse';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import { useHistory } from "react-router-dom";
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Cookies from 'js-cookie';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import MenuBar from './components/MenuBar';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
@@ -34,14 +24,14 @@ import CustomScroller from 'react-custom-scroller';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
-
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import ExerciseRatingContainer from './components/ExerciseRatingContainer'
+import CardHeader from '@material-ui/core/CardHeader';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 function Copyright() {
   return (
@@ -63,9 +53,9 @@ function getSteps() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(4),
-    display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    flexGrow: 1,
   },
   grow: {
     flexGrow: 1,
@@ -502,12 +492,11 @@ export default function MuscleBuildingPage() {
   return (
         <div className={classes.paper}>
           <Card>
-            <Grid item xs={12}>
-              <Typography component="h4" variant="h4"> 
-                <b>Muscle Building</b>
-              </Typography>
-            </Grid>
-            <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#D7E7DC'}}>
+          <CardHeader avatar={<FitnessCenterIcon/>} 
+            action={<IconButton aria-label="settings"><MoreVertIcon /></IconButton>}
+            title={<Typography variant="h5" component="h2">Muscle Building</Typography>}
+          />
+            <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#34ebe8'}}>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -515,7 +504,6 @@ export default function MuscleBuildingPage() {
             ))}
             </Stepper>
             <CardContent>
-
               <Grid container spacing={2}>
                 {/* <Grid item xs={12}>
                   {
@@ -537,26 +525,51 @@ export default function MuscleBuildingPage() {
                   </Grid>
                 )}
                 <Grid item xs={12}>
-                <div>
-                  {activeStep === steps.length ? (
-                    <div>
-                      <Button onClick={handleReset}>Reset</Button>
-                    </div>
-                  ) : (
-                      <div>
-                        <div>
-                          <Button
-                            disabled={activeStep === 0}
-                            onClick={handleBack}
-                            className={classes.backButton}
-                          >
-                            Back
-                          </Button>                          
-                        </div>
-                      </div>
-                      )
-                  }
-                </div>
+                  <Button
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  className={classes.backButton}
+                  >
+                  {(()=>{
+                      switch(activeStep){
+                        case 0:
+                          return 'Back';
+                        case 1:
+                          return 'Select Targeted Muscle';
+                        case 2:
+                          return 'Go back to preffered Exercise';
+                        case 3:
+                          return 'Check my exercise set';  
+                        default:
+                          return 'Back';
+                      }
+                  })()}
+                  </Button>
+                  <Button
+                    style={activeStep !== 3?{display: 'none'}:{display: null}}
+                    onClick={handleBack}
+                    className={classes.backButton}
+                    color="secondary"
+                    variant="contained"
+                    >
+                    Rate My Exercise Later
+                  </Button>
+                  <Button variant="contained" color="primary" onClick={handleNext}>
+                    {(()=>{
+                      switch(activeStep){
+                        case 0:
+                          return 'Generate exercises';
+                        case 1:
+                          return 'See my Exercise Set';
+                        case 2:
+                          return 'Rate my exercises';
+                        case 3:
+                          return 'Save my rating';  
+                        default:
+                          return 'Next';
+                      }
+                    })()}
+                  </Button>
                 </Grid>
               </Grid>
             </CardContent>

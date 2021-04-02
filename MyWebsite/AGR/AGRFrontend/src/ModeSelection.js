@@ -458,7 +458,7 @@ export default function ModeSelection() {
         }
 
   }, []);  
-
+ 
   return (
         <div className={classes.paper}>
           <Card>
@@ -472,40 +472,27 @@ export default function ModeSelection() {
           <CardContent>
 
           <Grid container spacing={2}>
-          {activeStep === 0 ? (
+            {activeStep === 0 ? (
+              <Grid item xs={12}>
+              {renderModeSelection}
+              </Grid>
+            ):(
+              <Grid item xs={12}>
+              {activeStep===1?renderUserData:renderFitnessMode}
+              </Grid>
+            )}
             <Grid item xs={12}>
-            {renderModeSelection}
+              <Button
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                className={classes.backButton}
+              >
+                Back
+              </Button>
+              <Button variant="contained" color="primary" onClick={handleNext}>
+                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+              </Button>
             </Grid>
-          ):(
-            <Grid item xs={12}>
-            {activeStep===1?renderUserData:renderFitnessMode}
-            </Grid>
-          )}
-          <Grid item xs={12}>
-          <div>
-            {activeStep === steps.length ? (
-              <div>
-                <Button onClick={handleReset}>Reset</Button>
-              </div>
-            ) : (
-                <div>
-                  <div>
-                    <Button
-                      disabled={activeStep === 0}
-                      onClick={handleBack}
-                      className={classes.backButton}
-                    >
-                      Back
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={handleNext}>
-                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                    </Button>
-                  </div>
-                </div>
-                )
-            }
-          </div>
-          </Grid>
           </Grid>
           </CardContent>
           </Card>
