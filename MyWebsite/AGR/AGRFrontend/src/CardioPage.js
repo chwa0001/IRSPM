@@ -57,7 +57,7 @@ function Copyright() {
 }
 
 function getSteps() {
-  return ['Choose targeted muscle', 'Choose your preffered exercise!','Exercise Set','Rate Exercise Set!'];
+  return ['Choose your preffered exercise!','Exercise Set','Rate Exercise Set!'];
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -449,69 +449,61 @@ export default function CardioPage() {
   )
 
   return (
-    <div className={classes.grow}>
-      <MenuBar/>
-      <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
-        <CustomScroller style={{ width: '100%', height: '100%' }}>
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Card>
-            <Grid item xs={12}>
-              <Typography component="h4" variant="h4"> 
-                <b>Muscle Building</b>
-              </Typography>
-            </Grid>
-            <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#D7E7DC'}}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-            </Stepper>
-            <CardContent>
+  <div className={classes.paper}>
+    <Card>
+      <Grid item xs={12}>
+        <Typography component="h4" variant="h4"> 
+          <b>Muscle Building</b>
+        </Typography>
+      </Grid>
+      <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#D7E7DC'}}>
+      {steps.map((label) => (
+        <Step key={label}>
+          <StepLabel>{label}</StepLabel>
+        </Step>
+      ))}
+      </Stepper>
+      <CardContent>
 
-              <Grid container spacing={2}>
-                {/* <Grid item xs={12}>
-                  {
-                    {
-                      0: <getMusclePrefference />,
-                      1: <choosingPrefferedExercise />,
-                      2: <showExercises/>
-                    }[activeStep]
-                  }
-                </Grid> */}
-                <Grid item xs={12}>
-                  {activeStep===0?choosingPrefferedExercise:
-                  activeStep===1?showExercises:rateExercise}
-                </Grid>
-                <Grid item xs={12}>
+        <Grid container spacing={2}>
+          {/* <Grid item xs={12}>
+            {
+              {
+                0: <getMusclePrefference />,
+                1: <choosingPrefferedExercise />,
+                2: <showExercises/>
+              }[activeStep]
+            }
+          </Grid> */}
+          <Grid item xs={12}>
+            {activeStep===0?choosingPrefferedExercise:
+            activeStep===1?showExercises:rateExercise}
+          </Grid>
+          <Grid item xs={12}>
+          <div>
+            {activeStep === steps.length ? (
+              <div>
+                <Button onClick={handleReset}>Reset</Button>
+              </div>
+            ) : (
                 <div>
-                  {activeStep === steps.length ? (
-                    <div>
-                      <Button onClick={handleReset}>Reset</Button>
-                    </div>
-                  ) : (
-                      <div>
-                        <div>
-                          <Button
-                            disabled={activeStep === 0}
-                            onClick={handleBack}
-                            className={classes.backButton}
-                          >
-                            Back
-                          </Button>                          
-                        </div>
-                      </div>
-                      )
-                  }
+                  <div>
+                    <Button
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      className={classes.backButton}
+                    >
+                      Back
+                    </Button>                          
+                  </div>
                 </div>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </div>
-      </CustomScroller>
-      </Container>
-    </div>
+                )
+            }
+          </div>
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
+  </div>
   );
 }
