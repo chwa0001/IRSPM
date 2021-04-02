@@ -13,6 +13,7 @@ import CustomScroller from 'react-custom-scroller';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -22,6 +23,17 @@ const useStyles = makeStyles((theme) => ({
     width: 500,
     height: 450,
   },
+  paper: {
+    marginTop: theme.spacing(4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+
 }));
 
 export default function ExerciseSetPage() {
@@ -31,12 +43,14 @@ export default function ExerciseSetPage() {
   const latest_set = Cookies.get('setId');
   console.log(latest_set);
   console.log(username);
+
   const [mode, setMode] = useState('');
   const [exercises, setExercises] = useState([]);
   const [date, setDate] = useState('');
   const pre = '/AGRFrontend/static/images/'
   const post = '.jpg'
   console.log(pre.concat(latest_set,post))
+
   let history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
 
@@ -84,22 +98,37 @@ export default function ExerciseSetPage() {
     <div className={classes.grow}>
       <MenuBar/>
       <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
+        <div className={classes.paper}>
+          <Grid container 
+          spacing={2}
+          className={classes.text}
+          >
+            <Grid item xs={12}>
+              <Typography component="h4" variant="h4"> 
+                <b>Set Type: {mode}</b>
+              </Typography>
+              <Typography component="h5" variant="h5"> 
+                <i>Exercise Date: {date}</i>
+              </Typography>
+            </Grid>
+          </Grid>
+        </div>
         <CustomScroller style={{ width: '100%', height: '100%' }}>
         <CssBaseline />
-            {exercises.map((tile) => (
-              <ExerciseContainer 
-              img1= {tile.img1} 
-              img2= {tile.img2} 
-              exercise_name= {tile.exercise_name} 
-              main_muscle= {tile.main_musclegroup} 
-              detailed_musclegroup= {tile.detail_muscle} 
-              other_muscle= {tile.other_musclegroups} 
-              type= {tile.exercise_type} 
-              mechanics= {tile.mechanics} 
-              equipment= {tile.equipment} 
-              difficulty= {tile.difficulty} 
-              Instructions= {tile.instruction_text}/>
-            ))}
+        {exercises.map((tile) => (
+          <ExerciseContainer 
+          img1= {pre.concat(tile.pic_no[0],post)} 
+          img2= {pre.concat(tile.pic_no[1],post)} 
+          exercise_name= {tile.exercise_name} 
+          main_muscle= {tile.main_musclegroup} 
+          detailed_musclegroup= {tile.detail_muscle} 
+          other_muscle= {tile.other_musclegroups} 
+          type= {tile.exercise_type} 
+          mechanics= {tile.mechanics} 
+          equipment= {tile.equipment} 
+          difficulty= {tile.difficulty} 
+          Instructions= {tile.instruction_text}/>
+        ))}
         </CustomScroller>
       </Container>
 

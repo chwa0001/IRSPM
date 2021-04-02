@@ -415,7 +415,49 @@ export default function HomePage() {
       
     </div>
   )
+  React.useEffect(()=> {
 
+    console.log("react response - UseEffect")
+
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username:username,
+          }),
+        };
+        if (username!=''){
+        fetch('/AGR/GetUserData', requestOptions)
+          .then(function(response){
+            console.log(response)
+            if (!response.ok){
+              throw new Error('Response not OK');
+            }
+            else{
+              return response.json();
+            }
+          }).then(
+            (data) => {
+              console.log(data.gender)
+              console.log(data.fitness_level)
+              console.log(data.goal)
+              console.log(data.intensity)
+              console.log(data.bmi)
+              console.log(data.location)
+
+              setGender(data.gender);
+              setFitnesslevel(data.fitness_level);
+              setGoal(data.goal);
+              setIntensity(data.intensity);
+              setBmi(data.bmi);
+              setLocation(data.location);
+            },
+            // (error) => {alert(error)}
+          )
+        }
+
+  }, []);  
+  
   return (
     <div className={classes.grow}>
       <MenuBar/>

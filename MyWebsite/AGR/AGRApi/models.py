@@ -159,13 +159,13 @@ def get_alluserdata_from_userdb (username):
 #antonia 03/24/21
 #get all the set that have not been reviewed
 #get the first set. 
-def get_set_to_review (username):
+def get_set_to_review (username, rate = False):
     print("was here - get_set_to_review")
     print(username)
     user = User.objects.get(username=username)
     print(f"user id from get_alluserdata_from_userdb: {user.id}")
     # return "nothing"
-    routine_set = Routine.objects.filter(userdata = user.id, rate = False).order_by('-date')
+    routine_set = Routine.objects.filter(userdata = user.id, rate = rate).order_by('-date')
     print(f"routine_set len: {len(routine_set)}")
     print(f"routine_set:{routine_set}")
 
@@ -182,6 +182,19 @@ def get_set_to_review (username):
     else :
         print("no exercise to rate")
         return "no exercise to rate"    
+
+#antonia 04/02/21
+#get set to show
+# #get the first set. 
+def get_set (username):
+    user = User.objects.get(username=username)
+    # return "nothing"
+    routine_set = Routine.objects.filter(userdata = user.id).order_by('-date')
+    if len(routine_set) > 0 :
+        routine = routine_set[0]
+        return routine.id
+    else :
+        return "no exercise to return"    
 
 
 #antonia 03/24/21
