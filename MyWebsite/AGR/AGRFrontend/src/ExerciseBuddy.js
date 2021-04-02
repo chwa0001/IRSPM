@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{ useState , useEffect } from 'react';
 import Cookies from 'js-cookie';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -6,46 +6,19 @@ import {makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import tileData from './_ExData';
 import ExerciseContainer from './components/ExerciseContainer';
-import ComplexGrid from './components/BuddyContainerv2';
+import ExBuddyGrid from './components/BuddyContainer';
+import ExGroupGrid from './components/GroupContainer';
 import MenuBar from './components/MenuBar';
 import CustomScroller from 'react-custom-scroller';
-// import { DataGrid, GridToolbar } from '@material-ui/data-grid';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import TabPanel from '@material-ui/lab/TabPanel';
-import PhoneIcon from '@material-ui/icons/Phone';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import PropTypes from 'prop-types';
 
-
-function IconLabelTabs() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  return (
-    <Paper square className={classes.root}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        variant="fullWidth"
-        indicatorColor="secondary"
-        textColor="secondary"
-        aria-label="icon label tabs example"
-      >
-        <Tab icon={<PersonIcon />} label="RECENTS" />
-        <Tab icon={<FavoriteIcon />} label="FAVORITES" />
-        <Tab icon={<PersonPinIcon />} label="NEARBY" />
-      </Tabs>
-    </Paper>
-  );
-}
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,6 +37,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
 
 function a11yProps(index) {
   return {
@@ -72,7 +71,7 @@ function a11yProps(index) {
   };
 }
 
-function ExerciseBuddytest() {
+export default function ExerciseBuddytest() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
@@ -80,12 +79,42 @@ function ExerciseBuddytest() {
       setValue(newValue);
     };
 
+    const [exercises,setExercises] = useState([]);
+    const [nearest_users,setNearestusers] = useState([]);
+    const [group_exercises,setGroupexercises] = useState([]);
+    const [nu_data,setNUdata] = useState([]);
+
+    const [data,setData]=useState([]);
+    const getData=()=>{
+      fetch('/AGR/Algo?username=2'
+      ,{
+        headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+         }
+      }
+      )
+        .then(function(response){
+          console.log(response)
+          return response.json();
+        })
+        .then(function(myJson) {
+          console.log(myJson);
+          setData(myJson)
+          setExercises(myJson.ex)
+          setNearestusers(myJson.nu)
+          setGroupexercises(myJson.ge)
+          setNUdata(myJson.nudata)
+        });
+    }
+    useEffect(()=>{
+      getData()
+    },[])
+    
     return (
+
     <div className={classes.grow}>
         <MenuBar/>
-        <Button variant="contained" color="primary">
-            Hello World!!!!
-        </Button>
         <CustomScroller style={{ width: '100%', height: '100%' }}>
         <Grid container xs={12} justify="center"  spacing={3}>
           <Grid container item xs={12} justify="center">
@@ -103,27 +132,48 @@ function ExerciseBuddytest() {
               </Tabs>
             </Paper>
           </Grid>
+
+
+        <TabPanel value={value} index={0}>
+        <Grid container xs={12} justify="center"  spacing={3}>
           
-        {/* <TabPanel value={value} index={0}> */}
-        <Grid container item xs={12} justify="center">
-        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
+        {nu_data.map((nuser) => (
+            <Grid container item xs={12} justify="center">
+            <Paper square className={classes.card}><ExBuddyGrid userid={nuser[0][0].user_id} gender={nuser[0][0].gender} goal={nuser[0][0].goal} fitness={nuser[0][0].fitness_level} age={nuser[1][0].age} exericeid={group_exercises}/></Paper>
+            </Grid>
+          ))}
+
+        {/* <Grid container item xs={12} justify="center">
+        <Paper square className={classes.card}><ExBuddyGrid userid={123}/></Paper></Grid>
         
         <Grid container item xs={12} justify="center">
-        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
+        <Paper square className={classes.card}><ExBuddyGrid/></Paper></Grid>
 
         <Grid container item xs={12} justify="center">
-        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
-        {/* </TabPanel> */}
-        {/* <TabPanel value={value} index={1}> */}
-        <Grid container item xs={12} justify="center">
-        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
+        <Paper square className={classes.card}><ExBuddyGrid/></Paper></Grid> */}
+        </Grid>
+        </TabPanel>
+
+        <TabPanel value={value} index={1}>
+        <Grid container xs={12} justify="center"  spacing={3}>
+
+        {nu_data.map((nuser) => (
+            <Grid container item xs={12} justify="center">
+            <Paper square className={classes.card}><ExGroupGrid userid={nuser[0][0].user_id} gender={nuser[0][0].gender} goal={nuser[0][0].goal} fitness={nuser[0][0].fitness_level} age={nuser[1][0].age} exericeid={group_exercises}/></Paper>
+            </Grid>
+          ))}
+
+
+        {/* <Grid container item xs={12} justify="center">
+        <Paper square className={classes.card}><ExGroupGrid /></Paper></Grid>
         
         <Grid container item xs={12} justify="center">
-        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
+        <Paper square className={classes.card}><ExGroupGrid/></Paper></Grid>
 
         <Grid container item xs={12} justify="center">
-        <Paper square className={classes.card}><ComplexGrid/></Paper></Grid>
-        {/* </TabPanel> */}
+        <Paper square className={classes.card}><ExGroupGrid/></Paper></Grid> */}
+        </Grid>
+        </TabPanel>
         
         </Grid>
         </CustomScroller>

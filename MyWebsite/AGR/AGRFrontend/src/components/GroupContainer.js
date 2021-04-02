@@ -28,8 +28,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ComplexGrid() {
+export default function ExGroupGrid(props) {
   const classes = useStyles();
+
+  function FormRow(rowdata) {
+    return (
+      <React.Fragment>
+      <Grid item xs={3}>
+        <Typography gutterBottom variant={rowdata.type}>
+          {rowdata.name}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="body2" gutterBottom>
+          {rowdata.value}
+        </Typography>
+      </Grid>
+      </React.Fragment>
+    );
+  }
 
   return (
     <div className={classes.root}>
@@ -37,60 +54,30 @@ export default function ComplexGrid() {
         <Grid container spacing={2}>
           <Grid item>
             <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/DefaultProfilePic.jpg" />
+              <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/DefaultGroupProfilePic.png" />
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm container spacing={2}>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs> 
-                <Typography gutterBottom variant="subtitle1">
-                  Profile
-                </Typography>
-                <Grid item xs={12} container spacing={3}>
-                <Grid item xs={3}>
-                <Typography variant="body2" gutterBottom>
-                  Age:
-                </Typography>
-                </Grid>
-                <Grid item>
-                <Typography variant="body2" gutterBottom>
-                  25
-                </Typography>
-                </Grid> 
-                </Grid>
-                <Grid item xs={12} container spacing={3}>
-                <Grid item xs={3}>
-                <Typography variant="body2" gutterBottom>
-                  Gender:
-                </Typography>
-                </Grid>
-                <Grid item>
-                <Typography variant="body2" gutterBottom>
-                  Male
-                </Typography>
-                </Grid>
-                </Grid>
-                <Grid item xs={12} container spacing={3}>
-                <Grid item xs={3}> 
-                <Typography variant="body2" gutterBottom>
-                  Goal:
-                </Typography>
-                </Grid>
-                </Grid>
-                <Grid item xs={12} container spacing={3}>
-                <Grid item xs={3}>
-                <Typography variant="body2" gutterBottom>
-                  Distance:
-                </Typography>
-                </Grid>
-                </Grid>
-                <Grid item xs={12} container spacing={3}> 
-                <Grid item xs={3}>
-                <Typography variant="body2" gutterBottom>
-                  Fitness:
-                </Typography>
-                </Grid>
-                </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"subtitle1"} name={'Group ID'} value={props.userid}/>
+              </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"body2"} name={'Age:'} value={props.age}/>
+              </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"body2"} name={'Gender:'} value={props.gender}/>
+              </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"body2"} name={'Goal:'} value={props.goal}/>
+              </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"body2"} name={'Distance:'} value={''}/>
+              </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"body2"} name={'Fitness:'} value={props.fitness}/>
+              </Grid>
                 <Grid item xs={12} container spacing={3}> 
                 <Grid item xs={12}>
                 <Typography variant="body2" color="textSecondary">
@@ -118,7 +105,7 @@ export default function ComplexGrid() {
             </Grid>
             <Grid item>
             <ButtonBase>
-              <Typography variant="subtitle1"> + Add User</Typography>
+              <Typography variant="subtitle1"> + Join Group</Typography>
             </ButtonBase>
             </Grid>
           </Grid>

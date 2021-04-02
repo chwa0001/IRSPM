@@ -1,152 +1,117 @@
-import React,{useState,useEffect} from 'react';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { sizing } from '@material-ui/system';
+import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
 
 
-import Box from '@material-ui/core/Box';
+
 
 const useStyles = makeStyles((theme) => ({
-  title: {
-    display: 'flex',
-    flexDirection: 'row',
-    // minWidth: 600,
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    margin: 'auto',
+    maxWidth: 1000,
+  },
+  image: {
+    width: 128,
+    height: 128,
+  },
+  img: {
+    margin: 'auto',
+    display: 'block',
     maxWidth: '100%',
-    alignContent: "center",
-    justifyContent: "center",
-  },root: {
-    display: 'flex',
-    flexDirection: 'row',
-    // minWidth: 600,
-    maxWidth: '100%',
-    // height: '60%',
-    alignContent: "center",
-    justifyContent: "center",
-  },
-  details: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '30%',
-    // maxWidth: 600,
-  },
-  content: {
-    flex: '1 0 auto',
-  },
-  pictures: {
-    // minWidth: 150,
-    width: '35%',
-    // paddingTop: '0%', // 16:9
-  },
-  table: {
-    // minWidth: 300,
+    maxHeight: '100%',
   },
 }));
 
-
-export default function BuddyContainer(props) {
+export default function ExBuddyGrid(props) {
   const classes = useStyles();
-  const theme = useTheme();
-  
-  function createData(name, details) {
-    return { name, details };
+
+  function FormRow(rowdata) {
+    return (
+      <React.Fragment>
+      <Grid item xs={3}>
+        <Typography gutterBottom variant={rowdata.type}>
+          {rowdata.name}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="body2" gutterBottom>
+          {rowdata.value}
+        </Typography>
+      </Grid>
+      </React.Fragment>
+    );
   }
-  const rows = [
-    createData('Age', props.main_muscle),
-    createData('Gender', props.detail_muscle),
-    createData('Goal', props.other_muscle),
-    createData('Distance', props.type),
-    createData('Fitness', props.mechanics),
-    createData('Recommended Exercises', props.equipment),
-  ]
 
   return (
-    <Grid 
-    alignContent="center" 
-    alignItems="center" 
-    justify="center" 
-    paddingBottom={1}
-    justify-content='center'
-    flex-direction= 'row'
-    >
-      <Card className={classes.title}>
-        <Grid
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="center"
-        flex-grow= {2}
-        >
-          <CardContent>
-            <Typography component="h1" variant="h1">
-              {props.exercise_name}
-            </Typography>
-          </CardContent>
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        <Grid container spacing={2}>
+          <Grid item>
+            <ButtonBase className={classes.image}>
+              <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/DefaultProfilePic.jpg" />
+            </ButtonBase>
+          </Grid>
+          <Grid item xs={12} sm container spacing={2}>
+            <Grid item xs container direction="column" spacing={2}>
+              <Grid item xs> 
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"subtitle1"} name={'User ID'} value={props.userid}/>
+              </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"body2"} name={'Age:'} value={props.age}/>
+              </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"body2"} name={'Gender:'} value={props.gender}/>
+              </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"body2"} name={'Goal:'} value={props.goal}/>
+              </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"body2"} name={'Distance:'} value={''}/>
+              </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"body2"} name={'Fitness:'} value={props.fitness}/>
+              </Grid>
+                <Grid item xs={12} container spacing={3}> 
+                <Grid item xs={12}>
+                <Typography variant="body2" color="textSecondary">
+                  Recommended Exercises:
+                </Typography>
+                </Grid>
+                </Grid>
+                <Grid item xs={12} container spacing={3}> 
+                <Grid item xs={3}>
+                <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/8.jpg" />
+                </Grid>
+                <Grid item xs={3}>
+                <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/56.jpg" />
+                </Grid>
+                <Grid item xs={3}>
+                <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/28.jpg" />
+                </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Typography variant="body2" style={{ cursor: 'pointer' }}>
+                  Remove
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid item>
+            <ButtonBase>
+              <Typography variant="subtitle1"> + Add User</Typography>
+            </ButtonBase>
+            </Grid>
+          </Grid>
         </Grid>
-      </Card>
-
-      <Card className={classes.root}>
-        <CardMedia
-        className={classes.pictures}
-        image={props.img1}
-        />
-        <CardMedia
-        className={classes.pictures}
-        image={props.img2}
-        />
-        <CardContent className={classes.details}>
-          {/* <CardContent className={classes.content}> */}
-            {/* <Typography component="h4" variant="h4">
-              Main Muscle: {props.main_muscle}
-            </Typography> */}
-            {/* <Typography variant="h5" color="textSecondary">
-              Mechanics: {props.mechanics}
-            </Typography> */}
-          {/* </CardContent> */}
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="custom pagination table">
-            <TableBody>
-              {(rows).map((row) => (
-                <TableRow key={row.name}>
-                  <TableCell style={{ width: 30, fontSize: 16 }} variant="head" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell style={{ fontSize: 13 }} align="left">
-                    {row.details}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </CardContent>
-    </Card>
-    <Card className={classes.root}>
-        <Grid
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="center"
-        >
-          <CardContent>
-            <Typography component="h2" variant="h2">
-              _________________________________________________________________________________
-            </Typography>
-          </CardContent>
-        </Grid>
-      </Card>
-  </Grid>
+      </Paper>
+    </div>
   );
 }

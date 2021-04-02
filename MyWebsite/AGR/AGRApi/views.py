@@ -4,7 +4,7 @@ from .serializers import UserSerializer,AccountDataSerializer,UpdateUserSerializ
 from .models import User,UserData,Routine,RoutineExercises
 from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb,get_set_to_review
 from .models import User, UserExerciseRating
-from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer, ExerciseSerializer
+from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer, ExerciseSerializer, UserDataSerializer
 from .models import User,UserData,Routine,RoutineExercises, Exercise
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -246,25 +246,43 @@ class GetSetToRate(APIView):
 from AGRApi.recommender_algo_AGR import *
 from django_pandas.io import read_frame
 from django_pandas.managers import DataFrameManager
+from datetime import date
+import json
 
 
 class AlgoToLearn(APIView):
     # serializer_class = UpdateUserSerializer
 
-    def post(self, request, format=None):
-        if not self.request.session.exists(self.request.session.session_key):
-            self.request.session.create()
+    def get(self, request, format=None):
+        username = request.GET.get('username')
         try:
             qs = UserExerciseRating.objects.all()
             q = qs.values('user_id', 'exercise_id','user_score')
             df = pd.DataFrame.from_records(q)
             # recommend exercise (individual)
-            exercise, usermatrix, itemid  = recommend_exercise(61, df , n=10, rating_scale=(1, 10))
+            exercise, usermatrix, itemid  = recommend_exercise(61, df , n=3, rating_scale=(1, 10))
             # recommend exercise buddy
             nearestusers = nearestuser(20,3,usermatrix)
             # recommend exercise for buddy/group
-            group_exercises = recommend_exercise_n_users([1,2,3], df , n=10, rating_scale=(1, 10))
-            return Response({"Recommneded exercise":exercise,"Recommneded buddies":nearestusers,"Recommneded buddy/group exercise":group_exercises}, status=status.HTTP_200_OK)
+            group_exercises = recommend_exercise_n_users([1,2,3], df , n=3, rating_scale=(1, 10))
+            # Extract exercise buddy user data
+            nearestusersdata=[]
+            nearestusers = [1,2,3]
+            def calculate_age(born):
+                today = date.today()
+                return today.year - int(born[-4:]) # - ((today.month, today.day) < (int(born[2:4])), int(born[0:2]))
+
+            for i in range(0,len(nearestusers)):  
+                nulist = UserData.objects.filter(user_id = str(nearestusers[i])).values('user_id','bmi','gender','goal','fitness_level')
+                nulist2 = User.objects.filter(id = str(nearestusers[i])).values('DOB')
+                cal_age = calculate_age(nulist2[0]['DOB'])
+                age = [json.loads(json.dumps({"age":cal_age}))]
+                combined_nulist = [nulist,age]
+                nearestusersdata.append(combined_nulist)
+
+
+            # return Response({"Recommneded exercise":exercise,"Recommneded buddies":nearestusers,"Recommneded buddy/group exercise":group_exercises}, status=status.HTTP_200_OK)
+            return Response({"ex":exercise,"nu":nearestusers,"ge":group_exercises, "nudata":nearestusersdata}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
