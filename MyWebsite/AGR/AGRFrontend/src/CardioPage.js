@@ -110,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function MuscleBuildingPage() {
+export default function CardioPage() {
   const classes = useStyles();
   const username = Cookies.get('username')
   console.log(username)
@@ -122,9 +122,8 @@ export default function MuscleBuildingPage() {
   const steps = getSteps();
   
   
-  const [muscle,setMuscle] = useState(' ');
+  const [muscle,setMuscle] = useState('Cardio');
   const [listExercise,setListExercise] = useState([]);
-  const musclechoices = ['Forearm','Shoulders','Triceps','Upper Legs','Lower Legs','Chest','Back','Biceps','Abs', 'Glutes']
   const [preference,setPreference] = useState('')
   const [exercise1,setExercise1] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
   const [exercise2,setExercise2] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
@@ -180,6 +179,11 @@ export default function MuscleBuildingPage() {
 
   }, [userStatus]);
 
+  useEffect(() => {
+    console.log("useEffect getting 4 random exercises")
+    getExercise4Muscle(muscle);
+  }, []);
+
   const rateMyExercises = () => {
     setActiveStep(3);
   }
@@ -217,7 +221,6 @@ export default function MuscleBuildingPage() {
           },
           (error) => {alert(error)}
         )
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     else{
       if(muscle==' ') {alert('Choose a mucle group to get started!')}
@@ -271,65 +274,11 @@ export default function MuscleBuildingPage() {
     // }
   };
 
-  const getMusclePrefference = (
-    <div>
-      <Grid item xs={12}>
-        <Typography component="h5" variant="h5"> 
-          <i>1. To get started, choose a targeted muscle group</i>
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <FormControl 
-        fullWidth='true'
-        className={classes.formControl}
-        >
-          <InputLabel id="muscle">Targeted Muscle</InputLabel>
-          <Select
-            labelId="muscle"
-            id="muscle"
-            value={muscle}
-            onChange={muscleHandleChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {musclechoices.map( (item) =>
-              <MenuItem value={item}>{item}</MenuItem>
-            )}
-          </Select>
-        </FormControl>
-        <ButtonGroup 
-          disableElevation 
-          variant="contained" 
-          width='20vw'
-          className={classes.buttongrouping2}
-          >
-          <Button
-          className={classes.backbutton}
-          startIcon={<ArrowBackIcon />}
-          backgroundColor="secondary"
-          onClick={() => {history.goBack();}}
-          >
-            Back
-          </Button>
-          <Button
-            className={classes.submitbutton2}
-            endIcon={<TrendingFlatIcon />}
-            color="secondary"
-            onClick={() => getExercise4Muscle(muscle)}
-          >
-            Generate exercises!
-          </Button>
-        </ButtonGroup>
-      </Grid>
-    </div>
-  )
-
   const choosingPrefferedExercise = (
     <div>
       <Grid container xs={12}>
         <Typography display='block' component="h5" variant="h5" > 
-          <p><i>2. Choose your preffered exercise</i></p>
+          <p><i>Choose your preffered exercise</i></p>
         </Typography>
       </Grid>
       <Grid container xs={12}>
@@ -500,6 +449,11 @@ export default function MuscleBuildingPage() {
   )
 
   return (
+    <div className={classes.grow}>
+      <MenuBar/>
+      <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
+        <CustomScroller style={{ width: '100%', height: '100%' }}>
+        <CssBaseline />
         <div className={classes.paper}>
           <Card>
             <Grid item xs={12}>
@@ -526,16 +480,10 @@ export default function MuscleBuildingPage() {
                     }[activeStep]
                   }
                 </Grid> */}
-                {activeStep === 0 ? (
-                  <Grid item xs={12}>
-                  {getMusclePrefference}
-                  </Grid>
-                ):(
-                  <Grid item xs={12}>
-                    {activeStep===1?choosingPrefferedExercise:
-                    activeStep===2?showExercises:rateExercise}
-                  </Grid>
-                )}
+                <Grid item xs={12}>
+                  {activeStep===0?choosingPrefferedExercise:
+                  activeStep===1?showExercises:rateExercise}
+                </Grid>
                 <Grid item xs={12}>
                 <div>
                   {activeStep === steps.length ? (
@@ -562,5 +510,8 @@ export default function MuscleBuildingPage() {
             </CardContent>
           </Card>
         </div>
+      </CustomScroller>
+      </Container>
+    </div>
   );
 }

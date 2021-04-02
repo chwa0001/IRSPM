@@ -291,9 +291,9 @@ export default function UserDataPage() {
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value={1}>Weight Loss</MenuItem>
+                  <MenuItem value={1}>General Training</MenuItem>
                   <MenuItem value={2}>Muscle Building</MenuItem>
-                  <MenuItem value={3}>Get Healthy</MenuItem>
+                  <MenuItem value={3}>Endurence Training</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
