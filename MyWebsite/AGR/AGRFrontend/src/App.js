@@ -19,6 +19,7 @@ import ModeSelection from "./ModeSelection";
 import MenuBar from './components/MenuBar';
 import Container from '@material-ui/core/Container';
 import CustomScroller from 'react-custom-scroller';
+import ExerciseBuddytest from './ExerciseBuddy';
 
 export default class App extends Component {
   constructor(props) {
@@ -48,6 +49,7 @@ export default class App extends Component {
               <Route exact path="/MuscleBuilding" component={MuscleBuildingPage}/>
               <Route exact path="/ExerciseSet" component={ExerciseSetPage}/>
               <Route exact path="/ModeSelection" component={ModeSelection}/>
+              <Route exact path="/ExerciseBuddy" component={ExerciseBuddytest}/>
             </Container>
             </CustomScroller>
             </div>
