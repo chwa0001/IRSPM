@@ -114,7 +114,6 @@ export default function ExerciseBuddytest() {
     return (
 
     <div className={classes.grow}>
-        <MenuBar/>
         <CustomScroller style={{ width: '100%', height: '100%' }}>
         <Grid container xs={12} justify="center"  spacing={3}>
           <Grid container item xs={12} justify="center">
