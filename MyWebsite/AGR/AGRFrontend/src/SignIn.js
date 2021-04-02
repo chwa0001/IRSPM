@@ -65,6 +65,7 @@ export default function SignIn() {
     {
       setUserStatus(-1);
       Cookies.set('username', username);
+      Cookies.set('setId', 60);
       history.push('/Home');
     }
     else if (userStatus===1)

@@ -5,6 +5,7 @@ const tileData = [
       author: 'jill111',
       cols: 1,
       featured: true,
+      
     },
     {
       img: '/AGRFrontend/static/images/5.jpg',

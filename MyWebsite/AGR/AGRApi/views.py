@@ -13,6 +13,7 @@ import numpy as np
 import random
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from ast import literal_eval
 # Create your views here.
 
 
@@ -433,8 +434,9 @@ class GetSetDetails(APIView):
                 
                 item = Exercise.objects.get(id=exercise_item.exercise_id)
                 # print(f"item: {item}")
-
-                exercises_details.append(ExerciseSerializer(item).data)
+                excerciseDetailsData = ExerciseSerializer(item).data
+                excerciseDetailsData['pic_no'] = literal_eval(ExerciseSerializer(item).data['pic_no'])
+                exercises_details.append(excerciseDetailsData)
 
 
             print(f"exercises_details: {exercises_details}")
