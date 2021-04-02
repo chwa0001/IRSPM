@@ -28,6 +28,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import ExerciseContainer from './components/ExerciseContainer';
 
 import CustomScroller from 'react-custom-scroller';
 import Stepper from '@material-ui/core/Stepper';
@@ -40,7 +41,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-
+import ExerciseRatingContainer from './components/ExerciseRatingContainer'
 
 function Copyright() {
   return (
@@ -56,7 +57,7 @@ function Copyright() {
 }
 
 function getSteps() {
-  return ['Choose your preffered exercise!'];
+  return ['Choose targeted muscle', 'Choose your preffered exercise!','Exercise Set','Rate Exercise Set!'];
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -109,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function UserDataPage() {
+export default function MuscleBuildingPage() {
   const classes = useStyles();
   const username = Cookies.get('username')
   console.log(username)
@@ -130,8 +131,16 @@ export default function UserDataPage() {
   const [exercise3,setExercise3] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
   const [exercise4,setExercise4] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
   const [preferedExerciseId,setPreferedExerciseId] = useState('-1')
-  
-  
+
+  const [mode, setMode] = useState('MuscleBuilding');
+  const [exercises, setExercises] = useState([]);
+  const [date, setDate] = useState('');
+  const [setid, setSetid] = useState('');
+  const pre = '/AGRFrontend/static/images/'
+  const post = '.jpg'
+  console.log(pre.concat(setid,post))
+
+
   const history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
   const [open, setOpen] = useState(false);
@@ -161,7 +170,8 @@ export default function UserDataPage() {
       alert('Account has been updated!');
       history.push('/Home');
     }
-    else if(userStatus===3)
+    // temp not working
+    else if(userStatus===5)
     {
       console.log("userStatus: 3")
       setUserStatus(-1);
@@ -170,6 +180,9 @@ export default function UserDataPage() {
 
   }, [userStatus]);
 
+  const rateMyExercises = () => {
+    setActiveStep(3);
+  }
 
   function getExercise4Muscle(muscle) {
     const requestOptions = {
@@ -214,17 +227,22 @@ export default function UserDataPage() {
     if (username!=''){
       console.log(username)
       console.log("was here")
+      console.log(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
       fetch(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
           .then(response => response.json())
           .then(
             (data) => {
               console.log(data)
               setUserStatus(data.status)
+              setExercises(data.set_exercise_details)
+              setDate(data.set_date)
+              setSetid(data.set_id)
               Cookies.set('setId', data.set_id);
               Cookies.set('setExData', data.set_exercise_details);  
             },
             (error) => {alert(error)}
           )
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
     else{
       if(username==''){alert('Username is not detected!')}
@@ -234,8 +252,15 @@ export default function UserDataPage() {
   const handleNext = () => {
     // console.log(activeStep)
     // console.log(muscle)
+    if(activeStep ===0){
+      console.log("routing through handleNext activeStep0")
+    }
     if(activeStep ===1){
-      console.log("routing through handleNext")
+      console.log("routing through handleNext activeStep1")
+    }
+    if(activeStep ===2){
+      console.log("routing through handleNext activeStep2")
+
     }
     // else if(activeStep ===0){
     //   console.log("activestep ==0 branch")
@@ -405,6 +430,74 @@ export default function UserDataPage() {
 
     </div>
   )
+  const showExercises = (
+    <div>
+      <div className={classes.paper}>
+        <Grid container 
+        spacing={2}
+        className={classes.text}
+        >
+          <Grid item xs={12}>
+            <Typography component="h4" variant="h4"> 
+              <b>Set Type: {mode}</b>
+            </Typography>
+            <Typography component="h5" variant="h5"> 
+              <i>Exercise Date: {date}</i>
+            </Typography>
+          </Grid>
+        </Grid>
+      </div>
+      <CustomScroller style={{ width: '100%', height: '100%' }}>
+      <CssBaseline />
+      {exercises.map((tile) => (
+        <ExerciseContainer 
+        img1= {pre.concat(tile.pic_no[0],post)} 
+        img2= {pre.concat(tile.pic_no[1],post)} 
+        exercise_name= {tile.exercise_name} 
+        main_muscle= {tile.main_musclegroup} 
+        detailed_musclegroup= {tile.detail_muscle} 
+        other_muscle= {tile.other_musclegroups} 
+        type= {tile.exercise_type} 
+        mechanics= {tile.mechanics} 
+        equipment= {tile.equipment} 
+        difficulty= {tile.difficulty} 
+        Instructions= {tile.instruction_text}/>
+      ))}
+      <ButtonGroup 
+        disableElevation 
+        variant="contained" 
+        fullWidth
+        className={classes.buttongrouping}
+        >
+        <Button
+          className={classes.backbutton}
+          startIcon={<ArrowBackIcon />}
+          backgroundColor="secondary"
+          onClick={handleBack}
+        >
+          Go back to preffered Exercise
+        </Button>
+        <Button
+          className={classes.submitbutton}
+          endIcon={<FitnessCenterIcon />}
+          color="secondary"
+          onClick={() => rateMyExercises()}
+        >
+          Rate my exercises!
+        </Button>
+      </ButtonGroup>
+      </CustomScroller>
+    </div>
+  )
+  
+  const rateExercise = (
+    <ExerciseRatingContainer 
+    exercises= {exercises} 
+    set_id={setid}
+    date={date}
+    />
+  )
+
   return (
     <div className={classes.grow}>
       <MenuBar/>
@@ -428,15 +521,25 @@ export default function UserDataPage() {
             <CardContent>
 
               <Grid container spacing={2}>
-              {activeStep === 0 ? (
-                <Grid item xs={12}>
-                {getMusclePrefference}
-                </Grid>
-              ):(
-                <Grid item xs={12}>
-                {choosingPrefferedExercise}
-                </Grid>
-              )}
+                {/* <Grid item xs={12}>
+                  {
+                    {
+                      0: <getMusclePrefference />,
+                      1: <choosingPrefferedExercise />,
+                      2: <showExercises/>
+                    }[activeStep]
+                  }
+                </Grid> */}
+                {activeStep === 0 ? (
+                  <Grid item xs={12}>
+                  {getMusclePrefference}
+                  </Grid>
+                ):(
+                  <Grid item xs={12}>
+                    {activeStep===1?choosingPrefferedExercise:
+                    activeStep===2?showExercises:rateExercise}
+                  </Grid>
+                )}
                 <Grid item xs={12}>
                 <div>
                   {activeStep === steps.length ? (
@@ -452,11 +555,7 @@ export default function UserDataPage() {
                             className={classes.backButton}
                           >
                             Back
-                          </Button>
-                          <Button variant="contained" color="primary" onClick={handleNext(muscle)}>
-                            {activeStep === steps.length - 1 ? 'Go to my Set!' : 'Next'}
-                          </Button>
-                          
+                          </Button>                          
                         </div>
                       </div>
                       )

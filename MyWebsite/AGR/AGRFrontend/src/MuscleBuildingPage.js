@@ -189,6 +189,7 @@ export default function MuscleBuildingPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          username:username,
           muscle:muscle,
         }),
     };
@@ -227,6 +228,7 @@ export default function MuscleBuildingPage() {
     if (username!=''){
       console.log(username)
       console.log("was here")
+      console.log(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
       fetch(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
           .then(response => response.json())
           .then(
