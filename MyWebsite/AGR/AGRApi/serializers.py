@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 class AccountDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id','fullname','DOB','username')
+        fields = ('id','fullname','DOB','username','password')
 
 class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,7 +20,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 class UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
-        fields = ('id','user','fitness_level','gender','goal','bmi','intensity')
+        fields = ('id','user','fitness_level','gender','goal','bmi','intensity','location')
 
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,7 +31,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
 class RoutineSerializer (serializers.ModelSerializer):
     class Meta:
         model = Routine
-        fields = ('id','userdata','set_id','date')
+        fields = ('id','userdata_id','rate','date')
 
 class RoutineExercisesSerializer (serializers.ModelSerializer):
     class Meta: 

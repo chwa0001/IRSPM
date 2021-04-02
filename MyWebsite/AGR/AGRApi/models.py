@@ -23,8 +23,13 @@ class User(models.Model):
     password    = models.CharField(max_length=50,unique=False)
     created_at  = models.DateTimeField(auto_now_add=True)
     status      = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.username
+
     class Meta:
         db_table = "USER_CREDENTIAL_DATABASE"
+
 
 class UserData(models.Model):
     user            = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -33,6 +38,8 @@ class UserData(models.Model):
     goal            = models.IntegerField(null=False, default=0)
     bmi             = models.IntegerField(null=False, default=20)
     intensity       = models.IntegerField(null=False, default=0)
+    location        = models.IntegerField(null=False, default =0) #1 home, 2 gym 
+
     class Meta:
         db_table = "USER_DATABASE"
 
@@ -50,11 +57,16 @@ class Exercise(models.Model):
     instruction_text        = models.TextField(blank=True,null=True)
     pic_no                  = models.TextField(blank=True,null=True)
     link_url                = models.URLField(blank=True,null=True)
+
+    def __str__(self):
+        return self.exercise_name
+
     class Meta:
         db_table = 'EXERCISE'
 
+
 class UserExerciseRating(models.Model): 
-    user            = models.ForeignKey('AGRApi.UserData',on_delete=models.CASCADE)
+    user            = models.ForeignKey('AGRApi.UserData', on_delete=models.CASCADE)
     exercise        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     user_score      = models.FloatField(default=5)
     exercise_count  = models.IntegerField(default=1)
@@ -63,15 +75,15 @@ class UserExerciseRating(models.Model):
 
 class Routine(models.Model):
     userdata        = models.ForeignKey('AGRApi.UserData',on_delete=models.CASCADE)
-    set_id          = models.IntegerField()
     date            = models.DateField()
     rate            = models.BooleanField(default=False)
+    mode            = models.IntegerField(default=0) #1 general #2 muscle #3 endurence 
     class Meta: 
         db_table = 'ROUTINE'
 
 class RoutineExercises(models.Model):
-    set_id          = models.ForeignKey(Routine, on_delete=models.CASCADE)
-    exercise_id     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    routine     = models.ForeignKey(Routine, on_delete=models.CASCADE)
+    exercise    = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     class Meta: 
         db_table = 'ROUTINE_EXERICSE'
 
@@ -93,6 +105,8 @@ def save_routine_exercises ():
     # to add in how to write the server
     return 0
 
+#antonia 03/24/21
+#database is connected by username and cookies is by username. to get the user id
 def get_userid_from_userdb (username):
     queryset = User.objects.filter(username=username)
 
@@ -106,6 +120,7 @@ def get_userid_from_userdb (username):
             return user_id
     else:
         return -1
+
 
 ##currently not used yet
 def get_data_from_userdb (username,request_type):
@@ -123,6 +138,8 @@ def get_data_from_userdb (username,request_type):
     else:
         return -1
 
+#antonia 03/24/21
+#Given the username, return the details
 def get_alluserdata_from_userdb (username):
     print("was here")
     user = User.objects.filter(username=username)[0]
@@ -139,19 +156,77 @@ def get_alluserdata_from_userdb (username):
         return userdata
     return -1
 
-def get_set_to_review (username):
+#antonia 03/24/21
+#get all the set that have not been reviewed
+#get the first set. 
+def get_set_to_review (username, rate = False):
     print("was here - get_set_to_review")
     print(username)
-    user = User.objects.filter(username=username)[0]
+    user = User.objects.get(username=username)
     print(f"user id from get_alluserdata_from_userdb: {user.id}")
-    routine_set = Routine.objects.filter(user_id=user.id,rate=False)
-    if routine_set.user_id==user.id:
-        print(f"user from get_alluserdata_from_userdb function: {routine_set.user_id}")
-        print("{" + f""""user_id":{routine_set.user_id},
-                            "set_id":{routine_set.set_id},
-                            "date":{routine_set.date},
-                            "rate":{routine_set.rate}"""+"}")
-        print(routine_set)
-        return routine_set
-    return -1
+    # return "nothing"
+    routine_set = Routine.objects.filter(userdata = user.id, rate = rate).order_by('-date')
+    print(f"routine_set len: {len(routine_set)}")
+    print(f"routine_set:{routine_set}")
 
+    if len(routine_set) > 0 :
+        print(f"routine_set:{routine_set}")
+        routine = routine_set[0]
+        print(f"user from get_alluserdata_from_userdb function: {routine.userdata_id}")
+        print("{" + f""""user_id":{routine.userdata_id},
+                            "set_id":{routine.id},
+                            "date":{routine.date},
+                            "rate":{routine.rate}"""+"}")
+        print(routine)
+        return routine
+    else :
+        print("no exercise to rate")
+        return "no exercise to rate"    
+
+#antonia 04/02/21
+#get set to show
+# #get the first set. 
+def get_set (username):
+    user = User.objects.get(username=username)
+    # return "nothing"
+    routine_set = Routine.objects.filter(userdata = user.id).order_by('-date')
+    if len(routine_set) > 0 :
+        routine = routine_set[0]
+        return routine.id
+    else :
+        return "no exercise to return"    
+
+
+#antonia 03/24/21
+#from routine object, get all the exercises associated with that routine set
+def get_set_exercises (routine):
+    print("was here - get_set_exercises")
+    exercises = RoutineExercises.objects.filter(routine = routine.id)
+    print(f"routine: {routine}")
+    print(f"exercises: {exercises}")
+
+    edic = []
+    enames = []
+    eids = []
+    for exercise in exercises:
+        temp_dic = {}
+        e = Exercise.objects.get(id = exercise.exercise_id)
+        print(f"ename: {e.exercise_name}")
+        print(f"exercise.exercise_id : {exercise.exercise_id}")
+        temp_dic["id"] = e.id
+        temp_dic["name"] = e.exercise_name
+        edic.append(temp_dic)
+        enames.append(e.exercise_name)
+        eids.append(e.id)
+    print(edic)
+    return enames,edic,eids 
+
+#antonia 03/24/21 not used -- to delete in the future if not used
+def get_set_exercises_output_in_str (eids):
+    counter = 1
+    eids_str = '{'
+    for eid in eids:
+        eids_str = eids_str + f' "exercise_id_{counter}" : "{eid}" ,'
+        counter = counter + 1
+    eids_str = eids_str + '}'
+    return eids_str

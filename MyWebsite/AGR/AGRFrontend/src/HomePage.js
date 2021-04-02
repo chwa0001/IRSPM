@@ -1,65 +1,51 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import {makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import tileData from './_ExData';
-import ExerciseContainer from './components/ExerciseContainer';
+import {useHistory} from "react-router-dom";
+import Card from '@material-ui/core/Card';
 import MenuBar from './components/MenuBar';
 import CustomScroller from 'react-custom-scroller';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
+  gridList: {
+    width: 500,
+    height: 450,
+  },
+  paper: {
+    marginTop: theme.spacing(4),
+    flexDirection: 'column',
+    alignItems: 'center',
+    flexGrow: 1,
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  Images:{
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 export default function HomePage() {
   const classes = useStyles();
+  let history = useHistory()
   const username = Cookies.get('username');
-
-  const GetModel =(username)=> {
-    if (username!=''){
-    fetch(`/AGR/AskModelToLearn?username=${username}`)
-        .then(response => response.json())
-        .then(
-          (data) => {console.log(data)},
-          (error) => {alert(error)}
-        )
-      }
-    else{
-      if(username==''){alert('Username is not detected!')}
-    }
-  }
-
   return (
-    <div className={classes.grow}>
-      <MenuBar/>
-      <Grid>
-        <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={() =>GetModel(username) }
-          >
-            GetUserDataTest
-        </Button>
-      </Grid>
-      <CustomScroller style={{ width: '100%', height: '100%' }}>
-        {/* !! not sure how to make it centered yet */}
-        <GridList 
-          fullWidth 
-          // cellHeight='auto' 
-          display= 'grid'
-          justify-content='center' 
-          align-content= 'center'
-          >
-          {tileData.map((tile) => (
-            <ExerciseContainer img1= {tile.img1} img2= {tile.img2} exercise_name= {tile.exercise_name} main_muscle= {tile.main_muscle} detail_muscle= {tile.detail_muscle} other_muscle= {tile.other_muscle} type= {tile.type} mechanics= {tile.mechanics} equipment= {tile.equipment} difficulty= {tile.difficulty} Instructions= {tile.Instructions}/>
-          ))}
-        </GridList>
-      </CustomScroller>
-    </div>
+        <div className={classes.paper}>
+          <Card>
+          </Card>
+        </div>
   );
 }

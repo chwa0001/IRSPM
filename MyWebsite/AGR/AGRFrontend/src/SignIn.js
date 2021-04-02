@@ -65,6 +65,7 @@ export default function SignIn() {
     {
       setUserStatus(-1);
       Cookies.set('username', username);
+      Cookies.set('setId', 60);
       history.push('/Home');
     }
     else if (userStatus===1)
@@ -79,35 +80,36 @@ export default function SignIn() {
       setAlertText('Invalid username!');
     }
   }, [userStatus])
+  
   function TryLogin(username,password) {
-  const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-  };
-  if (username!='' && password!=''){
-  fetch('/AGR/LoginUser', requestOptions)
-  .then(function(response){
-    if (!response.ok){
-      throw new Error('Response not OK');
-    }
-    else{
-      return response.json();
-    }
-  }).then(
-    (data) => {
-      setUserStatus(data.status);
-    },
-    (error) => {alert(error)}
-  )
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+    };
+    if (username!='' && password!=''){
+    fetch('/AGR/LoginUser', requestOptions)
+    .then(function(response){
+      if (!response.ok){
+        throw new Error('Response not OK');
       }
-  else{
-    if(username==''){alert('Username cannot be blank!')}
-    else if(password==''){alert('Password cannot be blank!')}
-  }
+      else{
+        return response.json();
+      }
+    }).then(
+      (data) => {
+        setUserStatus(data.status);
+      },
+      (error) => {alert(error)}
+    )
+        }
+    else{
+      if(username==''){alert('Username cannot be blank!')}
+      else if(password==''){alert('Password cannot be blank!')}
+    }
   }
 
   return (

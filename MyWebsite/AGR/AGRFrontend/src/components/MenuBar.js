@@ -1,6 +1,6 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import {useLocation,useHistory} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -91,10 +91,6 @@ export default function MenuBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const username = Cookies.get('username')
-
-  function useQuery() {
-    return new URLSearchParams(useLocation().search);
-  }
   
   let history = useHistory()
   const isMenuOpen = Boolean(anchorEl);
@@ -110,7 +106,15 @@ export default function MenuBar() {
 
   const handleUserDataProfile = ()=>{
     history.push('/UserData');
+    setAnchorEl(null);
+    setMobileMoreAnchorEl(null);
   };
+
+  const handleAccountDataProfile=()=>{
+    history.push('/AccountData');
+    setAnchorEl(null);
+    setMobileMoreAnchorEl(null);
+  }
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -119,8 +123,10 @@ export default function MenuBar() {
 
   const  GoBack=()=>
     {
-      Cookies.remove('username')
-      history.push('/')
+      Cookies.remove('username');
+      setAnchorEl(null);
+      setMobileMoreAnchorEl(null);
+      history.push('/');
     };
 
   const handleMobileMenuOpen = (event) => {
@@ -139,11 +145,11 @@ export default function MenuBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleUserDataProfile}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleAccountDataProfile}>My account</MenuItem>
       <MenuItem onClick={GoBack}>Logout</MenuItem>
     </Menu>
   );
-
+  
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -188,7 +194,7 @@ export default function MenuBar() {
   return (
     <div className={classes.grow}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar style={{minHeight:"10vh"}}>
           <IconButton
             edge="start"
             className={classes.menuButton}

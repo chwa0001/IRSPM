@@ -11,10 +11,14 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
+import TableFooter from '@material-ui/core/TableFooter';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Collapse from '@material-ui/core/Collapse';
 import { sizing } from '@material-ui/system';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 
 import Box from '@material-ui/core/Box';
@@ -22,17 +26,19 @@ import Box from '@material-ui/core/Box';
 const useStyles = makeStyles((theme) => ({
   title: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     // minWidth: 600,
     maxWidth: '100%',
     alignContent: "center",
     justifyContent: "center",
-  },root: {
+  },
+  root: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     // minWidth: 600,
     maxWidth: '100%',
     // height: '60%',
+    alignItems: "center",
     alignContent: "center",
     justifyContent: "center",
   },
@@ -40,18 +46,26 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     width: '30%',
-    // maxWidth: 600,
   },
   content: {
     flex: '1 0 auto',
   },
   pictures: {
-    // minWidth: 150,
-    width: '35%',
-    // paddingTop: '0%', // 16:9
+    width: '100%',
   },
-  table: {
-    // minWidth: 300,
+  container:{
+    alignContent: "center",
+    alignItems: "center",
+  },
+  sizeSmall:{
+    width: 5,
+    alignContent: "left",
+  },
+  paper: {
+    marginTop: theme.spacing(3),
+    alignContent: "center",
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 }));
 
@@ -59,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ExerciseContainer(props) {
   const classes = useStyles();
   const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
   
   function createData(name, details) {
     return { name, details };
@@ -75,80 +90,58 @@ export default function ExerciseContainer(props) {
   ]
 
   return (
-    <Grid 
-    alignContent="center" 
-    alignItems="center" 
-    justify="center" 
-    paddingBottom={1}
-    justify-content='center'
-    flex-direction= 'row'
-    >
-      <Card className={classes.title}>
-        <Grid
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="center"
-        flex-grow= {2}
-        >
-          <CardContent>
-            <Typography component="h1" variant="h1">
-              {props.exercise_name}
-            </Typography>
-          </CardContent>
-        </Grid>
-      </Card>
-
-      <Card className={classes.root}>
-        <CardMedia
-        className={classes.pictures}
-        image={props.img1}
-        />
-        <CardMedia
-        className={classes.pictures}
-        image={props.img2}
-        />
-        <CardContent className={classes.details}>
-          {/* <CardContent className={classes.content}> */}
-            {/* <Typography component="h4" variant="h4">
-              Main Muscle: {props.main_muscle}
-            </Typography> */}
-            {/* <Typography variant="h5" color="textSecondary">
-              Mechanics: {props.mechanics}
-            </Typography> */}
-          {/* </CardContent> */}
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="custom pagination table">
-            <TableBody>
-              {(rows).map((row) => (
-                <TableRow key={row.name}>
-                  <TableCell style={{ width: 30, fontSize: 16 }} variant="head" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell style={{ fontSize: 13 }} align="left">
-                    {row.details}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+    <Card className={classes.paper}>
+      <CardContent>
+        <Typography component="h5" variant="h5" align='center'>
+          {props.exercise_name}
+        </Typography>
       </CardContent>
-    </Card>
-    <Card className={classes.root}>
-        <Grid
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="center"
-        >
-          <CardContent>
-            <Typography component="h2" variant="h2">
-              _________________________________________________________________________________
-            </Typography>
-          </CardContent>
+      <TableContainer component={Paper} className={classes.container}>
+        <Table className={classes.root} aria-label="collapsible table">
+          <TableBody>
+            {(rows).map((row) => (
+                <React.Fragment>
+                  <TableRow key={row.name}>
+                    <TableCell />
+                    <TableCell style={{ width: 100, fontSize: 16 }} variant="head">
+                      {row.name}
+                    </TableCell>
+                    <TableCell style={{ width: 600, fontSize: 13 }} align="left">
+                      {row.details}
+                    </TableCell>
+                  </TableRow>
+                  </React.Fragment>
+                ))}
+            <TableRow>
+              <TableCell scope="row" align="left" size="small" width={5} alignContent="left">
+                  <IconButton width={5} aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+                      {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                  </IconButton>
+              </TableCell>
+              <TableCell />
+              <TableCell />
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
+          <Grid item xs={12} sm={6}>
+            <CardMedia
+              style = {{ height: 100, paddingTop: '90%'}}
+              image={props.img1}
+              />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <CardMedia
+                style = {{ height: 100, paddingTop: '90%'}}
+                image={props.img2}
+                />
+          </Grid>
         </Grid>
-      </Card>
-  </Grid>
+        <CardContent className={{marginBottom:'10%'}}></CardContent>
+      </Collapse>
+    </Card>
+
   );
 }

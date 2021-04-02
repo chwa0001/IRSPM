@@ -4,8 +4,6 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -13,7 +11,6 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import moment from 'moment';
 import { useHistory } from "react-router-dom";
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -69,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     height: 36,
   },
   buttongrouping:{
-    padding: '90px 15px',
+    padding: '30px 15px',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -82,30 +79,33 @@ const useStyles = makeStyles((theme) => ({
 export default function UserDataPage() {
   const classes = useStyles();
   const username = Cookies.get('username')
-  
+  console.log(username)
+  console.log(Cookies.get())
 
   const [fitnesslevel,setFitnesslevel] = useState(' ');
   const [gender,setGender] = React.useState(' ');
   const [goal,setGoal] = useState(' ');
   const [bmi,setBmi] = useState(' ');
   const [intensity,setIntensity] = useState(' ');
+  const [location,setLocation] = useState(' ');
+
   const history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
   
 
   React.useEffect(()=> {
 
-    console.log("response")
+    console.log("react response - UseEffect")
 
       const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username:username,
-        }),
-      };
-      if (username!=''){
-      fetch('/AGR/GetUserData', requestOptions)
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username:username,
+          }),
+        };
+        if (username!=''){
+        fetch('/AGR/GetUserData', requestOptions)
           .then(function(response){
             console.log(response)
             if (!response.ok){
@@ -121,11 +121,14 @@ export default function UserDataPage() {
               console.log(data.goal)
               console.log(data.intensity)
               console.log(data.bmi)
+              console.log(data.location)
+
               setGender(data.gender);
               setFitnesslevel(data.fitness_level);
               setGoal(data.goal);
               setIntensity(data.intensity);
               setBmi(data.bmi);
+              setLocation(data.location);
             },
             // (error) => {alert(error)}
           )
@@ -152,12 +155,12 @@ export default function UserDataPage() {
       setUserStatus(-1);
       // setAlertShow('visible');
       // setAlertText('Not sure but cannot signup!');
-      alert('Not sure but cannot signup!')
+      alert('Data not updated, help us to improve by reporting the bug!')
     }
   }, [userStatus])
 
   // function SetUserData(username,fitnesslevel,gender,goal,bmi,intensity) {
-  function SetUserData(username,fitnesslevel,goal,intensity,gender,bmi) {
+  function SetUserData(username,fitnesslevel,goal,intensity,gender,bmi,location) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -168,6 +171,7 @@ export default function UserDataPage() {
           goal:goal,
           bmi:bmi,
           intensity:intensity,
+          location:location,
         }),
     };
     if (username!='' && fitnesslevel!='' && gender!='' && goal!='' && intensity!='' && bmi!=''){
@@ -215,12 +219,12 @@ export default function UserDataPage() {
     setBmi(event.target.value);
   };
 
+  const locationHandleChange = (event) => {
+    setLocation(event.target.value);
+  };
+
   return (
-      <div className={classes.grow}>
-        <MenuBar/>
-        <CssBaseline />
         <div className={classes.paper}>
-        <Container component="main" maxWidth="xs">
         <form className={classes.form} noValidate>
           <Grid container 
           spacing={2}
@@ -321,21 +325,41 @@ export default function UserDataPage() {
               fullWidth='true'
               className={classes.formControl}
               >
+                <InputLabel id="location">Exercise Location</InputLabel>
+                <Select
+                  labelId="location"
+                  id="location"
+                  value={location}
+                  onChange={locationHandleChange}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={1}>Home</MenuItem>
+                  <MenuItem value={2}>Gym</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl 
+              fullWidth='true'
+              className={classes.formControl}
+              >
                 <TextField
                   id="bmi"
                   label="BMI"
-                  type="number"
-                  step=".01"
-                  min="15"
-                  max="30"
-                  margin="normal"
+                  type="number"            
+                  inputProps={{
+                    step: 0.01,
+                    min:15,
+                    max:30,
+                  }}
                   defaultValue={bmi}
                   value={bmi}
                   fullWidth
+                  value={bmi}
+                  fullWidth
                   onChange={e => setBmi(e.target.value)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
                 />
               </FormControl>
             </Grid>
@@ -358,15 +382,16 @@ export default function UserDataPage() {
               className={classes.submitbutton}
               endIcon={<CloudUploadIcon />}
               color="secondary"
-              onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi)}
+              onClick={() => SetUserData(username,fitnesslevel,goal,intensity,gender,bmi,location)}
             >
               Update My Data
             </Button>
           </ButtonGroup>
-        </form>
-        </Container>
+          <Box mt={8}>
+            <Copyright />
+          </Box>
+          </form>
         </div>
-      </div>
       
   );
 }

@@ -1,18 +1,19 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import UserSerializer,AccountDataSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer
 from .models import User,UserData,Routine,RoutineExercises
-from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb,get_set_to_review
+from .models import get_userid_from_userdb, get_data_from_userdb,get_alluserdata_from_userdb,get_set_to_review,get_set_exercises
 from .models import User, UserExerciseRating
-from .serializers import UserSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer, ExerciseSerializer, UserDataSerializer
+from .serializers import UserSerializer,UserDataSerializer,UpdateUserSerializer, RoutineSerializer, RoutineExercisesSerializer, ExerciseSerializer, UserDataSerializer,AccountDataSerializer
 from .models import User,UserData,Routine,RoutineExercises, Exercise
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
 import pandas as pd
 import numpy as np
+import random
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from ast import literal_eval
 # Create your views here.
 
 
@@ -49,11 +50,6 @@ class SetUserData(APIView):
             if not self.request.session.exists(self.request.session.session_key):
                 self.request.session.create()
 
-            # print("reach here")
-            # if len(Exercise.objects.all()) < 1 : 
-            #     print("initiating database")
-            #     generate_database()
-
             print(f"requestdata : {request.data}")
             username = request.data.get("username")
             fitness_level = request.data.get("fitness_level")
@@ -61,6 +57,7 @@ class SetUserData(APIView):
             goal = request.data.get("goal")
             intensity = request.data.get("intensity")
             bmi = request.data.get("bmi")
+            location = request.data.get("location")
 
             user_id = get_userid_from_userdb(username)
             queryset = UserData.objects.filter(user_id=user_id)
@@ -68,24 +65,21 @@ class SetUserData(APIView):
                 user = queryset[0]
                 if user.user_id==user_id:
                     #status:0==> user credential verified okay
-                    if (fitness_level != ""):
-                        print(f"print fitness {fitness_level}")
-                        user.fitness_level=int(fitness_level)
-                    if (goal != ""):
-                        print(f"print goal {goal}")
-                        user.goal = goal
-                    if (gender != ""):
-                        print(f"print gender {gender}")
-                        user.gender = gender
-                    if (intensity != ""):
-                        print(f"print intensity {intensity}")
-                        user.intensity = int(intensity)
-                    if (bmi != None and bmi != ""):
-                        print(f"print bmi {bmi}")
-                        user.bmi = int(bmi)
                     print(f"print fitness {fitness_level}")
+                    user.fitness_level=int(fitness_level)
+                    print(f"print goal {goal}")
+                    user.goal = goal
+                    print(f"print gender {gender}")
+                    user.gender = gender
+                    print(f"print intensity {intensity}")
+                    user.intensity = int(intensity)
+                    print(f"print bmi {bmi}")
+                    user.bmi = int(bmi)
+                    print(f"print fitness {fitness_level}")
+                    user.location = int(location)
+
                     user.save()
-                    print(user.user_id+5)
+                    print(user.user_id)
 
                     return Response({"status":0}, status=status.HTTP_200_OK)
                 else:
@@ -100,7 +94,7 @@ class SetUserData(APIView):
             print("Exception in SetUserData")
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
-#currently not used yet 
+#impletmention done. connection done. no bug so far
 class GetUserData(APIView):
     def post(self, request, format=None):
         try:
@@ -110,11 +104,13 @@ class GetUserData(APIView):
             username = request.data.get("username")
             print(username)
             userdata = get_alluserdata_from_userdb(username)
-            return Response({"gender":userdata.gender,
-                            "fitness_level":userdata.fitness_level,
-                            "goal":userdata.goal,
-                            "intensity":userdata.intensity,
-                            "bmi":userdata.bmi}, status=status.HTTP_200_OK)
+            print(UserDataSerializer(userdata).data)
+            return Response(UserDataSerializer(userdata).data, status=status.HTTP_200_OK)
+            # return Response({"gender":userdata.gender,
+            #                 "fitness_level":userdata.fitness_level,
+            #                 "goal":userdata.goal,
+            #                 "intensity":userdata.intensity,
+            #                 "bmi":userdata.bmi}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -153,7 +149,20 @@ class CreateUserView(APIView):
                         #incorrect data of birth
                         return Response({"status":1}, status=status.HTTP_200_OK)
                 else:
-                    #incorrect data of birth
+                    #Cannot find the username
+                    return Response({"status":2}, status=status.HTTP_200_OK)
+            elif CreateUser==2:
+                if queryset.exists():
+                    user = queryset[0]
+                    user.username = request.data.get("newUsername")
+                    user.password = password
+                    user.DOB = request.data.get("DOB")
+                    user.fullname = request.data.get("fullname")
+                    user.save(update_fields=["username", "password","DOB","fullname"])
+                    # return Response(UserSerializer(user).data, status=status.HTTP_200_OK) 
+                    return Response({"status":0}, status=status.HTTP_200_OK)
+                else:
+                    #incorrect username
                     return Response({"status":2}, status=status.HTTP_200_OK)
             else:
                 if queryset.exists():
@@ -212,35 +221,235 @@ class ModelToLearn(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
-#empty class
+#antonia 03/23/21 initiate to test 
 class ExerciseRating(APIView):
-    def get(self, request, format=None):
-        username = request.GET.get('username')
-        exercise_id = request.GET.get('exercise_id')
-        score = request.GET.get('score')
-        print(f"exercise id: {exercis_id}, score: {score}")
-        return Response({"status":1}) 
-
-class GetSetToRate(APIView):
     def post(self, request, format=None):
         try:
-            print("debug part 1")
+            if not self.request.session.exists(self.request.session.session_key):
+                self.request.session.create()
+            
+            username = request.data.get('username')
+            set_id = request.data.get('set_id')
+            score = int(request.data.get('score'))
+            print(f"username: {username}, set_id: {set_id}, score: {score}")
+            user_id = get_userid_from_userdb(username)
+
+            if user_id == None :
+                return Response({"Bad Request":"Username doesnt exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+            # print(f"score: {score}")
+            # print(f"exercise_id: {exercise_id}")
+            # print(f"set_id {set_id}")
+            routine = Routine.objects.get(id=set_id)
+            # print(f"routine, {routine}, routine id: {routine.id}")
+            _,__,eids = get_set_exercises(routine)
+            # print(f"eids : {eids}")
+            for eid in eids: 
+                exrate = UserExerciseRating.objects.filter(user=user_id, exercise_id=eid)
+                if exrate.exists() : 
+                    uer = exrate[0]
+                    print(f"Exercise {eid}. count {uer.exercise_count}, score: {uer.user_score}")
+                    
+                    score_average = ( uer.user_score + score ) / 2
+                    print(f"score_average : {score_average}")
+                    count = uer.user_score + 1
+
+                    # uer = UserExerciseRating(user_id=user_id, exercise_id=eid, user_score=score_average,exercise_count= count)
+                    # uer.save()
+                    uer.user_score = score_average
+                    uer.exercise_count += 1
+                    uer.save()
+                    print(f"data saved! {uer.id}")
+
+                else : 
+                    print(f"this is the first time user raiting exercise {eid}")
+                    #create a UserExerciseRating (uer) object 
+                    uer = UserExerciseRating(user_id=user_id, exercise_id=eid, user_score=score,exercise_count=1)
+                    uer.save()
+                    print("data saved!")
+
+
+            routine.rate = True
+            routine.save()
+            return Response({"status":0}, status=status.HTTP_200_OK) 
+        except Exception as error:
+            return Response({"status":0, "Bad Request":"Unable to run"}, status=status.HTTP_400_BAD_REQUEST)
+
+#antonia 03/23/21 working
+class GetSetToRate(APIView):
+    
+    def post(self, request, format=None):
+        print(f"requestdata : {request.data}")
+        try:
+            if not self.request.session.exists(self.request.session.session_key):
+                self.request.session.create()
+
+            # print("reach here")
+            # if len(Exercise.objects.all()) < 1 : 
+            #     print("initiating database")
+            #     generate_database()
+
             if not self.request.session.exists(self.request.session.session_key):
                 print("AGRApi no session")
                 self.request.session.create()
-            print("debug part 2")
-            username = request.GET.get('username')
-            print("debug part 3")
-            queryset = User.objects.filter(username=username)
-            print("debug part 4")
-            setToReview = get_set_to_review(username)
-            print("debug part 5")
-            if len(setToReview) > 0 :
-                return Response(UserSerializer(setToReview[0]).data, status=status.HTTP_200_OK)
-            else : 
-                return Response({"Bad Request":"No Exercise to rate"}, status=status.HTTP_400_BAD_REQUEST)
+            username = request.data.get("username")
+            # queryset = User.objects.filter(username=username)
+            print(username)
+            setToReview = get_set_to_review(username,rate=False)
+            if setToReview == "no exercise to rate":
+                return Response({"status":3 , "Bad Request":"No Exercise to rate"}, status=status.HTTP_200_OK)
+            else :
+                exercises,edic,_ = get_set_exercises(setToReview)
+                print(exercises)
+                return Response({"status":"good", "user_id":setToReview.userdata_id ,  
+                                "date":setToReview.date , "set_id":setToReview.id , 
+                                "exercises": edic , "exercise1" : exercises[0],
+                                "exercise2" : exercises[1], "exercise3" : exercises[2],
+                                "exercise4" : exercises[3], "exercise5" : exercises[4],
+                                "exercise6" : exercises[5],
+                                }, status=status.HTTP_200_OK)
         except Exception as error:
-            return Response({"Bad Request":"Unable to run"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status":2, "Bad Request":"Unable to run"}, status=status.HTTP_400_BAD_REQUEST)
+
+#antonia 03/23/21 initiate to test 
+class CreateSet(APIView):
+    def post(self, request, format=None):
+        try:
+            username = request.data.get("username")
+            mode = int(request.data.get("mode"))
+            user_id = get_userid_from_userdb(username)
+            routine = Routine(userdata=user_id, rate=False, mode=mode, date=date.today())
+            routine.save()
+            return Response({"status":"good"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
+
+#antonia 03/23/21 initiate to test 
+class CreateSetExercises(APIView):
+    def post(self, request, format=None):
+        try:
+            routine = request.data.get("routine")
+            exercise_ids = request.data.get("exercise_ids")
+            for exercise_id in exercise_ids:
+                re = RoutineExercises(routine=routine, exercise=exercise_id)
+                re.save()
+            return Response({"status":"good"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
+
+# create a set given the username, mode and exercise ids
+# return the set id
+def createSetExercises(username, mode, exercise_ids):
+    try:
+        user_id = get_userid_from_userdb(username)
+        print(username,user_id,mode,type(mode),exercise_ids)
+        print(user_id, mode, date.today())
+
+        routine = Routine(userdata_id=user_id, mode=mode, date=date.today())
+        print(username,user_id)
+
+        routine.save()
+        print(username,user_id)
+        for exercise_id in exercise_ids:
+            re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
+            re.save()
+        return (routine.id,routine.date) #Set and Exercise Created
+    except Exception as error: 
+        return (-1) #error
+
+#antonia 03/28/21 to get list of exercise in an array
+class GetExercise4Muscle(APIView):
+    def post(self, request, format=None):
+        try:
+            muscle = request.data.get("muscle")
+            print(f"muscle: {muscle}")
+            exercises = Exercise.objects.filter(main_musclegroup=muscle)
+            
+            if (len(exercises)>0):
+                renderExercise = []
+                print(f"len(exercises): {len(exercises)}")
+                # print(f"exercises: {exercises}")
+                random4 = random.sample(range(len(exercises)-1),4)
+                print(random4)
+                for ran in random4: 
+                    exercise = exercises[ran]
+                    renderExercise.append(ExerciseSerializer(exercise).data)
+
+                print(f"renderExercise: {renderExercise}")
+
+            return Response({"exercises":renderExercise , "status":"good"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
+
+#antonia 04/02/21 to get list of exercise in an array
+class GetExercise4General(APIView):
+    def post(self, request, format=None):
+        try:
+            exercises = Exercise.objects.get()
+            
+            if (len(exercises)>0):
+                renderExercise = []
+                print(f"len(exercises): {len(exercises)}")
+                random4 = random.sample(range(len(exercises)-1),4)
+                print(random4)
+                for ran in random4: 
+                    exercise = exercises[ran]
+                    renderExercise.append(ExerciseSerializer(exercise).data)
+
+                print(f"renderExercise: {renderExercise}")
+
+            return Response({"exercises":renderExercise , "status":"good"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
+
+class GetSetDetails(APIView):
+    def post(self, request, format=None):
+        try:
+            username = request.data.get("username")
+            set_id = request.data.get("set_id")
+            if (set_id == None):
+                set_id = get_sets(username)
+            
+            print(f"username,set_id: {username}, {set_id}")
+            routine = Routine.objects.get(id=set_id)
+            print(f"routine: {routine}, {routine.id}")
+            
+            if (routine.mode) == 1:
+                set_type = 'General Fitness'
+            elif routine.mode == 2:
+                set_type = 'Muscle Building'
+            elif routine.mode == 3: 
+                set_type = 'Endurence'
+            else: 
+                set_type = 'unknown'
+
+
+
+            exercise_class = RoutineExercises.objects.filter(routine_id=set_id)
+            print(f"exercise_class: {exercise_class}")
+
+            exercises_details = []
+            for exercise_item in exercise_class:
+                print(f"exercise_item.exercise_id: {exercise_item.exercise_id}")
+                
+                item = Exercise.objects.get(id=exercise_item.exercise_id)
+                # print(f"item: {item}")
+                excerciseDetailsData = ExerciseSerializer(item).data
+                excerciseDetailsData['pic_no'] = literal_eval(ExerciseSerializer(item).data['pic_no'])
+                exercises_details.append(excerciseDetailsData)
+
+
+            print(f"exercises_details: {exercises_details}")
+
+            return Response({"set_date":routine.date, "set_type":set_type,"exercises_details":exercises_details , "status":1}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request":"unable to retrieved exercises"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
 
 
 from AGRApi.recommender_algo_AGR import *
@@ -289,73 +498,226 @@ class AlgoToLearn(APIView):
 class FirstReco(APIView):
     def get(self, request, format=None):
         username = request.GET.get('username')
-        exercise_id = request.GET.get('exercise_id')
-        print(Exercise.objects.filter(id= exercise_id).exists())
-        if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists():
-            exercise_data = Exercise.objects.all() #get all data from db according to models.py format
-            df = pd.DataFrame.from_records(exercise_data.values())
-            # exercisesArr = []
-            # i = 0
-            # while i < len(exercise_data):
-            #     exercisesArr.append(ExerciseSerializer(exercise_data[i]).data) #convert into list of json format
-            #     i += 1
-            # df = pd.DataFrame(exercisesArr) #convert into dataframe
-            # print("here", len(df))
-
-            #Select features to find similarity
-            features = ['other_musclegroups', 'exercise_type', 'mechanics', 'equipment', 'exercise_name'] #type change to exercise type because type is special keyword
-            for feature in features:
-                df[feature] = df[feature].fillna('')
-            #print(df[feature])
-
-            #Create combined features column
-            def combined_features(row):
-                return row['other_musclegroups']+" "+row['exercise_type']+" "+row['mechanics']+" "+row['exercise_name']+" "+row['equipment']
-            df["combined_features"] = df.apply(combined_features, axis =1)
-            #print(df["combined_features"])
-
-            #Use CountVectorizer to convert words into word count for cosine similarity
-            cv = CountVectorizer()
-            count_matrix = cv.fit_transform(df["combined_features"])
-            #print("Count Matrix:", count_matrix.toarray())
-
-            #Cosine similarity
-            cosine_sim = cosine_similarity(count_matrix)
-            # print("here", len(cosine_sim))
-
-            exercise_index = int(exercise_id) #user input in exercise_id
-
-            #Place similar exercises in list and sort in descending similarity score
-            similar_exercises = list(enumerate(cosine_sim[exercise_index]))
-            #print(similar_exercises)
-            sorted_similar_exercises = sorted(similar_exercises, key=lambda x:x[1], reverse=True)
-
-            #Store top 6 similar exercise_id in list
-            recoList = []
-            i=0
-            for exercise in sorted_similar_exercises:
-                recoList.append(exercise[0])
-                i=i+1
-                if i>5:
-                    break
+        exercise_id = int(request.GET.get('exercise_id'))
+        mode = int(request.GET.get('mode'))
+        muscle = request.GET.get("muscle")
                 
-            print(recoList)
+        user_id = int(get_userid_from_userdb(username))
+        userdata = UserData.objects.filter(user_id=user_id)[0]
+        print(f"username,exercise_id,mode,muscle,user_id,userdata: {username},{exercise_id},{mode},{muscle},{user_id},{userdata}")
 
+        if(userdata.fitness_level==1):
+            fitness = 'Beginner'
+        elif (userdata.fitness_level==2):
+            fitness = 'Intermediate'
+        else: 
+            fitness = 'Expert'
+        location = userdata.location #may not be used due to ambuguity of exercises in db (barbell at home?)
+        
+        print(f"username,exercise_id,mode,muscle,user_id,userdata,fitness,location: {username},{exercise_id},{mode},{muscle},{user_id},{userdata},{fitness},{location}")
 
-            # Creating json
-            data = {}
-            data["recoList"] = recoList
+        print(f"len(Exercise.objects.filter(id= exercise_id)):{len(Exercise.objects.filter(id= exercise_id))}")
+        if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 1: #For general fitness
+            exercise_data = Exercise.objects.filter(difficulty=fitness) #get all exercise data from db according to models.py format filtered by difficulty and equipment
+            df = pd.DataFrame.from_records(exercise_data.values())
+            #print("ALL: ", df.tail)
+        
+        elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 2: #For focused muscle building
+            exercise_data = Exercise.objects.filter(main_musclegroup=muscle, difficulty=fitness) #get exercise data filetered for muscle, difficulty and equipment from db according to models.py format
+            df = pd.DataFrame.from_records(exercise_data.values())
+            #print("MUSLCE: ", df.head)
 
-            recoEx = Exercise.objects.filter(id__in = recoList) #filter for Exercise db for recommended exercise according to models.py format
-            recoExArray = []
-            i = 0
-            while i < len(recoEx):
-                recoExArray.append(ExerciseSerializer(recoEx[i]).data) #serialize into json format
-                i += 1
-            data['recoExList'] = recoExArray
+        elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 3: #For cardio
+            muscle = "Cardio" #set muscle to cardio
+            exercise_data = Exercise.objects.filter(main_musclegroup= muscle) #get exercise data filetered for cardio from db according to models.py format
+            df = pd.DataFrame.from_records(exercise_data.values())
+            #print("CARDIO: ", df.head)
 
-
-            return Response(data, status=status.HTTP_200_OK)
-            
         else:
+            print(f"username, exercise_id ,Exercise.objects.filter(id= exercise_id).exists(): {username, exercise_id ,Exercise.objects.filter(id= exercise_id).exists()}")
             return Response({"Bad Request": "No Username and/or exercise_id out of range"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # exercisesArr = []
+        # i = 0
+        # while i < len(exercise_data):
+        #     exercisesArr.append(ExerciseSerializer(exercise_data[i]).data) #convert into list of json format
+        #     i += 1
+        # df = pd.DataFrame(exercisesArr) #convert into dataframe
+        # print("here", len(df))
+
+        #Select features to find similarity
+        features = ['other_musclegroups', 'exercise_type', 'mechanics', 'equipment', 'exercise_name'] #type change to exercise type because type is special keyword
+        for feature in features:
+            df[feature] = df[feature].fillna('')
+        #print(df[feature])
+
+        #Create combined features column
+        def combined_features(row):
+            return row['other_musclegroups']+" "+row['exercise_type']+" "+row['mechanics']+" "+row['exercise_name']+" "+row['equipment']
+        df["combined_features"] = df.apply(combined_features, axis =1)
+        #print(df["combined_features"])
+
+        #Use CountVectorizer to convert words into word count for cosine similarity
+        cv = CountVectorizer()
+        count_matrix = cv.fit_transform(df["combined_features"])
+        #print("Count Matrix:", count_matrix.toarray())
+
+        #Cosine similarity
+        cosine_sim = cosine_similarity(count_matrix)
+        # print("here", len(cosine_sim))
+
+        exercise_index = df[df['id'] == exercise_id].index[0] #Convert exercise_id into row number in filtered df
+        #print('ROW NUMBER HERE: ', exercise_index)
+
+        #Place similar exercises in list and sort in descending similarity score
+        similar_exercises = list(enumerate(cosine_sim[exercise_index]))
+        #print(similar_exercises)
+        sorted_similar_exercises = sorted(similar_exercises, key=lambda x:x[1], reverse=True)
+        #print("SORTED SIMILAR ", sorted_similar_exercises)
+
+        #Store top 6 similar exercise_id in list
+        recoList = []
+        i=0
+        for exercise in sorted_similar_exercises:
+            reco_id = df.loc[exercise[0], 'id'] #Convert row number in filtered df back to exercise_id
+            recoList.append(reco_id)
+            i=i+1
+            if i>5:
+                break
+            
+        #print("RECOLIST HERE ", recoList)
+
+
+        # Creating json
+        data = {}
+        data["recoList"] = recoList
+
+        recoEx = Exercise.objects.filter(id__in = recoList) #filter for Exercise db for recommended exercise according to models.py format
+        recoExArray = []
+        i = 0
+        while i < len(recoEx):
+            recoExArray.append(ExerciseSerializer(recoEx[i]).data) #serialize into json format
+            i += 1
+        data['recoExList'] = recoExArray
+
+        # user_id = int(get_userid_from_userdb(username))
+        # routine = Routine(userdata_id=user_id, date=date.today(), mode=mode)
+        # routine.save()
+        # for exercise_id in recoList:
+        #     re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
+        #     re.save()
+        set_id,set_date = createSetExercises(username, mode, recoList)
+        
+        if set_id >=0: 
+            data['set_id'] = set_id
+            data['set_date'] = set_date
+        else:
+            return Response({"Bad Request": "Set is not created"}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"status":3 ,"set_exercise_id": data["recoList"], "set_exercise_details": data['recoExList'], "set_id": data['set_id'], "set_date": data['set_date']}, status=status.HTTP_200_OK)
+        
+
+############################################
+# Copy above first Reco with POST method 
+# getting empty data set for muscle...
+############################################
+# class FirstReco(APIView):
+#     def post(self, request, format=None):
+#         print(f"request: {request}")
+#         username = request.data.get('username')
+#         exercise_id = request.data.get('exercise_id')
+#         mode = int(request.data.get('mode'))
+#         muscle = request.data.get("muscle")
+
+#         user_id = int(get_userid_from_userdb(username))
+#         userdata = UserData.objects.filter(user_id=user_id)[0]
+#         print(f"username,exercise_id,mode,muscle,user_id,userdata: {username},{exercise_id},{mode},{muscle},{user_id},{userdata}")
+
+#         fitness = userdata.fitness_level
+#         location = userdata.location #may not be used due to ambuguity of exercises in db (barbell at home?)
+        
+#         print(f"username,exercise_id,mode,muscle,user_id,userdata,fitness,location: {username},{exercise_id},{mode},{muscle},{user_id},{userdata},{fitness},{location}")
+
+#         print(Exercise.objects.filter(id= exercise_id).exists())
+
+
+# class FirstReco(APIView):
+#     def post(self, request, format=None):
+#         username = request.data.get('username')
+#         exercise_id = int(request.data.get('exercise_id'))
+#         mode = int(request.data.get('mode'))
+#         print(Exercise.objects.filter(id= exercise_id).exists())
+#         if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists():
+#             exercise_data = Exercise.objects.all() #get all data from db according to models.py format
+#             df = pd.DataFrame.from_records(exercise_data.values())
+
+#             # exercisesArr = []
+#             # i = 0
+#             # while i < len(exercise_data):
+#             #     exercisesArr.append(ExerciseSerializer(exercise_data[i]).data) #convert into list of json format
+#             #     i += 1
+#             # df = pd.DataFrame(exercisesArr) #convert into dataframe
+#             # print("here", len(df))
+#             #Select features to find similarity
+#             features = ['other_musclegroups', 'exercise_type', 'mechanics', 'equipment', 'exercise_name'] #type change to exercise type because type is special keyword
+#             for feature in features:
+#                 df[feature] = df[feature].fillna('')
+#             #print(df[feature])
+#             #Create combined features column
+#             def combined_features(row):
+#                 return row['other_musclegroups']+" "+row['exercise_type']+" "+row['mechanics']+" "+row['exercise_name']+" "+row['equipment']
+#             df["combined_features"] = df.apply(combined_features, axis =1)
+#             #print(df["combined_features"])
+#             #Use CountVectorizer to convert words into word count for cosine similarity
+#             cv = CountVectorizer()
+#             count_matrix = cv.fit_transform(df["combined_features"])
+#             #print("Count Matrix:", count_matrix.toarray())
+#             #Cosine similarity
+#             cosine_sim = cosine_similarity(count_matrix)
+#             # print("here", len(cosine_sim))
+#             exercise_index = int(exercise_id) #user input in exercise_id
+#             #Place similar exercises in list and sort in descending similarity score
+#             similar_exercises = list(enumerate(cosine_sim[exercise_index]))
+#             #print(similar_exercises)
+#             sorted_similar_exercises = sorted(similar_exercises, key=lambda x:x[1], reverse=True)
+#             #Store top 6 similar exercise_id in list
+#             recoList = []
+#             i=0
+#             for exercise in sorted_similar_exercises:
+#                 recoList.append(exercise[0])
+#                 i=i+1
+#                 if i>5:
+#                     break
+                
+#             print(recoList)
+#             # Creating json
+#             data = {}
+#             data["recoList"] = recoList
+#             recoEx = Exercise.objects.filter(id__in = recoList) #filter for Exercise db for recommended exercise according to models.py format
+#             recoExArray = []
+#             i = 0
+#             while i < len(recoEx):
+#                 recoExArray.append(ExerciseSerializer(recoEx[i]).data) #serialize into json format
+#                 i += 1
+#             data['recoExList'] = recoExArray
+
+#             user_id = int(get_userid_from_userdb(username))
+#             routine = Routine(userdata_id=user_id, date=date.today(), mode=mode)
+#             routine.save()
+#             for exercise_id in recoList:
+#                 re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
+#                 re.save()
+
+
+#             set_id = createSetExercises(username, mode, recoList)
+
+#             if set_id >=0: 
+#                 data['set_id'] = set_id
+#             else:
+#                 return Response({"Bad Request": "Set is not created"}, status=status.HTTP_400_BAD_REQUEST)
+
+#             return Response({"status":3 ,"set_exercise_id": data["recoList"], "set_exercise_details": data['recoExList'], "set_id": data['set_id']}, status=status.HTTP_200_OK)
+
+#         else:
+#             print(f"username, exercise_id ,Exercise.objects.filter(id= exercise_id).exists(): {username, exercise_id ,Exercise.objects.filter(id= exercise_id).exists()}")
+#             return Response({"Bad Request": "No Username and/or exercise_id out of range"}, status=status.HTTP_400_BAD_REQUEST)

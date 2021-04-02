@@ -63,7 +63,7 @@ export default function SignUp() {
       setUserStatus(-1);
       alert('Account is signup successfully!');
       Cookies.set('username', username);
-      history.push('/');
+      history.push('/ModeSelection');
     }
     else if (userStatus===1)
     {
