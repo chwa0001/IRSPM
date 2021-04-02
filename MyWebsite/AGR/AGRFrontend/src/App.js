@@ -16,6 +16,8 @@ import AccountData from './AccountData';
 import MuscleBuildingPage from './MuscleBuildingPage';
 import ExerciseSetPage from './ExerciseSetPage';
 import ModeSelection from "./ModeSelection";
+import GeneralFitnessPage from "./GeneralFitnessPage";
+import CardioPage from "./CardioPage";
 
 export default class App extends Component {
   constructor(props) {
@@ -41,8 +43,11 @@ export default class App extends Component {
             <Route exact path="/ExerciseRating" component={ExerciseRatingPage}/>
             <Route exact path="/AccountData" component={AccountData}/>
             <Route exact path="/MuscleBuilding" component={MuscleBuildingPage}/>
+            <Route exact path="/GeneralFitness" component={GeneralFitnessPage}/>
             <Route exact path="/ExerciseSet" component={ExerciseSetPage}/>
             <Route exact path="/ModeSelection" component={ModeSelection}/>
+            <Route exact path="/CardioExercises" component={CardioPage}/>
+            
 
           </Switch>
         </Suspense>

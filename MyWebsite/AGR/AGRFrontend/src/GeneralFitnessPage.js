@@ -57,7 +57,7 @@ function Copyright() {
 }
 
 function getSteps() {
-  return ['Choose targeted muscle', 'Choose your preffered exercise!','Exercise Set','Rate Exercise Set!'];
+  return ['Choose your preffered exercise!','Exercise Set','Rate Exercise Set!'];
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -110,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function MuscleBuildingPage() {
+export default function GeneralFitnessPage() {
   const classes = useStyles();
   const username = Cookies.get('username')
   console.log(username)
@@ -132,7 +132,7 @@ export default function MuscleBuildingPage() {
   const [exercise4,setExercise4] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
   const [preferedExerciseId,setPreferedExerciseId] = useState('-1')
 
-  const [mode, setMode] = useState('MuscleBuilding');
+  const [mode, setMode] = useState('General Fitness');
   const [exercises, setExercises] = useState([]);
   const [date, setDate] = useState('');
   const [setid, setSetid] = useState('');
@@ -181,20 +181,25 @@ export default function MuscleBuildingPage() {
   }, [userStatus]);
 
   const rateMyExercises = () => {
-    setActiveStep(3);
+    setActiveStep(2);
   }
 
-  function getExercise4Muscle(muscle) {
+  useEffect(() => {
+    console.log("useEffect getting 4 random exercises")
+    getExercise4General();
+  }, []);
+
+  function getExercise4General(muscle) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          muscle:muscle,
+          username:username,
         }),
     };
     console.log(requestOptions);
     if (muscle!=' '){
-    fetch('/AGR/GetExercise4Muscle', requestOptions)
+    fetch('/AGR/GetExercise4General', requestOptions)
         .then(function(response){
           if (!response.ok){
             throw new Error('Response not OK');
@@ -216,19 +221,18 @@ export default function MuscleBuildingPage() {
           },
           (error) => {alert(error)}
         )
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     else{
       if(muscle==' ') {alert('Choose a mucle group to get started!')}
     }
   };
 
-  const getMyFirstMuscleBuildingExercise=(username,muscle,preferedExerciseId,listExercise)=> {
+  const getMyFirstGeneralExercise=(username,muscle,preferedExerciseId,listExercise)=> {
     if (username!=''){
       console.log(username)
       console.log("was here")
-      console.log(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
-      fetch(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
+      console.log(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=1&muscle=${muscle}`)
+      fetch(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=1&muscle=${muscle}`)
           .then(response => response.json())
           .then(
             (data) => {
@@ -270,65 +274,11 @@ export default function MuscleBuildingPage() {
     // }
   };
 
-  const getMusclePrefference = (
-    <div>
-      <Grid item xs={12}>
-        <Typography component="h5" variant="h5"> 
-          <i>1. To get started, choose a targeted muscle group</i>
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <FormControl 
-        fullWidth='true'
-        className={classes.formControl}
-        >
-          <InputLabel id="muscle">Targeted Muscle</InputLabel>
-          <Select
-            labelId="muscle"
-            id="muscle"
-            value={muscle}
-            onChange={muscleHandleChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {musclechoices.map( (item) =>
-              <MenuItem value={item}>{item}</MenuItem>
-            )}
-          </Select>
-        </FormControl>
-        <ButtonGroup 
-          disableElevation 
-          variant="contained" 
-          width='20vw'
-          className={classes.buttongrouping2}
-          >
-          <Button
-          className={classes.backbutton}
-          startIcon={<ArrowBackIcon />}
-          backgroundColor="secondary"
-          onClick={() => {history.goBack();}}
-          >
-            Back
-          </Button>
-          <Button
-            className={classes.submitbutton2}
-            endIcon={<TrendingFlatIcon />}
-            color="secondary"
-            onClick={() => getExercise4Muscle(muscle)}
-          >
-            Generate exercises!
-          </Button>
-        </ButtonGroup>
-      </Grid>
-    </div>
-  )
-
   const choosingPrefferedExercise = (
     <div>
       <Grid container xs={12}>
         <Typography display='block' component="h5" variant="h5" > 
-          <p><i>2. Choose your preffered exercise</i></p>
+          <p><i>1. Choose your preffered exercise</i></p>
         </Typography>
       </Grid>
       <Grid container xs={12}>
@@ -422,7 +372,7 @@ export default function MuscleBuildingPage() {
           className={classes.submitbutton}
           endIcon={<FitnessCenterIcon />}
           color="secondary"
-          onClick={() => getMyFirstMuscleBuildingExercise(username,muscle,preferedExerciseId,listExercise)}
+          onClick={() => getMyFirstGeneralExercise(username,muscle,preferedExerciseId,listExercise)}
         >
           See my Exercise Set!
         </Button>
@@ -530,16 +480,10 @@ export default function MuscleBuildingPage() {
                     }[activeStep]
                   }
                 </Grid> */}
-                {activeStep === 0 ? (
-                  <Grid item xs={12}>
-                  {getMusclePrefference}
-                  </Grid>
-                ):(
-                  <Grid item xs={12}>
-                    {activeStep===1?choosingPrefferedExercise:
-                    activeStep===2?showExercises:rateExercise}
-                  </Grid>
-                )}
+                <Grid item xs={12}>
+                  {activeStep===0?choosingPrefferedExercise:
+                  activeStep===1?showExercises:rateExercise}
+                </Grid>
                 <Grid item xs={12}>
                 <div>
                   {activeStep === steps.length ? (

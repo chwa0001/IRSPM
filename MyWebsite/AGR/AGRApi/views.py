@@ -357,6 +357,9 @@ def createSetExercises(username, mode, exercise_ids):
     except Exception as error: 
         return (-1) #error
 
+#antonia 04/02/21 filter database so that user can use any exercise equalto or below its fitness
+#input argument muscle and fitness 
+#return argumenet exercesises query
 def getExerciseMuscleFitness(muscle,fitness):
     expert_exercises = Exercise.objects.filter(main_musclegroup=muscle,difficulty='Expert')
     intermediate_exercises = Exercise.objects.filter(main_musclegroup=muscle,difficulty='Intermediate')
@@ -370,6 +373,42 @@ def getExerciseMuscleFitness(muscle,fitness):
         exercises = beginner_exercises
 
     return exercises 
+
+#antonia 04/02/21 filter database so that user can use any exercise equalto or below its fitness
+#input argument muscle and fitness 
+#return argumenet exercesises query
+def getExerciseGeneralFitness(fitness):
+    expert_exercises = Exercise.objects.filter(difficulty='Expert')
+    intermediate_exercises = Exercise.objects.filter(difficulty='Intermediate')
+    beginner_exercises = Exercise.objects.filter(difficulty='Beginner')
+
+    if fitness=='Expert':
+        exercises = beginner_exercises.union(intermediate_exercises,expert_exercises)
+    elif fitness == 'Intermediate':
+        exercises = beginner_exercises.union(intermediate_exercises)
+    else:
+        exercises = beginner_exercises
+
+    return exercises 
+
+# antonia 04/02/21 get the fitness and location of a user
+def getfitnesslocation(username):
+    user_id = int(get_userid_from_userdb(username))
+    userdata = UserData.objects.filter(user_id=user_id)[0]
+    print(f"getfitnesslocation userdata:{userdata}")
+
+    if(userdata.fitness_level==1):
+        fitness = 'Beginner'
+    elif (userdata.fitness_level==2):
+        fitness = 'Intermediate'
+    else: 
+        fitness = 'Expert'
+    location = userdata.location #may not be used due to ambuguity of exercises in db (barbell at home?)
+    
+    print(f"getfitnesslocation fitness, location:{fitness}, {location}")
+
+    return (fitness, location)
+
 
 #antonia 03/28/21 to get list of exercise in an array
 class GetExercise4Muscle(APIView):
@@ -405,18 +444,26 @@ class GetExercise4Muscle(APIView):
 class GetExercise4General(APIView):
     def post(self, request, format=None):
         try:
-            exercises = Exercise.objects.get()
+            username = request.data.get("username")
+            print(f"username: {username}")
+
+            fitness, location = getfitnesslocation(username)
+            print(f"location,fitness: {location},{fitness}")
             
+            exercises = getExerciseGeneralFitness(fitness)
+            # exercises = Exercise.objects.filter(main_musclegroup=muscle).get(difficulty=fitness)
+            print(exercises)
             if (len(exercises)>0):
                 renderExercise = []
                 print(f"len(exercises): {len(exercises)}")
+                # print(f"exercises: {exercises}")
                 random4 = random.sample(range(len(exercises)-1),4)
                 print(random4)
                 for ran in random4: 
                     exercise = exercises[ran]
                     renderExercise.append(ExerciseSerializer(exercise).data)
 
-                print(f"renderExercise: {renderExercise}")
+                # print(f"renderExercise: {renderExercise}")
 
             return Response({"exercises":renderExercise , "status":"good"}, status=status.HTTP_200_OK)
         except Exception as error:
@@ -515,23 +562,6 @@ class AlgoToLearn(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
 
-def getfitnesslocation(username):
-    user_id = int(get_userid_from_userdb(username))
-    userdata = UserData.objects.filter(user_id=user_id)[0]
-    print(f"getfitnesslocation userdata:{userdata}")
-
-    if(userdata.fitness_level==1):
-        fitness = 'Beginner'
-    elif (userdata.fitness_level==2):
-        fitness = 'Intermediate'
-    else: 
-        fitness = 'Expert'
-    location = userdata.location #may not be used due to ambuguity of exercises in db (barbell at home?)
-    
-    print(f"getfitnesslocation fitness, location:{fitness}, {location}")
-
-    return (fitness, location)
-
 class FirstReco(APIView):
     def get(self, request, format=None):
         username = request.GET.get('username')
@@ -546,9 +576,10 @@ class FirstReco(APIView):
 
         print(f"len(Exercise.objects.filter(id= exercise_id)):{len(Exercise.objects.filter(id= exercise_id))}")
         if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 1: #For general fitness
-            exercise_data = Exercise.objects.filter(difficulty=fitness) #get all exercise data from db according to models.py format filtered by difficulty and equipment
+            # exercise_data = Exercise.objects.filter(difficulty=fitness) #get all exercise data from db according to models.py format filtered by difficulty and equipment
+            exercise_data = getExerciseGeneralFitness(fitness)
             df = pd.DataFrame.from_records(exercise_data.values())
-            #print("ALL: ", df.tail)
+            print("ALL: ", df.tail)
         
         elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 2: #For focused muscle building
             # exercise_data = Exercise.objects.filter(main_musclegroup=muscle, difficulty=fitness) #get exercise data filetered for muscle, difficulty and equipment from db according to models.py format
