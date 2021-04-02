@@ -106,10 +106,14 @@ export default function MenuBar() {
 
   const handleUserDataProfile = ()=>{
     history.push('/UserData');
+    setAnchorEl(null);
+    setMobileMoreAnchorEl(null);
   };
 
   const handleAccountDataProfile=()=>{
     history.push('/AccountData');
+    setAnchorEl(null);
+    setMobileMoreAnchorEl(null);
   }
 
   const handleMenuClose = () => {
@@ -119,8 +123,10 @@ export default function MenuBar() {
 
   const  GoBack=()=>
     {
-      Cookies.remove('username')
-      history.push('/')
+      Cookies.remove('username');
+      setAnchorEl(null);
+      setMobileMoreAnchorEl(null);
+      history.push('/');
     };
 
   const handleMobileMenuOpen = (event) => {

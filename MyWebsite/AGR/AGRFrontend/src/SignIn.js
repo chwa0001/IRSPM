@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -64,6 +65,7 @@ export default function SignIn() {
     {
       setUserStatus(-1);
       Cookies.set('username', username);
+      Cookies.set('setId', 60);
       history.push('/Home');
     }
     else if (userStatus===1)

@@ -18,6 +18,10 @@ import ExerciseSetPage from './ExerciseSetPage';
 import ModeSelection from "./ModeSelection";
 import GeneralFitnessPage from "./GeneralFitnessPage";
 import CardioPage from "./CardioPage";
+import MenuBar from './components/MenuBar';
+import Container from '@material-ui/core/Container';
+import CustomScroller from 'react-custom-scroller';
+import ExerciseBuddytest from './ExerciseBuddy';
 
 export default class App extends Component {
   constructor(props) {
@@ -33,27 +37,30 @@ export default class App extends Component {
         <Pace color={theme.palette.primary.light} />
         <Suspense fallback={<Fragment />}>
           <Switch>
-            <Route exact path="/">
-              <SignIn />
-            </Route>
-            <Route exact path="/Home" component={HomePage}/>
+            <Route exact path="/"  component={SignIn}/>
             <Route exact path="/SignUp" component={SignUp}/>
             <Route exact path="/Reset" component={ResetPassword}/>
-            <Route exact path="/UserData" component={UserDataPage}/>
-            <Route exact path="/ExerciseRating" component={ExerciseRatingPage}/>
-            <Route exact path="/AccountData" component={AccountData}/>
-            <Route exact path="/MuscleBuilding" component={MuscleBuildingPage}/>
-            <Route exact path="/GeneralFitness" component={GeneralFitnessPage}/>
-            <Route exact path="/ExerciseSet" component={ExerciseSetPage}/>
-            <Route exact path="/ModeSelection" component={ModeSelection}/>
-            <Route exact path="/CardioExercises" component={CardioPage}/>
-            
-
+            <div style={{flexGrow:1}}>
+            <CustomScroller style={{ width: '100%', height: '100%' }}>
+            <MenuBar/>
+            <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
+              <Route exact path="/Home" component={HomePage}/>
+              <Route exact path="/UserData" component={UserDataPage}/>
+              <Route exact path="/ExerciseRating" component={ExerciseRatingPage}/>
+              <Route exact path="/AccountData" component={AccountData}/>
+              <Route exact path="/MuscleBuilding" component={MuscleBuildingPage}/>
+              <Route exact path="/GeneralFitness" component={GeneralFitnessPage}/>
+              <Route exact path="/ExerciseSet" component={ExerciseSetPage}/>
+              <Route exact path="/ModeSelection" component={ModeSelection}/>
+              <Route exact path="/CardioExercises" component={CardioPage}/>
+              <Route exact path="/ExerciseBuddy" component={ExerciseBuddytest}/>
+            </Container>
+            </CustomScroller>
+            </div>
           </Switch>
         </Suspense>
       </MuiThemeProvider>
     </BrowserRouter>
-
     );
   }
 }

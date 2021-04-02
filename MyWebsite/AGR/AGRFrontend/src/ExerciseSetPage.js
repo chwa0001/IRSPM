@@ -95,9 +95,6 @@ export default function ExerciseSetPage() {
   }, []);  
 
   return (
-    <div className={classes.grow}>
-      <MenuBar/>
-      <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
         <div className={classes.paper}>
           <Grid container 
           spacing={2}
@@ -112,9 +109,6 @@ export default function ExerciseSetPage() {
               </Typography>
             </Grid>
           </Grid>
-        </div>
-        <CustomScroller style={{ width: '100%', height: '100%' }}>
-        <CssBaseline />
         {exercises.map((tile) => (
           <ExerciseContainer 
           img1= {pre.concat(tile.pic_no[0],post)} 
@@ -129,9 +123,6 @@ export default function ExerciseSetPage() {
           difficulty= {tile.difficulty} 
           Instructions= {tile.instruction_text}/>
         ))}
-        </CustomScroller>
-      </Container>
-
-    </div>
+      </div>
   );
 }

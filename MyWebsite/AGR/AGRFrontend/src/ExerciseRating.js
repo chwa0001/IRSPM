@@ -268,10 +268,6 @@ export default function ExerciseRatingPage() {
   };
   
   return (
-    <div className={classes.grow}>
-      <MenuBar/>
-      <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}} alignContent="center" justifyContent="center">
-      <CssBaseline />
       <div className={classes.paper}>
       
         <Grid container direction="column" justify="space-between" alignItems="flex-start" spacing={3}>
@@ -379,9 +375,6 @@ export default function ExerciseRatingPage() {
           </Button>
         </ButtonGroup>
       </div>
-      </Container>
-
-    </div>
       
   );
   

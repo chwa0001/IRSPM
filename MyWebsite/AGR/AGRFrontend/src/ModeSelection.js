@@ -460,11 +460,6 @@ export default function ModeSelection() {
   }, []);  
 
   return (
-    <div className={classes.grow}>
-      <MenuBar/>
-      <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
-        <CustomScroller style={{ width: '100%', height: '100%' }}>
-        <CssBaseline />
         <div className={classes.paper}>
           <Card>
           <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#34ebe8'}}>
@@ -515,8 +510,5 @@ export default function ModeSelection() {
           </CardContent>
           </Card>
         </div>
-      </CustomScroller>
-      </Container>
-    </div>
   );
 }

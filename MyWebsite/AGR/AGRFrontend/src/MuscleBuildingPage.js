@@ -500,11 +500,6 @@ export default function MuscleBuildingPage() {
   )
 
   return (
-    <div className={classes.grow}>
-      <MenuBar/>
-      <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
-        <CustomScroller style={{ width: '100%', height: '100%' }}>
-        <CssBaseline />
         <div className={classes.paper}>
           <Card>
             <Grid item xs={12}>
@@ -567,8 +562,5 @@ export default function MuscleBuildingPage() {
             </CardContent>
           </Card>
         </div>
-      </CustomScroller>
-      </Container>
-    </div>
   );
 }
