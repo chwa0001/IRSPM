@@ -224,11 +224,6 @@ export default function UserDataPage() {
   };
 
   return (
-      <div className={classes.grow}>
-        <MenuBar/>
-        <CssBaseline />
-        
-        <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
         <div className={classes.paper}>
         <form className={classes.form} noValidate>
           <Grid container 
@@ -397,9 +392,6 @@ export default function UserDataPage() {
           </Box>
           </form>
         </div>
-      </Container>
-        
-    </div>
       
   );
 }
