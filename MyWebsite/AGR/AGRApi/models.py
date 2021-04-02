@@ -202,6 +202,8 @@ def get_set (username):
 def get_set_exercises (routine):
     print("was here - get_set_exercises")
     exercises = RoutineExercises.objects.filter(routine = routine.id)
+    print(f"routine: {routine}")
+    print(f"exercises: {exercises}")
 
     edic = []
     enames = []

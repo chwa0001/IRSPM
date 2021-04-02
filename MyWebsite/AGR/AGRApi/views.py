@@ -352,7 +352,7 @@ def createSetExercises(username, mode, exercise_ids):
         for exercise_id in exercise_ids:
             re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
             re.save()
-        return (routine.id) #Set and Exercise Created
+        return (routine.id,routine.date) #Set and Exercise Created
     except Exception as error: 
         return (-1) #error
 
@@ -367,7 +367,7 @@ class GetExercise4Muscle(APIView):
             if (len(exercises)>0):
                 renderExercise = []
                 print(f"len(exercises): {len(exercises)}")
-                print(f"exercises: {exercises}")
+                # print(f"exercises: {exercises}")
                 random4 = random.sample(range(len(exercises)-1),4)
                 print(random4)
                 for ran in random4: 
@@ -380,6 +380,26 @@ class GetExercise4Muscle(APIView):
         except Exception as error:
             return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
 
+#antonia 04/02/21 to get list of exercise in an array
+class GetExercise4General(APIView):
+    def post(self, request, format=None):
+        try:
+            exercises = Exercise.objects.get()
+            
+            if (len(exercises)>0):
+                renderExercise = []
+                print(f"len(exercises): {len(exercises)}")
+                random4 = random.sample(range(len(exercises)-1),4)
+                print(random4)
+                for ran in random4: 
+                    exercise = exercises[ran]
+                    renderExercise.append(ExerciseSerializer(exercise).data)
+
+                print(f"renderExercise: {renderExercise}")
+
+            return Response({"exercises":renderExercise , "status":"good"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
 
 class GetSetDetails(APIView):
     def post(self, request, format=None):
@@ -455,11 +475,23 @@ class FirstReco(APIView):
         username = request.GET.get('username')
         exercise_id = int(request.GET.get('exercise_id'))
         mode = int(request.GET.get('mode'))
-        fitness = request.GET.get('fitness')
-        location = request.GET.get('location') #may not be used due to ambuguity of exercises in db (barbell at home?)
         muscle = request.GET.get("muscle")
-        print(Exercise.objects.filter(id= exercise_id).exists())
+                
+        user_id = int(get_userid_from_userdb(username))
+        userdata = UserData.objects.filter(user_id=user_id)[0]
+        print(f"username,exercise_id,mode,muscle,user_id,userdata: {username},{exercise_id},{mode},{muscle},{user_id},{userdata}")
 
+        if(userdata.fitness_level==1):
+            fitness = 'Beginner'
+        elif (userdata.fitness_level==2):
+            fitness = 'Intermediate'
+        else: 
+            fitness = 'Expert'
+        location = userdata.location #may not be used due to ambuguity of exercises in db (barbell at home?)
+        
+        print(f"username,exercise_id,mode,muscle,user_id,userdata,fitness,location: {username},{exercise_id},{mode},{muscle},{user_id},{userdata},{fitness},{location}")
+
+        print(f"len(Exercise.objects.filter(id= exercise_id)):{len(Exercise.objects.filter(id= exercise_id))}")
         if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 1: #For general fitness
             exercise_data = Exercise.objects.filter(difficulty=fitness) #get all exercise data from db according to models.py format filtered by difficulty and equipment
             df = pd.DataFrame.from_records(exercise_data.values())
@@ -543,23 +575,21 @@ class FirstReco(APIView):
             i += 1
         data['recoExList'] = recoExArray
 
-
-        user_id = int(get_userid_from_userdb(username))
-        routine = Routine(userdata_id=user_id, date=date.today(), mode=mode)
-        routine.save()
-        for exercise_id in recoList:
-            re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
-            re.save()
-
-
-        set_id = createSetExercises(username, mode, recoList)
+        # user_id = int(get_userid_from_userdb(username))
+        # routine = Routine(userdata_id=user_id, date=date.today(), mode=mode)
+        # routine.save()
+        # for exercise_id in recoList:
+        #     re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
+        #     re.save()
+        set_id,set_date = createSetExercises(username, mode, recoList)
         
         if set_id >=0: 
             data['set_id'] = set_id
+            data['set_date'] = set_date
         else:
             return Response({"Bad Request": "Set is not created"}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({"status":3 ,"set_exercise_id": data["recoList"], "set_exercise_details": data['recoExList'], "set_id": data['set_id']}, status=status.HTTP_200_OK)
+        return Response({"status":3 ,"set_exercise_id": data["recoList"], "set_exercise_details": data['recoExList'], "set_id": data['set_id'], "set_date": data['set_date']}, status=status.HTTP_200_OK)
         
 
 ############################################

@@ -12,7 +12,6 @@ import moment from 'moment';
 import { useHistory } from "react-router-dom";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import MenuBar from './components/MenuBar';
 
 import { withStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
@@ -121,73 +120,76 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function ExerciseRatingPage() {
+export default function ExerciseRatingContainer(props) {
   const classes = useStyles();
   const username = Cookies.get('username') // cookies not working
   const [score, setScore] = useState('')
   const [userId, setUserId] = useState('')
-  const [setId, setSetId] = useState('')
-  const [date, setDate] = useState('')
-  const [exercises, setExercises] = useState([{'id':1,'name':''}])
+  const setId = props.set_id
+  const date = props.date
+  const exercises = props.exercises
+
+  console.log(props.exercises)
+  console.log(exercises)
 
   const [userStatus, setUserStatus] = useState(-1)
   const history = useHistory();
   const [refresh, setRefresh] = useState(0)
 
 
-  React.useEffect(()=> {
+  // React.useEffect(()=> {
 
-    console.log("react response - UseEffect")
+  //   console.log("react response - UseEffect")
 
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username:username,
-          }),
-        };
-        console.log(username)
-        console.log(requestOptions)
-        if (username!=''){
-          fetch('/AGR/GetSetToRate', requestOptions)
-          .then(function(response){
-            console.log(response)
-            if (response.status === 418){
-              setUserStatus(3)
-            }
-            else if (!response.ok){
-              throw new Error('Response not OK');
-            }
-            else{
-              return response.json();
-            }
-          }).then(
-            (data) => {
-              console.log(data.user_id)
-              console.log(data.set_id)
-              console.log(data.date)
-              console.log(data.exercises)
-              console.log(data.exercise1)
-              console.log(data.exercise6)
-              setUserId(data.user_id);
-              setSetId(data.set_id);
-              setDate(data.date);
-              if (data.exercises){
-                setExercises(data.exercises);
-              }
-              else{
-                setExercises([{'id':1,'name':''}]);
-              }
-              setUserStatus(data.status);
-            },
-            (error) => {
-              userStatus(-5)
-              alert(error)
-            }
-          )
-        }
+  //     const requestOptions = {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         username:username,
+  //         }),
+  //       };
+  //       console.log(username)
+  //       console.log(requestOptions)
+  //       if (username!=''){
+  //         fetch('/AGR/GetSetToRate', requestOptions)
+  //         .then(function(response){
+  //           console.log(response)
+  //           if (response.status === 418){
+  //             setUserStatus(3)
+  //           }
+  //           else if (!response.ok){
+  //             throw new Error('Response not OK');
+  //           }
+  //           else{
+  //             return response.json();
+  //           }
+  //         }).then(
+  //           (data) => {
+  //             console.log(data.user_id)
+  //             console.log(data.set_id)
+  //             console.log(data.date)
+  //             console.log(data.exercises)
+  //             console.log(data.exercise1)
+  //             console.log(data.exercise6)
+  //             setUserId(data.user_id);
+  //             setSetId(data.set_id);
+  //             setDate(data.date);
+  //             if (data.exercises){
+  //               setExercises(data.exercises);
+  //             }
+  //             else{
+  //               setExercises([{'id':1,'name':''}]);
+  //             }
+  //             setUserStatus(data.status);
+  //           },
+  //           (error) => {
+  //             userStatus(-5)
+  //             alert(error)
+  //           }
+  //         )
+  //       }
 
-  }, [refresh]);  
+  // }, [refresh]);  
    
 
   useEffect(() => {
@@ -195,7 +197,7 @@ export default function ExerciseRatingPage() {
     {
       setUserStatus(-1);
       setRefresh(refresh + 1);
-      history.push('/ExerciseRating');
+      history.push('/Home');
     }
     else if (userStatus===1)
     {
@@ -269,7 +271,6 @@ export default function ExerciseRatingPage() {
   
   return (
     <div className={classes.grow}>
-      <MenuBar/>
       <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}} alignContent="center" justifyContent="center">
       <CssBaseline />
       <div className={classes.paper}>
@@ -304,7 +305,7 @@ export default function ExerciseRatingPage() {
             <Grid item xs={12} sm={6}>
               <Typography variant="body1" component="body1">
                 {exercises.map((exercise) => (
-                <li key={exercise.id}>{exercise.name}</li>
+                <li key={exercise.id}>{exercise.exercise_name}</li>
               ))}
               </Typography>
             </Grid>
@@ -365,9 +366,9 @@ export default function ExerciseRatingPage() {
             className={classes.backbutton}
             startIcon={<ArrowBackIcon />}
             backgroundColor="secondary"
-            onClick={() => {history.goBack();}}
+            onClick={() => {history.push('/Home');}}
           >
-            Go Back
+            Rate Later
           </Button>
           <Button
             className={classes.submitbutton}
