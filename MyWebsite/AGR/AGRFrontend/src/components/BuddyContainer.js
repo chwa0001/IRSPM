@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{ useState , useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -31,6 +31,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ExBuddyGrid(props) {
   const classes = useStyles();
+  const pre = '/AGRFrontend/static/images/'
+  const post = '.jpg'
+  const images = props.expics
+  const count = props.count
+  const slicedimages = images.slice((count-1)*3,((count*3)))
 
   function FormRow(rowdata) {
     return (
@@ -49,9 +54,64 @@ export default function ExBuddyGrid(props) {
     );
   }
 
+    // const [ex_pics,setExpicsdata] = useState([]);
+
+    // const [data,setData]=useState([]);
+    // const getData=(i)=>{
+    //   fetch('/AGR/GetExerciseDetails?id='.concat(i)
+    //   ,{
+    //     headers : { 
+    //       'Content-Type': 'application/json',
+    //       'Accept': 'application/json'
+    //      }
+    //   }
+    //   )
+    //     .then(function(response){
+    //       console.log(response)
+    //       return response.json();
+    //     })
+    //     .then(function(myJson) {
+    //       console.log(myJson);
+    //       setData(myJson)
+    //       setExpicsdata(myJson.pic_no)
+    //     });
+    // }
+
+    // useEffect(()=>{
+    //   getData()
+    // },[])
+
+    // function Getpics(props) {
+    //   fetch('/AGR/GetExerciseDetails?id='
+    //   ,{
+    //     headers : { 
+    //       'Content-Type': 'application/json',
+    //       'Accept': 'application/json'
+    //      }
+    //   }
+    //   )
+    //     .then(function(response){
+    //       console.log(response)
+    //       return response.json();
+    //     })
+    //     .then(function(myJson) {
+    //       console.log(myJson);
+    //       setData(myJson)
+    //       setExpicsdata(myJson.pic_no)
+    //     }); 
+    // }
+    
+    // {images.map((exercise) => ( 
+    //   getData(exercise)
+    //   ))} 
+
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
+      <ButtonBase>
+              <Typography variant="subtitle1"> {props.count}</Typography>
+      </ButtonBase>
         <Grid container spacing={2}>
           <Grid item>
             <ButtonBase className={classes.image}>
@@ -74,7 +134,7 @@ export default function ExBuddyGrid(props) {
                 <FormRow type={"body2"} name={'Goal:'} value={props.goal}/>
               </Grid>
               <Grid item xs={12} container spacing={3}>
-                <FormRow type={"body2"} name={'Distance:'} value={''}/>
+                <FormRow type={"body2"} name={'Preferred Location:'} value={props.location}/>
               </Grid>
               <Grid item xs={12} container spacing={3}>
                 <FormRow type={"body2"} name={'Fitness:'} value={props.fitness}/>
@@ -86,9 +146,20 @@ export default function ExBuddyGrid(props) {
                 </Typography>
                 </Grid>
                 </Grid>
-                <Grid item xs={12} container spacing={3}> 
+                <Grid item xs={12} container spacing={3}>
+
+                {slicedimages.map((exercise) => ( 
+
+                <Grid item xs={3} >
+                {/* <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/56.jpg" /> */}
+                <img className={classes.img} alt="complex" src={pre.concat(exercise,post)} />
+                </Grid>
+                ))} 
+                
+
                 <Grid item xs={3}>
-                <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/8.jpg" />
+                <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/56.jpg" />
+                {/* <img className={classes.img} alt="complex" src={pre.concat(expics.pic_no,post)} /> */}
                 </Grid>
                 <Grid item xs={3}>
                 <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/56.jpg" />

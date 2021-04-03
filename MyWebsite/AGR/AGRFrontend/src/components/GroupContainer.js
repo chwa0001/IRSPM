@@ -30,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ExGroupGrid(props) {
   const classes = useStyles();
+  const pre = '/AGRFrontend/static/images/'
+  const post = '.jpg'
 
   function FormRow(rowdata) {
     return (
@@ -102,13 +104,19 @@ export default function ExGroupGrid(props) {
                   Remove
                 </Typography>
               </Grid>
+            
             </Grid>
             <Grid item>
+            <Grid item container direction="column" spacing={2}>
             <ButtonBase>
               <Typography variant="subtitle1"> + Join Group</Typography>
             </ButtonBase>
+            <ButtonBase>
+              <Typography variant="subtitle1"> + Invite Trainer</Typography>
+            </ButtonBase>
             </Grid>
-          </Grid>
+            </Grid>  
+            </Grid>          
         </Grid>
       </Paper>
     </div>
