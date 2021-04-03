@@ -551,43 +551,105 @@ from django_pandas.io import read_frame
 from django_pandas.managers import DataFrameManager
 from datetime import date
 import json
+import random
 
 
 class AlgoToLearn(APIView):
     # serializer_class = UpdateUserSerializer
 
     def get(self, request, format=None):
-        username = request.GET.get('username')
+        user_id = request.GET.get('user_id')
         try:
+            user_id = int(user_id)
             qs = UserExerciseRating.objects.all()
             q = qs.values('user_id', 'exercise_id','user_score')
             df = pd.DataFrame.from_records(q)
             # recommend exercise (individual)
-            exercise, usermatrix, itemid  = recommend_exercise(61, df , n=3, rating_scale=(1, 10))
+            exercise, usermatrix, itemid  = recommend_exercise(user_id, df , n=5, rating_scale=(1, 10))
             # recommend exercise buddy
-            nearestusers = nearestuser(20,3,usermatrix)
+            nearestusers = nearestuser(20,5,usermatrix)
+            nearestusers = nearestusers.astype(int)
+            
+            buddy_exercisesdata = []
+            
+            for k in nearestusers:
+                buddy_exercises = recommend_exercise_n_users([user_id,int(k)], df , n=3, rating_scale=(1, 10))
+                exercisepics_buddy=[]
+                for m in range(0,len(buddy_exercises)):  
+                    exercisepics = Exercise.objects.filter(id = str(buddy_exercises[m])).values('pic_no')
+                    exercisepics_buddy.append(exercisepics)
+                buddy_exercisesdata.append(exercisepics_buddy)
+
             # recommend exercise for buddy/group
-            group_exercises = recommend_exercise_n_users([1,2,3], df , n=3, rating_scale=(1, 10))
+            # nearestusers = [1,2,3]
+            exercisepicsdata=[]
+            for j in nearestusers:
+                print(j)
+                group_exercises = recommend_exercise_n_users([user_id,j], df , n=3, rating_scale=(1, 10))
+                for i in range(0,len(group_exercises)):  
+                    exercisepics = Exercise.objects.filter(id = str(group_exercises[i])).values('pic_no')
+                    # exercisepicsdata.append(exercisepics)
+                    df2 = pd.DataFrame.from_records(exercisepics)
+                    numbers = []
+                    for word in df2['pic_no'][0].split("'"):
+                        if word.isdigit():
+                            numbers.append(int(word))
+                    exercisepicsdata.append(numbers[0])
+
+
+            # group_exercises = recommend_exercise_n_users([1,2,3], df , n=3, rating_scale=(1, 10))
+            # exercisepicsdata=[]
+            # for i in range(0,len(group_exercises)):  
+            #     exercisepics = Exercise.objects.filter(id = str(group_exercises[i])).values('pic_no')
+            #     # exercisepicsdata.append(exercisepics)
+            #     df = pd.DataFrame.from_records(exercisepics)
+            #     numbers = []
+            #     for word in df['pic_no'][0].split("'"):
+            #         if word.isdigit():
+            #             numbers.append(int(word))
+            #     exercisepicsdata.append(numbers[0])
+
             # Extract exercise buddy user data
             nearestusersdata=[]
-            nearestusers = [1,2,3]
+            # nearestusers = [1,2,3]
             def calculate_age(born):
                 today = date.today()
                 return today.year - int(born[-4:]) # - ((today.month, today.day) < (int(born[2:4])), int(born[0:2]))
 
             for i in range(0,len(nearestusers)):  
-                nulist = UserData.objects.filter(user_id = str(nearestusers[i])).values('user_id','bmi','gender','goal','fitness_level')
-                nulist2 = User.objects.filter(id = str(nearestusers[i])).values('DOB')
-                cal_age = calculate_age(nulist2[0]['DOB'])
-                age = [json.loads(json.dumps({"age":cal_age}))]
-                combined_nulist = [nulist,age]
+                nulist = UserData.objects.filter(user_id = str(nearestusers[i])).values('user_id','bmi','gender','goal','fitness_level','location')
+                # nulist2 = User.objects.filter(id = str(nearestusers[i])).values('DOB')
+                # cal_age = calculate_age(nulist2[0]['DOB'])
+                random_age = random.randint(20, 30)
+                age = [json.loads(json.dumps({"age":random_age}))]
+                count = [json.loads(json.dumps({"count":i+1}))]
+                combined_nulist = [nulist,age,count]
                 nearestusersdata.append(combined_nulist)
 
 
             # return Response({"Recommneded exercise":exercise,"Recommneded buddies":nearestusers,"Recommneded buddy/group exercise":group_exercises}, status=status.HTTP_200_OK)
-            return Response({"ex":exercise,"nu":nearestusers,"ge":group_exercises, "nudata":nearestusersdata}, status=status.HTTP_200_OK)
+            return Response({"ex":exercise,"nu":nearestusers,"ge":group_exercises, "nudata":nearestusersdata, "expics":exercisepicsdata}, status=status.HTTP_200_OK)
         except Exception as error:
-            return Response({"Bad Request": str(error)}, status=status.HTTP_200_OK)
+            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# class GetExerciseDetails(APIView):
+#     def get(self, request, format=None):
+#         id1 = request.GET.getlist('id')
+#         pic_list = []
+#         try:
+#             for i in id1:
+#                 qs = Exercise.objects.filter(id = i)
+#                 q = qs.values('pic_no')
+#                 df = pd.DataFrame.from_records(q)
+#                 numbers = []
+#                 for word in df['pic_no'][0].split("'"):
+#                     if word.isdigit():
+#                         numbers.append(int(word))
+#                 pic_list.append(numbers[0])
+#             return Response({"pic_no":pic_list}, status=status.HTTP_200_OK)
+#         except Exception as error:
+#             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
 class FirstReco(APIView):
     def get(self, request, format=None):

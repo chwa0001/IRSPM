@@ -102,14 +102,14 @@ def recommend_exercise_n_users(user_id_array, db , n=10, rating_scale=(1, 10)):
     for n_user in user_id_array:
         average_pu = np.add(average_pu,algo.pu[n_user-1][:])
     average_pu = average_pu / (len(user_id_array))
-    print(algo.pu[0])
+    #print(algo.pu[0])
     algo.pu[0] = average_pu
     predictions = algo.test(testset)
-    print(algo.pu[0])
+    #print(algo.pu[0])
     
     top_n, bottom_n = get_top_n(predictions, str(1), n=n)
     
-    return [iid for (iid, _) in top_n]
+    return [int(iid) for (iid, _) in top_n]
 
     # print(algo.pu[0])
     # print(average_pu)

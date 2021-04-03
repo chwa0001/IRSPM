@@ -83,10 +83,11 @@ export default function ExerciseBuddytest() {
     const [nearest_users,setNearestusers] = useState([]);
     const [group_exercises,setGroupexercises] = useState([]);
     const [nu_data,setNUdata] = useState([]);
+    const [ex_pics,setExpicsdata] = useState([]);
 
     const [data,setData]=useState([]);
     const getData=()=>{
-      fetch('/AGR/Algo?username=2'
+      fetch('/AGR/Algo?user_id=61'
       ,{
         headers : { 
           'Content-Type': 'application/json',
@@ -105,16 +106,57 @@ export default function ExerciseBuddytest() {
           setNearestusers(myJson.nu)
           setGroupexercises(myJson.ge)
           setNUdata(myJson.nudata)
+          setExpicsdata(myJson.expics)
         });
     }
     useEffect(()=>{
       getData()
     },[])
+
+    // const [ex_pics2,setExpicsdata2] = useState([]);
+    // const pre = '/AGR/GetExerciseDetails?'
+    // const filler = '&id='
+    // const grpex = group_exercises
+    // const url = pre.concat(filler,1)
+    // const url2 = url.concat(filler,2)
+    // const url3 = url2.concat(filler,3)
+    // const url4 = url3.concat(filler,4)
+    // const urlist = []
+
+    // // {group_exercises.map((exercise) => ( 
+    // //   urlist.push(url2)  ) 
+    // // )}  
+
+    // const getData2=(i)=>{
+    //   // fetch('/AGR/GetExerciseDetails?id='.concat(i)
+    //   fetch(url4
+    //   ,{
+    //     headers : { 
+    //       'Content-Type': 'application/json',
+    //       'Accept': 'application/json'
+    //      }
+    //   }
+    //   )
+    //     .then(function(response){
+    //       console.log(response)
+    //       return response.json();
+    //     })
+    //     .then(function(myJson) {
+    //       console.log(myJson);
+    //       setExpicsdata2(myJson.pic_no)
+    //       // ex_pics3.push(ex_pics2)
     
+    //     });
+    //   }
+
+    //   useEffect(()=>{
+    //     getData2()
+    //   },[])
+
+
     return (
 
     <div className={classes.grow}>
-        <MenuBar/>
         <CustomScroller style={{ width: '100%', height: '100%' }}>
         <Grid container xs={12} justify="center"  spacing={3}>
           <Grid container item xs={12} justify="center">
@@ -139,7 +181,7 @@ export default function ExerciseBuddytest() {
           
         {nu_data.map((nuser) => (
             <Grid container item xs={12} justify="center">
-            <Paper square className={classes.card}><ExBuddyGrid userid={nuser[0][0].user_id} gender={nuser[0][0].gender} goal={nuser[0][0].goal} fitness={nuser[0][0].fitness_level} age={nuser[1][0].age} exericeid={group_exercises}/></Paper>
+            <Paper square className={classes.card}><ExBuddyGrid userid={nuser[0][0].user_id} gender={nuser[0][0].gender} goal={nuser[0][0].goal} fitness={nuser[0][0].fitness_level} location={nuser[0][0].location} age={nuser[1][0].age} count={nuser[2][0].count} expics={ex_pics} exerciseid={group_exercises}/></Paper>
             </Grid>
           ))}
 
