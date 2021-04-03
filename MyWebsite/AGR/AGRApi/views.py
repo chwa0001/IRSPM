@@ -136,6 +136,7 @@ class CreateUserView(APIView):
             username = request.data.get("username")
             password = request.data.get("password")
             queryset = User.objects.filter(username=username)
+            print(request.data)
             if CreateUser==0:
                 if queryset.exists():
                     user = queryset[0]
