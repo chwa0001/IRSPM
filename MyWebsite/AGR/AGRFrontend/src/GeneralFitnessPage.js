@@ -2,35 +2,26 @@ import React ,{ useState , useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup'
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
 import Paper from '@material-ui/core/Paper';
 import Collapse from '@material-ui/core/Collapse';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from "react-router-dom";
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import Cookies from 'js-cookie';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuBar from './components/MenuBar';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
-import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
-import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import ExerciseContainer from './components/ExerciseContainer';
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import CustomScroller from 'react-custom-scroller';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -63,7 +54,7 @@ function getSteps() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(4),
-    display: 'flex',
+    flexGrow: 1,
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -136,6 +127,7 @@ export default function GeneralFitnessPage() {
   const [exercises, setExercises] = useState([]);
   const [date, setDate] = useState('');
   const [setid, setSetid] = useState('');
+  const [rateit,triggerToRate] = useState(0);
   const pre = '/AGRFrontend/static/images/'
   const post = '.jpg'
   console.log(pre.concat(setid,post))
@@ -145,11 +137,6 @@ export default function GeneralFitnessPage() {
   const [userStatus, setUserStatus] = useState(-1);
   const [open, setOpen] = useState(false);
   
-  const muscleHandleChange = (event) => {
-    setMuscle(event.target.value);
-    console.log(muscle)
-  };
-
   const preferenceHandleChange = (event) => {
     setPreference(event.target.value);
     setPreferedExerciseId(listExercise[event.target.value].id);
@@ -159,8 +146,8 @@ export default function GeneralFitnessPage() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
+  const handleBackToHome = () => {
+    history.push('/Home');
   };
 
   useEffect(() => {
@@ -180,16 +167,16 @@ export default function GeneralFitnessPage() {
 
   }, [userStatus]);
 
-  const rateMyExercises = () => {
-    setActiveStep(2);
-  }
+  // const rateMyExercises = () => {
+  //   setActiveStep(2);
+  // }
 
   useEffect(() => {
     console.log("useEffect getting 4 random exercises")
     getExercise4General();
   }, []);
 
-  function getExercise4General(muscle) {
+  function getExercise4General() {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -198,7 +185,7 @@ export default function GeneralFitnessPage() {
         }),
     };
     console.log(requestOptions);
-    if (muscle!=' '){
+    if (username!=' '){
     fetch('/AGR/GetExercise4General', requestOptions)
         .then(function(response){
           if (!response.ok){
@@ -223,16 +210,16 @@ export default function GeneralFitnessPage() {
         )
       }
     else{
-      if(muscle==' ') {alert('Choose a mucle group to get started!')}
+      if(username==' ') {alert('Choose a mucle group to get started!')}
     }
   };
 
-  const getMyFirstGeneralExercise=(username,muscle,preferedExerciseId,listExercise)=> {
+  const getMyFirstGeneralExercise=(username,preferedExerciseId,listExercise)=> {
     if (username!=''){
       console.log(username)
       console.log("was here")
-      console.log(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=1&muscle=${muscle}`)
-      fetch(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=1&muscle=${muscle}`)
+      console.log(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=1`)
+      fetch(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=1&`)
           .then(response => response.json())
           .then(
             (data) => {
@@ -254,31 +241,25 @@ export default function GeneralFitnessPage() {
   }
 
   const handleNext = () => {
-    // console.log(activeStep)
-    // console.log(muscle)
     if(activeStep ===0){
-      console.log("routing through handleNext activeStep0")
+      console.log("routing through handleNext activeStep0");
+      getMyFirstGeneralExercise(username,preferedExerciseId,listExercise);
     }
     if(activeStep ===1){
-      console.log("routing through handleNext activeStep1")
+      console.log("routing through handleNext activeStep1");
+      setActiveStep(2);
     }
     if(activeStep ===2){
-      console.log("routing through handleNext activeStep2")
-
+      console.log("routing through handleNext activeStep2");
+      triggerToRate(1);
     }
-    // else if(activeStep ===0){
-    //   console.log("activestep ==0 branch")
-
-    //   getExercise4Muscle(muscle);
-    //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    // }
-  };
+  };  
 
   const choosingPrefferedExercise = (
     <div>
       <Grid container xs={12}>
         <Typography display='block' component="h5" variant="h5" > 
-          <p><i>1. Choose your preffered exercise</i></p>
+          <p><i>Choose your preffered exercise</i></p>
         </Typography>
       </Grid>
       <Grid container xs={12}>
@@ -292,94 +273,40 @@ export default function GeneralFitnessPage() {
           onChange={preferenceHandleChange}
           orientation='vertical'
           >
-            <FormControlLabel
-            value='0'
-            control={<Radio/>}
-            label={exercise1.exercise_name}
-            labelPlacement="right"
-            />
-            {/* <IconButton width={5} aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
-                <Typography display='block' component="h5" variant="h5" > 
-                  <p><i>2. Choose your preffered exercise</i></p>
-                </Typography>
-              </Grid>
-            </Collapse> */}
-
-            <FormControlLabel
-            value='1'
-            control={<Radio/>}
-            label={exercise2.exercise_name}
-            labelPlacement="right"
-            />
-            <FormControlLabel
-            value='2'
-            control={<Radio/>}
-            label={exercise3.exercise_name}
-            labelPlacement="right"
-            />
-            <FormControlLabel
-            value='3'
-            control={<Radio/>}
-            label={exercise4.exercise_name}
-            labelPlacement="right"
-            />
-
-            {/* {listExercise.map( (item) =>
+            <Grid className={classes.formControl} spacing={2}>
+            {listExercise.map((item) =>
+              <Grid>
               <FormControlLabel
-              value={item.id}
+              value={listExercise.indexOf(item).toString()}
               control={<Radio/>}
               label={item.exercise_name}
               labelPlacement="right"
               />
-            )} */}
-              
-              {/* // <Card fullWidth='true'>
-              //   <CardContent width='25vw'>
-              //     <Typography component="body" variant="body" align='center'>
-              //       {item.exercise_name}
-              //     </Typography>
-              //     <IconButton width={5} aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-              //       {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              //     </IconButton>
-              //   </CardContent>
-              //   <Collapse in={open} timeout="auto" unmountOnExit>
-              //     <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
-              //     </Grid>
-              //   </Collapse>
-              // </Card> */}
+              <Collapse in={listExercise.indexOf(item).toString()===preference}>
+                <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
+                  <Grid item xs={12} sm={6}>
+                    <CardMedia
+                      style = {{ height: 100, paddingTop: '90%'}}
+                      image={pre.concat(item.pic_no[0],post)}
+                      />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <CardMedia
+                        style = {{ height: 100, paddingTop: '90%'}}
+                        image={pre.concat(item.pic_no[1],post)}
+                        />
+                  </Grid>
+                </Grid>
+              </Collapse>
+              </Grid>
+            )}
+            </Grid>
           </RadioGroup>
         </FormControl>
       </Grid>
-      <ButtonGroup 
-        disableElevation 
-        variant="contained" 
-        fullWidth
-        className={classes.buttongrouping}
-        >
-        <Button
-          className={classes.backbutton}
-          startIcon={<ArrowBackIcon />}
-          backgroundColor="secondary"
-          onClick={handleBack}
-        >
-          Select Targeted Muscle
-        </Button>
-        <Button
-          className={classes.submitbutton}
-          endIcon={<FitnessCenterIcon />}
-          color="secondary"
-          onClick={() => getMyFirstGeneralExercise(username,muscle,preferedExerciseId,listExercise)}
-        >
-          See my Exercise Set!
-        </Button>
-      </ButtonGroup>
-
     </div>
   )
+
   const showExercises = (
     <div>
       <div className={classes.paper}>
@@ -388,17 +315,15 @@ export default function GeneralFitnessPage() {
         className={classes.text}
         >
           <Grid item xs={12}>
-            <Typography component="h4" variant="h4"> 
+            {/* <Typography component="h4" variant="h4"> 
               <b>Set Type: {mode}</b>
-            </Typography>
+            </Typography> */}
             <Typography component="h5" variant="h5"> 
               <i>Exercise Date: {date}</i>
             </Typography>
           </Grid>
         </Grid>
       </div>
-      <CustomScroller style={{ width: '100%', height: '100%' }}>
-      <CssBaseline />
       {exercises.map((tile) => (
         <ExerciseContainer 
         img1= {pre.concat(tile.pic_no[0],post)} 
@@ -413,30 +338,6 @@ export default function GeneralFitnessPage() {
         difficulty= {tile.difficulty} 
         Instructions= {tile.instruction_text}/>
       ))}
-      <ButtonGroup 
-        disableElevation 
-        variant="contained" 
-        fullWidth
-        className={classes.buttongrouping}
-        >
-        <Button
-          className={classes.backbutton}
-          startIcon={<ArrowBackIcon />}
-          backgroundColor="secondary"
-          onClick={handleBack}
-        >
-          Go back to preffered Exercise
-        </Button>
-        <Button
-          className={classes.submitbutton}
-          endIcon={<FitnessCenterIcon />}
-          color="secondary"
-          onClick={() => rateMyExercises()}
-        >
-          Rate my exercises!
-        </Button>
-      </ButtonGroup>
-      </CustomScroller>
     </div>
   )
   
@@ -445,18 +346,18 @@ export default function GeneralFitnessPage() {
     exercises= {exercises} 
     set_id={setid}
     date={date}
+    rateit={rateit}
     />
   )
 
   return (
         <div className={classes.paper}>
           <Card>
-            <Grid item xs={12}>
-              <Typography component="h4" variant="h4"> 
-                <b>Muscle Building</b>
-              </Typography>
-            </Grid>
-            <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#D7E7DC'}}>
+            <CardHeader avatar={<DirectionsRunIcon/>} 
+              action={<IconButton aria-label="settings"><MoreVertIcon /></IconButton>}
+              title={<Typography variant="h5" component="h2">General Fitness Training</Typography>}
+            />
+            <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#34ebe8'}}>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -480,26 +381,50 @@ export default function GeneralFitnessPage() {
                   activeStep===1?showExercises:rateExercise}
                 </Grid>
                 <Grid item xs={12}>
-                <div>
-                  {activeStep === steps.length ? (
-                    <div>
-                      <Button onClick={handleReset}>Reset</Button>
-                    </div>
-                  ) : (
-                      <div>
-                        <div>
-                          <Button
-                            disabled={activeStep === 0}
-                            onClick={handleBack}
-                            className={classes.backButton}
-                          >
-                            Back
-                          </Button>                          
-                        </div>
-                      </div>
-                      )
-                  }
-                </div>
+                  {/* back button for all pages*/}
+                  <Button
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  className={classes.backButton}
+                  >
+                  {(()=>{
+                      switch(activeStep){
+                        case 0:
+                          return 'Back';
+                        case 1:
+                          return 'Go back to preffered Exercise';
+                        case 2:
+                          return 'Check my exercise set';  
+                        default:
+                          return 'Back';
+                      }
+                  })()}
+                  {/* only for the last page */}
+                  </Button>
+                  <Button
+                    style={activeStep !== 3?{display: 'none'}:{display: null}}
+                    onClick={handleBackToHome}
+                    className={classes.backButton}
+                    color="secondary"
+                    variant="contained"
+                    >
+                    Rate My Exercise Later
+                  </Button>
+                  {/* Next pages for all pages */}
+                  <Button variant="contained" color="primary" onClick={handleNext}>
+                    {(()=>{
+                      switch(activeStep){
+                        case 0:
+                          return 'See my Exercise Set';
+                        case 1:
+                          return 'Rate my exercises';
+                        case 2:
+                          return 'Save my rating';  
+                        default:
+                          return 'Next';
+                      }
+                    })()}
+                  </Button>
                 </Grid>
               </Grid>
             </CardContent>

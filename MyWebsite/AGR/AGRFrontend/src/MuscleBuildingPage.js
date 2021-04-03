@@ -1,7 +1,6 @@
 import React ,{ useState , useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup'
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Collapse from '@material-ui/core/Collapse';
@@ -278,7 +277,7 @@ export default function MuscleBuildingPage() {
     <div>
       <Grid item xs={12}>
         <Typography component="h5" variant="h5"> 
-          <i>1. To get started, choose a targeted muscle group</i>
+          <i>To get started, choose a targeted muscle group</i>
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -332,7 +331,7 @@ export default function MuscleBuildingPage() {
     <div>
       <Grid container xs={12}>
         <Typography display='block' component="h5" variant="h5" > 
-          <p><i>2. Choose your preffered exercise</i></p>
+          <p><i>Choose your preffered exercise</i></p>
         </Typography>
       </Grid>
       <Grid container xs={12}>
@@ -433,29 +432,6 @@ export default function MuscleBuildingPage() {
         difficulty= {tile.difficulty} 
         Instructions= {tile.instruction_text}/>
       ))}
-      {/* <ButtonGroup 
-        disableElevation 
-        variant="contained" 
-        fullWidth
-        className={classes.buttongrouping}
-        >
-        <Button
-          className={classes.backbutton}
-          startIcon={<ArrowBackIcon />}
-          backgroundColor="secondary"
-          onClick={handleBack}
-        >
-          Go back to preffered Exercise
-        </Button>
-        <Button
-          className={classes.submitbutton}
-          endIcon={<FitnessCenterIcon />}
-          color="secondary"
-          onClick={() => rateMyExercises()}
-        >
-          Rate my exercises!
-        </Button>
-      </ButtonGroup> */}
     </div>
   )
   
@@ -469,90 +445,89 @@ export default function MuscleBuildingPage() {
   )
 
   return (
-        <div className={classes.paper}>
-          <Card>
-          <CardHeader avatar={<FitnessCenterIcon/>} 
-            action={<IconButton aria-label="settings"><MoreVertIcon /></IconButton>}
-            title={<Typography variant="h5" component="h2">Muscle Building</Typography>}
-          />
-            <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#34ebe8'}}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-            </Stepper>
-            <CardContent>
-              <Grid container spacing={2}>
-                {/* <Grid item xs={12}>
-                  {
-                    {
-                      0: <getMusclePrefference />,
-                      1: <choosingPrefferedExercise />,
-                      2: <showExercises/>
-                    }[activeStep]
+    <div className={classes.paper}>
+      <Card>
+        <CardHeader avatar={<FitnessCenterIcon/>} 
+          action={<IconButton aria-label="settings"><MoreVertIcon /></IconButton>}
+          title={<Typography variant="h5" component="h2">Muscle Building</Typography>}
+        />
+        <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#34ebe8'}}>
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+        </Stepper>
+        <CardContent>
+          <Grid container spacing={2}>
+            {/* <Grid item xs={12}>
+              {
+                {
+                  0: <getMusclePrefference />,
+                  1: <choosingPrefferedExercise />,
+                  2: <showExercises/>
+                }[activeStep]
+              }
+            </Grid> */}
+
+            <Grid item xs={12}>
+              {activeStep===0?getMusclePrefference:
+              activeStep===1?choosingPrefferedExercise:
+              activeStep===2?showExercises:rateExercise}
+            </Grid>
+            <Grid item xs={12}>
+              {/* back button for all pages*/}
+              <Button
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              className={classes.backButton}
+              >
+              {(()=>{
+                  switch(activeStep){
+                    case 0:
+                      return 'Back';
+                    case 1:
+                      return 'Select Targeted Muscle';
+                    case 2:
+                      return 'Go back to preffered Exercise';
+                    case 3:
+                      return 'Check my exercise set';  
+                    default:
+                      return 'Back';
                   }
-                </Grid> */}
-                {activeStep === 0 ? (
-                  <Grid item xs={12}>
-                  {getMusclePrefference}
-                  </Grid>
-                ):(
-                  <Grid item xs={12}>
-                    {activeStep===1?choosingPrefferedExercise:
-                    activeStep===2?showExercises:rateExercise}
-                  </Grid>
-                )}
-                <Grid item xs={12}>
-                  <Button
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  className={classes.backButton}
-                  >
-                  {(()=>{
-                      switch(activeStep){
-                        case 0:
-                          return 'Back';
-                        case 1:
-                          return 'Select Targeted Muscle';
-                        case 2:
-                          return 'Go back to preffered Exercise';
-                        case 3:
-                          return 'Check my exercise set';  
-                        default:
-                          return 'Back';
-                      }
-                  })()}
-                  </Button>
-                  <Button
-                    style={activeStep !== 3?{display: 'none'}:{display: null}}
-                    onClick={handleBackToHome}
-                    className={classes.backButton}
-                    color="secondary"
-                    variant="contained"
-                    >
-                    Rate My Exercise Later
-                  </Button>
-                  <Button variant="contained" color="primary" onClick={handleNext}>
-                    {(()=>{
-                      switch(activeStep){
-                        case 0:
-                          return 'Generate exercises';
-                        case 1:
-                          return 'See my Exercise Set';
-                        case 2:
-                          return 'Rate my exercises';
-                        case 3:
-                          return 'Save my rating';  
-                        default:
-                          return 'Next';
-                      }
-                    })()}
-                  </Button>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </div>
+              })()}
+              {/* only for the last page */}
+              </Button>
+              <Button
+                style={activeStep !== 3?{display: 'none'}:{display: null}}
+                onClick={handleBackToHome}
+                className={classes.backButton}
+                color="secondary"
+                variant="contained"
+                >
+                Rate My Exercise Later
+              </Button>
+              {/* Next pages for all pages */}
+              <Button variant="contained" color="primary" onClick={handleNext}>
+                {(()=>{
+                  switch(activeStep){
+                    case 0:
+                      return 'Generate exercises';
+                    case 1:
+                      return 'See my Exercise Set';
+                    case 2:
+                      return 'Rate my exercises';
+                    case 3:
+                      return 'Save my rating';  
+                    default:
+                      return 'Next';
+                  }
+                })()}
+              </Button>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

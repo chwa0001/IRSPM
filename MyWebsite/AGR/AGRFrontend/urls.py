@@ -13,6 +13,6 @@ urlpatterns = [
     path('ExerciseSet',index),
     path('ModeSelection',index),
     path('GeneralFitness',index),
-    path('CardioExercises',index),
+    path('EndurenceTraining',index),
     path('ExerciseBuddy',index),
 ]
