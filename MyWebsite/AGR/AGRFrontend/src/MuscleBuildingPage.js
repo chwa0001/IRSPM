@@ -19,7 +19,6 @@ import IconButton from '@material-ui/core/IconButton';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import ExerciseContainer from './components/ExerciseContainer';
-
 import CustomScroller from 'react-custom-scroller';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -32,6 +31,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 import ExerciseRatingContainer from './components/ExerciseRatingContainer'
 import CardHeader from '@material-ui/core/CardHeader';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import CardMedia from '@material-ui/core/CardMedia';
+import Box from '@material-ui/core/Box';
 
 function Copyright() {
   return (
@@ -142,6 +143,7 @@ export default function MuscleBuildingPage() {
   };
 
   const preferenceHandleChange = (event) => {
+    console.log(event.target.value)
     setPreference(event.target.value);
     setPreferedExerciseId(listExercise[event.target.value].id);
   }
@@ -340,69 +342,36 @@ export default function MuscleBuildingPage() {
           <RadioGroup 
           aria-label="Prefered excercise" 
           name="Prefered excercise" 
-          value={preference} 
+          value={preference}
           onChange={preferenceHandleChange}
           orientation='vertical'
           >
-            <FormControlLabel
-            value='0'
-            control={<Radio/>}
-            label={exercise1.exercise_name}
-            labelPlacement="right"
-            />
-            {/* <IconButton width={5} aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
-                <Typography display='block' component="h5" variant="h5" > 
-                  <p><i>2. Choose your preffered exercise</i></p>
-                </Typography>
-              </Grid>
-            </Collapse> */}
-
-            <FormControlLabel
-            value='1'
-            control={<Radio/>}
-            label={exercise2.exercise_name}
-            labelPlacement="right"
-            />
-            <FormControlLabel
-            value='2'
-            control={<Radio/>}
-            label={exercise3.exercise_name}
-            labelPlacement="right"
-            />
-            <FormControlLabel
-            value='3'
-            control={<Radio/>}
-            label={exercise4.exercise_name}
-            labelPlacement="right"
-            />
-
-            {/* {listExercise.map( (item) =>
+            {listExercise.map((item) =>
+              <Box>
               <FormControlLabel
-              value={item.id}
+              value={listExercise.indexOf(item).toString()}
               control={<Radio/>}
               label={item.exercise_name}
               labelPlacement="right"
               />
-            )} */}
-              
-              {/* // <Card fullWidth='true'>
-              //   <CardContent width='25vw'>
-              //     <Typography component="body" variant="body" align='center'>
-              //       {item.exercise_name}
-              //     </Typography>
-              //     <IconButton width={5} aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-              //       {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              //     </IconButton>
-              //   </CardContent>
-              //   <Collapse in={open} timeout="auto" unmountOnExit>
-              //     <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
-              //     </Grid>
-              //   </Collapse>
-              // </Card> */}
+              <Collapse in={listExercise.indexOf(item).toString()===preference}>
+                <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
+                  <Grid item xs={12} sm={6}>
+                    <CardMedia
+                      style = {{ height: 100, paddingTop: '90%'}}
+                      image={pre.concat(item.pic_no[0],post)}
+                      />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <CardMedia
+                        style = {{ height: 100, paddingTop: '90%'}}
+                        image={pre.concat(item.pic_no[1],post)}
+                        />
+                  </Grid>
+                </Grid>
+              </Collapse>
+              </Box>
+            )}
           </RadioGroup>
         </FormControl>
       </Grid>
