@@ -542,7 +542,21 @@ class CheckModeFirst(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
-
+class GetExerciseList(APIView):
+    def get(self, request, format=None):
+        try:
+            
+            keywords=request.GET.get('search')
+            if 'search' not in request.GET.keys() or keywords==None or keywords=="":
+                exercises=Exercise.objects.order_by('exercise_name')[0:50]
+            else:
+                exercises=Exercise.objects.filter(exercise_name__contains=keywords)
+            renderExercise=[]
+            for exercise in exercises:
+                renderExercise.append(prepExerciseDetails(ExerciseSerializer(exercise).data))
+            return Response({"exercises":renderExercise , "status":"good"}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
