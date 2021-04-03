@@ -86,7 +86,7 @@ export default function ExerciseContainer(props) {
     createData('Mechanics', props.mechanics),
     createData('Equipment', props.equipment),
     createData('Difficulty', props.difficulty),
-    createData('Exercise Guide', props.Instructions),
+    // createData('Exercise Guide', props.Instructions),
   ]
 
   return (
@@ -112,6 +112,17 @@ export default function ExerciseContainer(props) {
                   </TableRow>
                   </React.Fragment>
                 ))}
+                <React.Fragment>
+                  <TableRow key="Instructions">
+                    <TableCell />
+                    <TableCell style={{ width: 100, fontSize: 16 }} variant="head">
+                      Instruction
+                    </TableCell>
+                    <TableCell style={{ width: 600, fontSize: 13 }} align="left">
+                      {(props.Instructions).map((line) => (<p>{line}</p>))}
+                    </TableCell>
+                  </TableRow>
+                  </React.Fragment>
             <TableRow>
               <TableCell scope="row" align="left" size="small" width={5} alignContent="left">
                   <IconButton width={5} aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
