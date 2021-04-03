@@ -192,7 +192,7 @@ export default function UserDataPage() {
       }
     else{
       if(bmi=='') {alert('All field must be field!')}
-      else if (fitness_level==''){alert('All field must be field!')}
+      else if (fitnesslevel==''){alert('All field must be field!')}
       else if (goal==''){alert('All field must be field!')}
       else if (gender==''){alert('All field must be field!')}
       else if (intensity==''){alert('All field must be field!')}

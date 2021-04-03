@@ -74,6 +74,8 @@ export default function ExerciseContainer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const pre = '/AGRFrontend/static/images/'
+  const post = '.jpg'
   
   function createData(name, details) {
     return { name, details };
@@ -137,18 +139,15 @@ export default function ExerciseContainer(props) {
       </TableContainer>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
-          <Grid item xs={12} sm={6}>
+          {props.imgs.map(
+            (pic)=>
+            <Grid item xs={12} sm={6}>
             <CardMedia
               style = {{ height: 100, paddingTop: '90%'}}
-              image={props.img1}
+              image={pre.concat(pic,post)}
               />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <CardMedia
-                style = {{ height: 100, paddingTop: '90%'}}
-                image={props.img2}
-                />
-          </Grid>
+            </Grid>
+          )}
         </Grid>
         <CardContent className={{marginBottom:'10%'}}></CardContent>
       </Collapse>

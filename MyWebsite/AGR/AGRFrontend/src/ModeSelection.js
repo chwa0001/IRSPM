@@ -78,7 +78,7 @@ export default function ModeSelection() {
   const [location,setLocation] = useState('');
 
   const [FitnessMode, setFitnessMode] = useState(0);
-  const [checkifFirst, setCheckifFirst] = useState("NA")
+  const [checkifFirst, setCheckifFirst] = useState("NA");
 
   const handleChangeFitnessMode = (event, newValue) => {
     setFitnessMode(newValue);
@@ -94,25 +94,61 @@ export default function ModeSelection() {
     SetPastMode(!event.target.checked);
   };
 
-  const handleNext = () => {
+  function SetUserData(username,fitnesslevel,goal,intensity,gender,bmi,location) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username:username,
+          gender:gender,
+          fitness_level:fitnesslevel,
+          goal:goal,
+          bmi:bmi,
+          intensity:intensity,
+          location:location,
+        }),
+    };
+    if (username!='' && fitnesslevel!='' && gender!='' && goal!='' && intensity!='' && bmi!=''){
+    fetch('/AGR/SetUserData', requestOptions)
+        .then(function(response){
+          if (!response.ok){
+            throw new Error('Response not OK');
+          }
+          else{
+            return response.json();
+          }
+        }).then(
+          (error) => {alert(error)}
+        )
+      }
+    else{
+      if(bmi=='') {alert('All field must be field!')}
+      else if (fitnesslevel==''){alert('All field must be field!')}
+      else if (goal==''){alert('All field must be field!')}
+      else if (gender==''){alert('All field must be field!')}
+      else if (intensity==''){alert('All field must be field!')}
+    }
+  }
 
+  const handleNext = () => {
     if(activeStep ===2){
+      SetUserData(username,fitnesslevel,goal,intensity,gender,bmi,location);
       if(RecommendMode){
         switch(FitnessMode){
           case 1:
             history.push('/MuscleBuilding');
             break;
           case 2:
-            switch(checkifFirst){
-              case 'NA':
-                alert("unable to check backend on history")
-              case 'YES':
-                history.push('/MuscleBuilding')
-              case 'NO':
-                history.push('/RMuscleBuilding')
-              default:
-                alert("unable to check backend on history")
+            if(checkifFirst==='YES')
+            {
+              history.push('/MuscleBuilding')
             }
+            else if(checkifFirst==='NO'){
+              history.push('/RMuscleBuilding')
+            }
+            else{
+              alert("unable to check backend on history")
+            }          
             break;
           case 3:
             history.push('/MuscleBuilding');
@@ -167,8 +203,9 @@ export default function ModeSelection() {
           .then(response => response.json())
           .then(
             (data) => {
-              console.log(data)
+              console.log(checkifFirst)
               setCheckifFirst(data.firsttime)
+
             },
             (error) => {alert(error)}
           )

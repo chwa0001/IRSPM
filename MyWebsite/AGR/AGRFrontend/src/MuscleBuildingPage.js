@@ -103,11 +103,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MuscleBuildingPage() {
   const classes = useStyles();
   const username = Cookies.get('username')
-  console.log(username)
-  // console.log(Cookies.get())
-  const [step1,SetStep1] = useState(false);
-  const [step2,SetStep2] = useState(false);
-  
+  console.log(username)  
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
   
@@ -116,10 +112,6 @@ export default function MuscleBuildingPage() {
   const [listExercise,setListExercise] = useState([]);
   const musclechoices = ['Forearm','Shoulders','Triceps','Upper Legs','Lower Legs','Chest','Back','Biceps','Abs', 'Glutes']
   const [preference,setPreference] = useState('')
-  const [exercise1,setExercise1] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
-  const [exercise2,setExercise2] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
-  const [exercise3,setExercise3] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
-  const [exercise4,setExercise4] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
   const [preferedExerciseId,setPreferedExerciseId] = useState('-1')
 
   const [mode, setMode] = useState('MuscleBuilding');
@@ -129,12 +121,10 @@ export default function MuscleBuildingPage() {
   const [rateit,triggerToRate] = useState(0);
   const pre = '/AGRFrontend/static/images/'
   const post = '.jpg'
-  console.log(pre.concat(setid,post))
-
+  console.log(pre.concat(setid,post));
 
   const history = useHistory();
   const [userStatus, setUserStatus] = useState(-1);
-  const [open, setOpen] = useState(false);
   
   const muscleHandleChange = (event) => {
     setMuscle(event.target.value);
@@ -155,9 +145,6 @@ export default function MuscleBuildingPage() {
     history.push('/Home');
   };
 
-  // const handleReset = () => {
-  //   setActiveStep(0);
-  // };
 
   useEffect(() => {
     if(userStatus===0)
@@ -166,7 +153,6 @@ export default function MuscleBuildingPage() {
       alert('Account has been updated!');
       history.push('/Home');
     }
-    // temp not working
     else if(userStatus===5)
     {
       console.log("userStatus: 3")
@@ -176,9 +162,6 @@ export default function MuscleBuildingPage() {
 
   }, [userStatus]);
 
-  // const rateMyExercises = () => {
-  //   setActiveStep(3);
-  // }
 
   function getExercise4Muscle(muscle) {
     const requestOptions = {
@@ -203,13 +186,8 @@ export default function MuscleBuildingPage() {
           (data) => {
             setListExercise(data.exercises);
             setUserStatus(data.status);
-            setExercise1(data.exercises[0]);
-            setExercise2(data.exercises[1]);
-            setExercise3(data.exercises[2]);
-            setExercise4(data.exercises[3]);
             console.log(data.exercises);
             console.log(listExercise);
-            // console.log(listExercise[0].id);
           },
           (error) => {alert(error)}
         )
@@ -247,8 +225,6 @@ export default function MuscleBuildingPage() {
   }
 
   const handleNext = () => {
-    // console.log(activeStep)
-    // console.log(muscle)
     if(activeStep ===0){
       console.log("routing through handleNext activeStep0");
       getExercise4Muscle(muscle);
@@ -265,12 +241,6 @@ export default function MuscleBuildingPage() {
       console.log("routing through handleNext activeStep3");
       triggerToRate(1);
     }
-    // else if(activeStep ===0){
-    //   console.log("activestep ==0 branch")
-
-    //   getExercise4Muscle(muscle);
-    //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    // }
   };
 
   const getMusclePrefference = (
@@ -300,29 +270,6 @@ export default function MuscleBuildingPage() {
             )}
           </Select>
         </FormControl>
-        {/* <ButtonGroup 
-          disableElevation 
-          variant="contained" 
-          width='20vw'
-          className={classes.buttongrouping2}
-          >
-          <Button
-          className={classes.backbutton}
-          startIcon={<ArrowBackIcon />}
-          backgroundColor="secondary"
-          onClick={() => {history.goBack();}}
-          >
-            Back
-          </Button>
-          <Button
-            className={classes.submitbutton2}
-            endIcon={<TrendingFlatIcon />}
-            color="secondary"
-            onClick={() => getExercise4Muscle(muscle)}
-          >
-            Generate exercises!
-          </Button>
-        </ButtonGroup> */}
       </Grid>
     </div>
   )
@@ -356,18 +303,15 @@ export default function MuscleBuildingPage() {
               />
               <Collapse in={listExercise.indexOf(item).toString()===preference}>
                 <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
-                  <Grid item xs={12} sm={6}>
+                  {item.pic_no.map(
+                    (pic)=>
+                    <Grid item xs={12} sm={6}>
                     <CardMedia
                       style = {{ height: 100, paddingTop: '90%'}}
-                      image={pre.concat(item.pic_no[0],post)}
+                      image={pre.concat(pic,post)}
                       />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <CardMedia
-                        style = {{ height: 100, paddingTop: '90%'}}
-                        image={pre.concat(item.pic_no[1],post)}
-                        />
-                  </Grid>
+                    </Grid>
+                  )}
                 </Grid>
               </Collapse>
               </Grid>
@@ -376,29 +320,6 @@ export default function MuscleBuildingPage() {
           </RadioGroup>
         </FormControl>
       </Grid>
-      {/* <ButtonGroup 
-        disableElevation 
-        variant="contained" 
-        fullWidth
-        className={classes.buttongrouping}
-        >
-        <Button
-          className={classes.backbutton}
-          startIcon={<ArrowBackIcon />}
-          backgroundColor="secondary"
-          onClick={handleBack}
-        >
-          Select Targeted Muscle
-        </Button>
-        <Button
-          className={classes.submitbutton}
-          endIcon={<FitnessCenterIcon />}
-          color="secondary"
-          onClick={() => getMyFirstMuscleBuildingExercise(username,muscle,preferedExerciseId,listExercise)}
-        >
-          See my Exercise Set!
-        </Button>
-      </ButtonGroup> */}
     </div>
   )
   const showExercises = (
@@ -420,8 +341,7 @@ export default function MuscleBuildingPage() {
       </div>
       {exercises.map((tile) => (
         <ExerciseContainer 
-        img1= {pre.concat(tile.pic_no[0],post)} 
-        img2= {pre.concat(tile.pic_no[1],post)} 
+        imgs= {tile.pic_no}
         exercise_name= {tile.exercise_name} 
         main_muscle= {tile.main_musclegroup} 
         detailed_musclegroup= {tile.detail_muscle} 
