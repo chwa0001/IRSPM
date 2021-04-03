@@ -346,8 +346,9 @@ export default function MuscleBuildingPage() {
           onChange={preferenceHandleChange}
           orientation='vertical'
           >
+            <Grid className={classes.formControl} spacing={2}>
             {listExercise.map((item) =>
-              <Box>
+              <Grid>
               <FormControlLabel
               value={listExercise.indexOf(item).toString()}
               control={<Radio/>}
@@ -370,8 +371,9 @@ export default function MuscleBuildingPage() {
                   </Grid>
                 </Grid>
               </Collapse>
-              </Box>
+              </Grid>
             )}
+            </Grid>
           </RadioGroup>
         </FormControl>
       </Grid>
