@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{ useState , useEffect } from 'react';
 import Cookies from 'js-cookie';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -70,25 +70,27 @@ export default function ModeSelection() {
   const classes = useStyles();
   let history = useHistory()
   const username = Cookies.get('username');
-  const [RecommendMode,SetRecommendMode] = React.useState(true);
-  const [GlossaryMode,SetGlossaryMode] = React.useState(false);
-  const [PastMode,SetPastMode] = React.useState(false);
+  const [RecommendMode,SetRecommendMode] = useState(true);
+  const [GlossaryMode,SetGlossaryMode] = useState(false);
+  const [PastMode,SetPastMode] = useState(false);
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
 
-  const [fitnesslevel,setFitnesslevel] = React.useState('');
-  const [gender,setGender] = React.useState('');
-  const [goal,setGoal] = React.useState('');
-  const [bmi,setBmi] = React.useState('');
-  const [intensity,setIntensity] = React.useState('');
-  const [location,setLocation] = React.useState('');
+  const [fitnesslevel,setFitnesslevel] = useState('');
+  const [gender,setGender] = useState('');
+  const [goal,setGoal] = useState('');
+  const [bmi,setBmi] = useState('');
+  const [intensity,setIntensity] = useState('');
+  const [location,setLocation] = useState('');
 
-  const [FitnessMode, setFitnessMode] = React.useState(0);
+  const [FitnessMode, setFitnessMode] = useState(0);
+  const [checkifFirst, setCheckifFirst] = useState("NA")
 
   const handleChangeFitnessMode = (event, newValue) => {
     setFitnessMode(newValue);
+    CheckModeFirst(username,newValue)
   };
 
   const handleChangeMode1 = (event) => {
@@ -109,7 +111,16 @@ export default function ModeSelection() {
             history.push('/MuscleBuilding');
             break;
           case 2:
-            history.push('/MuscleBuilding');
+            switch(checkifFirst){
+              case 'NA':
+                alert("unable to check backend on history")
+              case 'YES':
+                history.push('/MuscleBuilding')
+              case 'NO':
+                history.push('/RMuscleBuilding')
+              default:
+                alert("unable to check backend on history")
+            }
             break;
           case 3:
             history.push('/MuscleBuilding');
@@ -161,6 +172,26 @@ export default function ModeSelection() {
     setLocation(event.target.value);
   };
   
+  const CheckModeFirst=(username,mode)=> {
+    if (username!=''){
+      console.log(`/AGR/CheckModeFirst?username=${username}&mode=${mode}`)
+      fetch(`/AGR/CheckModeFirst?username=${username}&mode=${mode}`)
+          .then(response => response.json())
+          .then(
+            (data) => {
+              console.log(data)
+              setCheckifFirst(data.firsttime)
+            },
+            (error) => {alert(error)}
+          )
+      ;
+    }
+    else{
+      if(username==''){alert('Username is not detected!')}
+      if(mode==''){alert('There is no mode detected!')}
+    }
+  };
+
   const renderModeSelection = (
   <Grid container spacing={2}>
   <Grid item xs={12}>
@@ -416,7 +447,7 @@ export default function ModeSelection() {
     </div>
   )
   
-  React.useEffect(()=> {
+  useEffect(()=> {
 
     console.log("react response - UseEffect")
 

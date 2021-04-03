@@ -1,38 +1,37 @@
 import React ,{ useState , useEffect } from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import Paper from '@material-ui/core/Paper';
 import Collapse from '@material-ui/core/Collapse';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import { useHistory } from "react-router-dom";
 import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import Cookies from 'js-cookie';
-import MenuBar from './components/MenuBar';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import IconButton from '@material-ui/core/IconButton';
+import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 import ExerciseContainer from './components/ExerciseContainer';
-import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-
+import CustomScroller from 'react-custom-scroller';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
-
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import ExerciseRatingContainer from './components/ExerciseRatingContainer'
+import CardHeader from '@material-ui/core/CardHeader';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import CardMedia from '@material-ui/core/CardMedia';
+import Box from '@material-ui/core/Box';
 
 function Copyright() {
   return (
@@ -48,15 +47,15 @@ function Copyright() {
 }
 
 function getSteps() {
-  return ['Choose your preffered exercise!','Exercise Set','Rate Exercise Set!'];
+  return ['Choose targeted muscle', 'Exercise Set','Rate Exercise Set!'];
 };
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(4),
-    flexGrow: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    flexGrow: 1,
   },
   grow: {
     flexGrow: 1,
@@ -101,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function GeneralFitnessPage() {
+export default function MuscleBuildingPage() {
   const classes = useStyles();
   const username = Cookies.get('username')
   console.log(username)
@@ -115,7 +114,7 @@ export default function GeneralFitnessPage() {
   
   const [muscle,setMuscle] = useState(' ');
   const [listExercise,setListExercise] = useState([]);
-  const musclechoices = ['Forearm','Shoulders','Triceps','Upper Legs','Lower Legs','Cardio','Chest','Back','Biceps','Abs', 'Glutes']
+  const musclechoices = ['Forearm','Shoulders','Triceps','Upper Legs','Lower Legs','Chest','Back','Biceps','Abs', 'Glutes']
   const [preference,setPreference] = useState('')
   const [exercise1,setExercise1] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
   const [exercise2,setExercise2] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
@@ -123,7 +122,7 @@ export default function GeneralFitnessPage() {
   const [exercise4,setExercise4] = useState({'id':-1, "exercise_name":"waiting for muscle choice"})
   const [preferedExerciseId,setPreferedExerciseId] = useState('-1')
 
-  const [mode, setMode] = useState('General Fitness');
+  const [mode, setMode] = useState('MuscleBuilding');
   const [exercises, setExercises] = useState([]);
   const [date, setDate] = useState('');
   const [setid, setSetid] = useState('');
@@ -137,7 +136,13 @@ export default function GeneralFitnessPage() {
   const [userStatus, setUserStatus] = useState(-1);
   const [open, setOpen] = useState(false);
   
+  const muscleHandleChange = (event) => {
+    setMuscle(event.target.value);
+    console.log(muscle)
+  };
+
   const preferenceHandleChange = (event) => {
+    console.log(event.target.value)
     setPreference(event.target.value);
     setPreferedExerciseId(listExercise[event.target.value].id);
   }
@@ -149,6 +154,10 @@ export default function GeneralFitnessPage() {
   const handleBackToHome = () => {
     history.push('/Home');
   };
+
+  // const handleReset = () => {
+  //   setActiveStep(0);
+  // };
 
   useEffect(() => {
     if(userStatus===0)
@@ -168,25 +177,21 @@ export default function GeneralFitnessPage() {
   }, [userStatus]);
 
   // const rateMyExercises = () => {
-  //   setActiveStep(2);
+  //   setActiveStep(3);
   // }
 
-  useEffect(() => {
-    console.log("useEffect getting 4 random exercises")
-    getExercise4General();
-  }, []);
-
-  function getExercise4General() {
+  function getExercise4Muscle(muscle) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username:username,
+          muscle:muscle,
         }),
     };
     console.log(requestOptions);
-    if (username!=' '){
-    fetch('/AGR/GetExercise4General', requestOptions)
+    if (muscle!=' '){
+    fetch('/AGR/GetExercise4Muscle', requestOptions)
         .then(function(response){
           if (!response.ok){
             throw new Error('Response not OK');
@@ -208,18 +213,19 @@ export default function GeneralFitnessPage() {
           },
           (error) => {alert(error)}
         )
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     else{
-      if(username==' ') {alert('Choose a mucle group to get started!')}
+      if(muscle==' ') {alert('Choose a mucle group to get started!')}
     }
   };
 
-  const getMyFirstGeneralExercise=(username,preferedExerciseId,listExercise)=> {
+  const getRepeatMuscleBuildingExercise=(username,muscle)=> {
     if (username!=''){
       console.log(username)
-      console.log("was here")
-      console.log(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=1`)
-      fetch(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=1&`)
+      console.log(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
+      // fetch(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
+      fetch(`/AGR/ModelToLearn?username=${username}`)
           .then(response => response.json())
           .then(
             (data) => {
@@ -241,71 +247,76 @@ export default function GeneralFitnessPage() {
   }
 
   const handleNext = () => {
+    // console.log(activeStep)
+    // console.log(muscle)
     if(activeStep ===0){
       console.log("routing through handleNext activeStep0");
-      getMyFirstGeneralExercise(username,preferedExerciseId,listExercise);
+      getExercise4Muscle(muscle);
     }
     if(activeStep ===1){
       console.log("routing through handleNext activeStep1");
-      setActiveStep(2);
+      getRepeatMuscleBuildingExercise(username,muscle);
     }
     if(activeStep ===2){
-      console.log("routing through handleNext activeStep2");
+      console.log("routing through handleNext activeStep3");
       triggerToRate(1);
     }
-  };  
+  };
 
-  const choosingPrefferedExercise = (
+  const getMusclePrefference = (
     <div>
-      <Grid container xs={12}>
-        <Typography display='block' component="h5" variant="h5" > 
-          <p><i>Choose your preffered exercise</i></p>
+      <Grid item xs={12}>
+        <Typography component="h5" variant="h5"> 
+          <i>To get started, choose a targeted muscle group</i>
         </Typography>
       </Grid>
-      <Grid container xs={12}>
-        <FormControl component="fieldset" alignContent="center" justifyContent="center">
-          <FormLabel component="legend">Click on the exercises to get more details</FormLabel>
-          
-          <RadioGroup 
-          aria-label="Prefered excercise" 
-          name="Prefered excercise" 
-          value={preference} 
-          onChange={preferenceHandleChange}
-          orientation='vertical'
+      <Grid item xs={12}>
+        <FormControl 
+        fullWidth='true'
+        className={classes.formControl}
+        >
+          <InputLabel id="muscle">Targeted Muscle</InputLabel>
+          <Select
+            labelId="muscle"
+            id="muscle"
+            value={muscle}
+            onChange={muscleHandleChange}
           >
-            <Grid className={classes.formControl} spacing={2}>
-            {listExercise.map((item) =>
-              <Grid>
-              <FormControlLabel
-              value={listExercise.indexOf(item).toString()}
-              control={<Radio/>}
-              label={item.exercise_name}
-              labelPlacement="right"
-              />
-              <Collapse in={listExercise.indexOf(item).toString()===preference}>
-                <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
-                  <Grid item xs={12} sm={6}>
-                    <CardMedia
-                      style = {{ height: 100, paddingTop: '90%'}}
-                      image={pre.concat(item.pic_no[0],post)}
-                      />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <CardMedia
-                        style = {{ height: 100, paddingTop: '90%'}}
-                        image={pre.concat(item.pic_no[1],post)}
-                        />
-                  </Grid>
-                </Grid>
-              </Collapse>
-              </Grid>
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {musclechoices.map( (item) =>
+              <MenuItem value={item}>{item}</MenuItem>
             )}
-            </Grid>
-          </RadioGroup>
+          </Select>
         </FormControl>
+        {/* <ButtonGroup 
+          disableElevation 
+          variant="contained" 
+          width='20vw'
+          className={classes.buttongrouping2}
+          >
+          <Button
+          className={classes.backbutton}
+          startIcon={<ArrowBackIcon />}
+          backgroundColor="secondary"
+          onClick={() => {history.goBack();}}
+          >
+            Back
+          </Button>
+          <Button
+            className={classes.submitbutton2}
+            endIcon={<TrendingFlatIcon />}
+            color="secondary"
+            onClick={() => getExercise4Muscle(muscle)}
+          >
+            Generate exercises!
+          </Button>
+        </ButtonGroup> */}
       </Grid>
     </div>
   )
+
 
   const showExercises = (
     <div>
@@ -315,9 +326,9 @@ export default function GeneralFitnessPage() {
         className={classes.text}
         >
           <Grid item xs={12}>
-            {/* <Typography component="h4" variant="h4"> 
+            <Typography component="h4" variant="h4"> 
               <b>Set Type: {mode}</b>
-            </Typography> */}
+            </Typography>
             <Typography component="h5" variant="h5"> 
               <i>Exercise Date: {date}</i>
             </Typography>
@@ -351,84 +362,88 @@ export default function GeneralFitnessPage() {
   )
 
   return (
-        <div className={classes.paper}>
-          <Card>
-            <CardHeader avatar={<DirectionsRunIcon/>} 
-              action={<IconButton aria-label="settings"><MoreVertIcon /></IconButton>}
-              title={<Typography variant="h5" component="h2">General Fitness Training</Typography>}
-            />
-            <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#34ebe8'}}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-            </Stepper>
-            <CardContent>
+    <div className={classes.paper}>
+      <Card>
+        <CardHeader avatar={<FitnessCenterIcon/>} 
+          action={<IconButton aria-label="settings"><MoreVertIcon /></IconButton>}
+          title={<Typography variant="h5" component="h2">Muscle Building</Typography>}
+        />
+        <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#34ebe8'}}>
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+        </Stepper>
+        <CardContent>
+          <Grid container spacing={2}>
+            {/* <Grid item xs={12}>
+              {
+                {
+                  0: <getMusclePrefference />,
+                  1: <choosingPrefferedExercise />,
+                  2: <showExercises/>
+                }[activeStep]
+              }
+            </Grid> */}
 
-              <Grid container spacing={2}>
-                {/* <Grid item xs={12}>
-                  {
-                    {
-                      0: <getMusclePrefference />,
-                      1: <choosingPrefferedExercise />,
-                      2: <showExercises/>
-                    }[activeStep]
+            <Grid item xs={12}>
+              {activeStep===0?getMusclePrefference:
+              activeStep===1?showExercises:rateExercise}
+            </Grid>
+            <Grid item xs={12}>
+              {/* back button for all pages*/}
+              <Button
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              className={classes.backButton}
+              >
+              {(()=>{
+                  switch(activeStep){
+                    case 0:
+                      return 'Back';
+                    case 1:
+                      return 'Select Targeted Muscle';
+                    case 2:
+                      return 'Go back to preffered Exercise';
+                    case 3:
+                      return 'Check my exercise set';  
+                    default:
+                      return 'Back';
                   }
-                </Grid> */}
-                <Grid item xs={12}>
-                  {activeStep===0?choosingPrefferedExercise:
-                  activeStep===1?showExercises:rateExercise}
-                </Grid>
-                <Grid item xs={12}>
-                  {/* back button for all pages*/}
-                  <Button
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  className={classes.backButton}
-                  >
-                  {(()=>{
-                      switch(activeStep){
-                        case 0:
-                          return 'Back';
-                        case 1:
-                          return 'Go back to preffered Exercise';
-                        case 2:
-                          return 'Check my exercise set';  
-                        default:
-                          return 'Back';
-                      }
-                  })()}
-                  {/* only for the last page */}
-                  </Button>
-                  <Button
-                    style={activeStep !== 2?{display: 'none'}:{display: null}}
-                    onClick={handleBackToHome}
-                    className={classes.backButton}
-                    color="secondary"
-                    variant="contained"
-                    >
-                    Rate My Exercise Later
-                  </Button>
-                  {/* Next pages for all pages */}
-                  <Button variant="contained" color="primary" onClick={handleNext}>
-                    {(()=>{
-                      switch(activeStep){
-                        case 0:
-                          return 'See my Exercise Set';
-                        case 1:
-                          return 'Rate my exercises';
-                        case 2:
-                          return 'Save my rating';  
-                        default:
-                          return 'Next';
-                      }
-                    })()}
-                  </Button>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </div>
+              })()}
+              {/* only for the last page */}
+              </Button>
+              <Button
+                style={activeStep !== 2?{display: 'none'}:{display: null}}
+                onClick={handleBackToHome}
+                className={classes.backButton}
+                color="secondary"
+                variant="contained"
+                >
+                Rate My Exercise Later
+              </Button>
+              {/* Next pages for all pages */}
+              <Button variant="contained" color="primary" onClick={handleNext}>
+                {(()=>{
+                  switch(activeStep){
+                    case 0:
+                      return 'Generate exercises';
+                    case 1:
+                      return 'See my Exercise Set';
+                    case 2:
+                      return 'Rate my exercises';
+                    case 3:
+                      return 'Save my rating';  
+                    default:
+                      return 'Next';
+                  }
+                })()}
+              </Button>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
