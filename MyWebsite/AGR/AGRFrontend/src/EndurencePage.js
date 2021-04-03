@@ -218,8 +218,8 @@ export default function EndurencePage() {
     if (preferedExerciseId!='-1'){
       console.log(username)
       console.log("was here")
-      console.log(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
-      fetch(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
+      console.log(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=3&muscle=${muscle}`)
+      fetch(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=3&muscle=${muscle}`)
           .then(response => response.json())
           .then(
             (data) => {
@@ -408,7 +408,7 @@ export default function EndurencePage() {
               {/* only for the last page */}
               </Button>
               <Button
-                style={activeStep !== 3?{display: 'none'}:{display: null}}
+                style={activeStep !== 2?{display: 'none'}:{display: null}}
                 onClick={handleBackToHome}
                 className={classes.backButton}
                 color="secondary"

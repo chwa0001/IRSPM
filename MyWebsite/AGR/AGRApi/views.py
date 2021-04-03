@@ -524,6 +524,22 @@ class GetSetDetails(APIView):
             return Response({"Bad Request":"unable to retrieved exercises"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class CheckModeFirst(APIView):
+    def get(self, request, format=None):
+        try:
+            username = request.GET.get('username')
+            mode = int(request.GET.get('mode'))
+            user_id = int(get_userid_from_userdb(username))
+
+            routines = Routine.objects.filter(userdata_id=user_id,mode=mode)
+
+            if(len(routines)>0):
+                return Response({"firsttime":"NO"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"firsttime":"YES"}, status=status.HTTP_200_OK)
+
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

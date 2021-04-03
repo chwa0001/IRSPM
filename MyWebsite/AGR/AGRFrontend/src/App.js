@@ -18,6 +18,7 @@ import ExerciseSetPage from './ExerciseSetPage';
 import ModeSelection from "./ModeSelection";
 import GeneralFitnessPage from "./GeneralFitnessPage";
 import EndurencePage from "./EndurencePage";
+import RepeatMuscleBuildingPage from "./RepeatMuscleBuildingPage";
 import MenuBar from './components/MenuBar';
 import Container from '@material-ui/core/Container';
 import CustomScroller from 'react-custom-scroller';
@@ -53,6 +54,7 @@ export default class App extends Component {
               <Route exact path="/ExerciseSet" component={ExerciseSetPage}/>
               <Route exact path="/ModeSelection" component={ModeSelection}/>
               <Route exact path="/EndurenceTraining" component={EndurencePage}/>
+              <Route exact path="/RMuscleBuilding" component={RepeatMuscleBuildingPage}/>
               <Route exact path="/ExerciseBuddy" component={ExerciseBuddytest}/>
             </Container>
             </CustomScroller>
