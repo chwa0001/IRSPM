@@ -122,12 +122,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ExerciseRatingContainer(props) {
   const classes = useStyles();
-  const username = Cookies.get('username') // cookies not working
-  const [score, setScore] = useState('')
-  const [userId, setUserId] = useState('')
-  const setId = props.set_id
-  const date = props.date
-  const exercises = props.exercises
+  const username = Cookies.get('username'); // cookies not working
+  const [score, setScore] = useState('');
+  const [userId, setUserId] = useState('');
+  const setId = props.set_id;
+  const date = props.date;
+  const exercises = props.exercises;
+  const triggerToRate = props.rateit;
 
   console.log(props.exercises)
   console.log(exercises)
@@ -136,7 +137,11 @@ export default function ExerciseRatingContainer(props) {
   const history = useHistory();
   const [refresh, setRefresh] = useState(0)
 
-
+  React.useEffect(()=>{
+    if(triggerToRate===1){
+      SaveUserRating(username,setId,score);
+    }
+  },[triggerToRate])
   // React.useEffect(()=> {
 
   //   console.log("react response - UseEffect")
@@ -270,9 +275,6 @@ export default function ExerciseRatingContainer(props) {
   };
   
   return (
-    <div className={classes.grow}>
-      <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}} alignContent="center" justifyContent="center">
-      <CssBaseline />
       <div className={classes.paper}>
       
         <Grid container direction="column" justify="space-between" alignItems="flex-start" spacing={3}>
@@ -356,7 +358,7 @@ export default function ExerciseRatingContainer(props) {
               </RadioGroup>
           </FormControl>
         </Grid>
-        <ButtonGroup 
+        {/* <ButtonGroup 
         disableElevation 
         variant="contained" 
         fullWidth
@@ -378,11 +380,8 @@ export default function ExerciseRatingContainer(props) {
           >
             Save Rating
           </Button>
-        </ButtonGroup>
+        </ButtonGroup> */}
       </div>
-      </Container>
-
-    </div>
       
   );
   

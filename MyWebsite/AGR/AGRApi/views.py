@@ -364,7 +364,6 @@ def getExerciseMuscleFitness(muscle,fitness):
     expert_exercises = Exercise.objects.filter(main_musclegroup=muscle,difficulty='Expert')
     intermediate_exercises = Exercise.objects.filter(main_musclegroup=muscle,difficulty='Intermediate')
     beginner_exercises = Exercise.objects.filter(main_musclegroup=muscle,difficulty='Beginner')
-
     if fitness=='Expert':
         exercises = beginner_exercises.union(intermediate_exercises,expert_exercises)
     elif fitness == 'Intermediate':
@@ -432,11 +431,14 @@ class GetExercise4Muscle(APIView):
                 print(random4)
                 for ran in random4: 
                     exercise = exercises[ran]
-                    renderExercise.append(ExerciseSerializer(exercise).data)
+                    excerciseDetailsData = ExerciseSerializer(exercise).data
+                    excerciseDetailsData['pic_no'] = literal_eval(ExerciseSerializer(exercise).data['pic_no'])
+                    renderExercise.append(excerciseDetailsData)
 
                 # print(f"renderExercise: {renderExercise}")
-
-            return Response({"exercises":renderExercise , "status":"good"}, status=status.HTTP_200_OK)
+                return Response({"exercises":renderExercise , "status":"good"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"Bad Request":"unable to fetch exercises","status":"bad"}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
             return Response({"Bad Request":"unable to save"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -461,7 +463,9 @@ class GetExercise4General(APIView):
                 print(random4)
                 for ran in random4: 
                     exercise = exercises[ran]
-                    renderExercise.append(ExerciseSerializer(exercise).data)
+                    excerciseDetailsData = ExerciseSerializer(exercise).data
+                    excerciseDetailsData['pic_no'] = literal_eval(ExerciseSerializer(exercise).data['pic_no'])
+                    renderExercise.append(excerciseDetailsData)
 
                 # print(f"renderExercise: {renderExercise}")
 
@@ -657,7 +661,9 @@ class FirstReco(APIView):
         recoExArray = []
         i = 0
         while i < len(recoEx):
-            recoExArray.append(ExerciseSerializer(recoEx[i]).data) #serialize into json format
+            excerciseDetailsData = ExerciseSerializer(recoEx[i]).data
+            excerciseDetailsData['pic_no'] = literal_eval(ExerciseSerializer(recoEx[i]).data['pic_no'])
+            recoExArray.append(excerciseDetailsData) #serialize into json format
             i += 1
         data['recoExList'] = recoExArray
 

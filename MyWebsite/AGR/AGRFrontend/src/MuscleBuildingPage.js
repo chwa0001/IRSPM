@@ -126,6 +126,7 @@ export default function MuscleBuildingPage() {
   const [exercises, setExercises] = useState([]);
   const [date, setDate] = useState('');
   const [setid, setSetid] = useState('');
+  const [rateit,triggerToRate] = useState(0);
   const pre = '/AGRFrontend/static/images/'
   const post = '.jpg'
   console.log(pre.concat(setid,post))
@@ -149,9 +150,13 @@ export default function MuscleBuildingPage() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
+  const handleBackToHome = () => {
+    history.push('/Home');
   };
+
+  // const handleReset = () => {
+  //   setActiveStep(0);
+  // };
 
   useEffect(() => {
     if(userStatus===0)
@@ -170,9 +175,9 @@ export default function MuscleBuildingPage() {
 
   }, [userStatus]);
 
-  const rateMyExercises = () => {
-    setActiveStep(3);
-  }
+  // const rateMyExercises = () => {
+  //   setActiveStep(3);
+  // }
 
   function getExercise4Muscle(muscle) {
     const requestOptions = {
@@ -244,14 +249,20 @@ export default function MuscleBuildingPage() {
     // console.log(activeStep)
     // console.log(muscle)
     if(activeStep ===0){
-      console.log("routing through handleNext activeStep0")
+      console.log("routing through handleNext activeStep0");
+      getExercise4Muscle(muscle);
     }
     if(activeStep ===1){
-      console.log("routing through handleNext activeStep1")
+      console.log("routing through handleNext activeStep1");
+      getMyFirstMuscleBuildingExercise(username,muscle,preferedExerciseId,listExercise);
     }
     if(activeStep ===2){
-      console.log("routing through handleNext activeStep2")
-
+      console.log("routing through handleNext activeStep2");
+      setActiveStep(3);
+    }
+    if(activeStep ===3){
+      console.log("routing through handleNext activeStep3");
+      triggerToRate(1);
     }
     // else if(activeStep ===0){
     //   console.log("activestep ==0 branch")
@@ -288,7 +299,7 @@ export default function MuscleBuildingPage() {
             )}
           </Select>
         </FormControl>
-        <ButtonGroup 
+        {/* <ButtonGroup 
           disableElevation 
           variant="contained" 
           width='20vw'
@@ -310,7 +321,7 @@ export default function MuscleBuildingPage() {
           >
             Generate exercises!
           </Button>
-        </ButtonGroup>
+        </ButtonGroup> */}
       </Grid>
     </div>
   )
@@ -395,7 +406,7 @@ export default function MuscleBuildingPage() {
           </RadioGroup>
         </FormControl>
       </Grid>
-      <ButtonGroup 
+      {/* <ButtonGroup 
         disableElevation 
         variant="contained" 
         fullWidth
@@ -417,8 +428,7 @@ export default function MuscleBuildingPage() {
         >
           See my Exercise Set!
         </Button>
-      </ButtonGroup>
-
+      </ButtonGroup> */}
     </div>
   )
   const showExercises = (
@@ -438,8 +448,6 @@ export default function MuscleBuildingPage() {
           </Grid>
         </Grid>
       </div>
-      <CustomScroller style={{ width: '100%', height: '100%' }}>
-      <CssBaseline />
       {exercises.map((tile) => (
         <ExerciseContainer 
         img1= {pre.concat(tile.pic_no[0],post)} 
@@ -454,7 +462,7 @@ export default function MuscleBuildingPage() {
         difficulty= {tile.difficulty} 
         Instructions= {tile.instruction_text}/>
       ))}
-      <ButtonGroup 
+      {/* <ButtonGroup 
         disableElevation 
         variant="contained" 
         fullWidth
@@ -476,8 +484,7 @@ export default function MuscleBuildingPage() {
         >
           Rate my exercises!
         </Button>
-      </ButtonGroup>
-      </CustomScroller>
+      </ButtonGroup> */}
     </div>
   )
   
@@ -486,6 +493,7 @@ export default function MuscleBuildingPage() {
     exercises= {exercises} 
     set_id={setid}
     date={date}
+    rateit={rateit}
     />
   )
 
@@ -547,7 +555,7 @@ export default function MuscleBuildingPage() {
                   </Button>
                   <Button
                     style={activeStep !== 3?{display: 'none'}:{display: null}}
-                    onClick={handleBack}
+                    onClick={handleBackToHome}
                     className={classes.backButton}
                     color="secondary"
                     variant="contained"
