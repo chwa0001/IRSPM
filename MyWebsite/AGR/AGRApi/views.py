@@ -553,6 +553,22 @@ from datetime import date
 import json
 import random
 
+class AlgoToExercise(APIView):
+    # serializer_class = UpdateUserSerializer
+
+    def get(self, request, format=None):
+        user_id = request.GET.get('user_id')
+        try:
+            user_id = int(user_id)
+            qs = UserExerciseRating.objects.all()
+            q = qs.values('user_id', 'exercise_id','user_score')
+            df = pd.DataFrame.from_records(q)
+            # recommend exercise (individual)
+            exercise, usermatrix, itemid  = recommend_exercise(user_id, df , n=6, rating_scale=(1, 10))
+            return Response({"ex":exercise}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class AlgoToLearn(APIView):
     # serializer_class = UpdateUserSerializer

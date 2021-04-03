@@ -58,7 +58,7 @@ def recommend_exercise(user_id, db , n=10, rating_scale=(1, 10)):
 
     top_n, bottom_n = get_top_n(predictions, str(user_id), n=n)
     
-    return [iid for (iid, _) in top_n], algo.pu, innertorawid
+    return [int(iid) for (iid, _) in top_n], algo.pu, innertorawid
 
 from scipy.spatial import distance
 
