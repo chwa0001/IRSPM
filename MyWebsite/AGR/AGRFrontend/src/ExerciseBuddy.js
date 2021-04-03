@@ -20,7 +20,6 @@ import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 
 
-
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -70,6 +69,7 @@ function a11yProps(index) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
+
 
 export default function ExerciseBuddytest() {
     const classes = useStyles();
@@ -175,15 +175,16 @@ export default function ExerciseBuddytest() {
             </Paper>
           </Grid>
 
-
+        
         <TabPanel value={value} index={0}>
         <Grid container xs={12} justify="center"  spacing={3}>
-          
-        {nu_data.map((nuser) => (
+        {nu_data.map((nuser) => (       
             <Grid container item xs={12} justify="center">
             <Paper square className={classes.card}><ExBuddyGrid userid={nuser[0][0].user_id} gender={nuser[0][0].gender} goal={nuser[0][0].goal} fitness={nuser[0][0].fitness_level} location={nuser[0][0].location} age={nuser[1][0].age} count={nuser[2][0].count} expics={ex_pics} exerciseid={group_exercises}/></Paper>
             </Grid>
           ))}
+      
+
 
         {/* <Grid container item xs={12} justify="center">
         <Paper square className={classes.card}><ExBuddyGrid userid={123}/></Paper></Grid>
@@ -199,21 +200,63 @@ export default function ExerciseBuddytest() {
         <TabPanel value={value} index={1}>
         <Grid container xs={12} justify="center"  spacing={3}>
 
-        {nu_data.map((nuser) => (
+        {/* {nu_data.map((nuser) => (
             <Grid container item xs={12} justify="center">
             <Paper square className={classes.card}><ExGroupGrid userid={nuser[0][0].user_id} gender={nuser[0][0].gender} goal={nuser[0][0].goal} fitness={nuser[0][0].fitness_level} age={nuser[1][0].age} exericeid={group_exercises}/></Paper>
             </Grid>
-          ))}
+          ))} */}
 
 
-        {/* <Grid container item xs={12} justify="center">
-        <Paper square className={classes.card}><ExGroupGrid /></Paper></Grid>
+        <Grid container item xs={12} justify="center">
+        <Paper square className={classes.card}>
+          <ExGroupGrid 
+          grpname={"ISS Exercise Group"} 
+          grpid={1} 
+          grpsize={5} 
+          grplimit={10}
+          grpdays={"Tuesday, Friday"} 
+          grpgoal={"General Fitness"}
+          grpfitness={"Beginner"}  
+          exerciselist={[2885,3430,3460,792,1380,4877]} 
+          grouppic={"/AGRFrontend/static/images/isslogo.png"}/>
+          </Paper>
+          </Grid>
+
+        <Grid container item xs={12} justify="center">
+        <Paper square className={classes.card}>
+          <ExGroupGrid 
+          grpname={"NUS Gym Club"} 
+          grpid={2} 
+          grpsize={8} 
+          grplimit={15} 
+          grpdays={"Monday, Wednesday, Friday, Sunday"} 
+          grpgoal={"Muscle Building"}
+          grpfitness={"Intermediate"}  
+          exerciselist={[204,333,701,724,3593,2913]} 
+          grouppic={"/AGRFrontend/static/images/nuslogo.png"}/>
+          </Paper>
+          </Grid>
         
         <Grid container item xs={12} justify="center">
-        <Paper square className={classes.card}><ExGroupGrid/></Paper></Grid>
+        <Paper square className={classes.card}>
+          <ExGroupGrid 
+          grpname={"KentRidge Workout Group"} 
+          grpid={3} 
+          grpsize={4} 
+          grplimit={6}
+          grpdays={"Weekends"} 
+          grpgoal={"Cardio"}
+          grpfitness={"Beginner"}  
+          exerciselist={[1260,1280,1268,3708,]} 
+          grouppic={"/AGRFrontend/static/images/DefaultGroupProfilePic.png"}/>
+          </Paper>
+          </Grid>
+
+        {/* <Grid container item xs={12} justify="center">
+        <Paper square className={classes.card}><ExGroupGrid exerciselist={[8,56,288]} grouppic={"/AGRFrontend/static/images/nuslogo.png"}/></Paper></Grid>
 
         <Grid container item xs={12} justify="center">
-        <Paper square className={classes.card}><ExGroupGrid/></Paper></Grid> */}
+        <Paper square className={classes.card}><ExGroupGrid exerciselist={[8,56,288]} grouppic={"/AGRFrontend/static/images/DefaultGroupProfilePic.png"}/></Paper></Grid> */}
         </Grid>
         </TabPanel>
         
