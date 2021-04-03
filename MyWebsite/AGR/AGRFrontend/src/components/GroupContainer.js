@@ -32,6 +32,7 @@ export default function ExGroupGrid(props) {
   const classes = useStyles();
   const pre = '/AGRFrontend/static/images/'
   const post = '.jpg'
+  const exerciselist = props.exerciselist
 
   function FormRow(rowdata) {
     return (
@@ -42,7 +43,7 @@ export default function ExGroupGrid(props) {
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant="body2" gutterBottom>
+        <Typography variant={rowdata.type} gutterBottom>
           {rowdata.value}
         </Typography>
       </Grid>
@@ -56,29 +57,32 @@ export default function ExGroupGrid(props) {
         <Grid container spacing={2}>
           <Grid item>
             <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/DefaultGroupProfilePic.png" />
+              <img className={classes.img} alt="complex" src={props.grouppic} />
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm container spacing={2}>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs> 
               <Grid item xs={12} container spacing={3}>
-                <FormRow type={"subtitle1"} name={'Group ID'} value={props.userid}/>
+                <FormRow type={"subtitle1"} name={'Group Name'} value={props.grpname}/>
               </Grid>
               <Grid item xs={12} container spacing={3}>
-                <FormRow type={"body2"} name={'Age:'} value={props.age}/>
+                <FormRow type={"body2"} name={'Group ID:'} value={props.grpid}/>
               </Grid>
               <Grid item xs={12} container spacing={3}>
-                <FormRow type={"body2"} name={'Gender:'} value={props.gender}/>
+                <FormRow type={"body2"} name={'Group size:'} value={props.grpsize}/>
               </Grid>
               <Grid item xs={12} container spacing={3}>
-                <FormRow type={"body2"} name={'Goal:'} value={props.goal}/>
+                <FormRow type={"body2"} name={'Group limit:'} value={props.grplimit}/>
               </Grid>
               <Grid item xs={12} container spacing={3}>
-                <FormRow type={"body2"} name={'Distance:'} value={''}/>
+                <FormRow type={"body2"} name={'Training days:'} value={props.grpdays}/>
               </Grid>
               <Grid item xs={12} container spacing={3}>
-                <FormRow type={"body2"} name={'Fitness:'} value={props.fitness}/>
+                <FormRow type={"body2"} name={'Goal:'} value={props.grpgoal}/>
+              </Grid>
+              <Grid item xs={12} container spacing={3}>
+                <FormRow type={"body2"} name={'Fitness:'} value={props.grpfitness}/>
               </Grid>
                 <Grid item xs={12} container spacing={3}> 
                 <Grid item xs={12}>
@@ -88,15 +92,15 @@ export default function ExGroupGrid(props) {
                 </Grid>
                 </Grid>
                 <Grid item xs={12} container spacing={3}> 
-                <Grid item xs={3}>
-                <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/8.jpg" />
+
+                {exerciselist.map((exercise) => ( 
+
+                <Grid item xs={3} >
+                {/* <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/56.jpg" /> */}
+                <img className={classes.img} alt="complex" src={pre.concat(exercise,post)} />
                 </Grid>
-                <Grid item xs={3}>
-                <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/56.jpg" />
-                </Grid>
-                <Grid item xs={3}>
-                <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/28.jpg" />
-                </Grid>
+                ))} 
+
                 </Grid>
               </Grid>
               <Grid item>
