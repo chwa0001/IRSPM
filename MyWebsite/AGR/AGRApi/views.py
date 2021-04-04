@@ -558,6 +558,16 @@ class GetExerciseList(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
+# concert exercise list (array) into dictionary/json file with processed data.
+def convertExerciseListToDetailsJson(exercise):
+    recoEx = Exercise.objects.filter(id__in = exercise) #filter for Exercise db for recommended exercise according to models.py format
+    recoExArray = []
+    i = 0
+    while i < len(recoEx):
+        recoExArray.append(prepExerciseDetails(ExerciseSerializer(recoEx[i]).data)) #serialize into json format
+        i += 1
+    print(recoExArray)
+    return recoExArray
 
 
 
@@ -572,15 +582,21 @@ class AlgoToExercise(APIView):
     # serializer_class = UpdateUserSerializer
 
     def get(self, request, format=None):
-        user_id = request.GET.get('user_id')
+        username = request.GET.get('username')
         try:
-            user_id = int(user_id)
+            user_id = int(get_userid_from_userdb(username))
             qs = UserExerciseRating.objects.all()
             q = qs.values('user_id', 'exercise_id','user_score')
             df = pd.DataFrame.from_records(q)
             # recommend exercise (individual)
             exercise, usermatrix, itemid  = recommend_exercise(user_id, df , n=6, rating_scale=(1, 10))
-            return Response({"ex":exercise}, status=status.HTTP_200_OK)
+            
+            print(exercise)
+            ################## result 0, hard coding return 
+            exercise = [10,20,40,90,130,140]
+            recoExArray = convertExerciseListToDetailsJson(exercise)
+
+            return Response({"set_exercise_details":recoExArray,"set_id": 8, "set_date": "31/02/2020"}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -773,16 +789,7 @@ class FirstReco(APIView):
         data = {}
         data["recoList"] = recoList
 
-        recoEx = Exercise.objects.filter(id__in = recoList) #filter for Exercise db for recommended exercise according to models.py format
-        recoExArray = []
-        i = 0
-        while i < len(recoEx):
-            # excerciseDetailsData = ExerciseSerializer(recoEx[i]).data
-            # excerciseDetailsData['pic_no'] = literal_eval(ExerciseSerializer(recoEx[i]).data['pic_no'])
-            # recoExArray.append(excerciseDetailsData) #serialize into json format
-            recoExArray.append(prepExerciseDetails(ExerciseSerializer(recoEx[i]).data)) #serialize into json format
-            
-            i += 1
+        recoExArray = convertExerciseListToDetailsJson(recoList)
         data['recoExList'] = recoExArray
 
         set_id,set_date = createSetExercises(username, mode, recoList)

@@ -57,9 +57,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     flexGrow: 1,
   },
-  grow: {
-    flexGrow: 1,
-  },
   avatar: {
     margin: theme.spacing(1),
     // backgroundColor: '#8eb8ad',
@@ -76,23 +73,9 @@ const useStyles = makeStyles((theme) => ({
   text: {
     // outlineColor: '#8eb8ad',
   },
-  submitbutton:{
-    backgroundColor:"#0a57f2",
-    color: 'white',
-    height: 36,
-  },
   buttongrouping:{
     padding: '90px 15px',
   },
-  submitbutton2:{
-    backgroundColor:"#0a57f2",
-    color: 'white',
-    height: 36,
-  },
-  buttongrouping2:{
-    padding: '3px 15px',
-  },
-
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
@@ -105,12 +88,9 @@ export default function MuscleBuildingPage() {
   const username = Cookies.get('username')
   console.log(username)
   // console.log(Cookies.get())
-  const [step1,SetStep1] = useState(false);
-  const [step2,SetStep2] = useState(false);
   
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
-  
   
   const [muscle,setMuscle] = useState(' ');
   const [listExercise,setListExercise] = useState([]);
@@ -129,7 +109,7 @@ export default function MuscleBuildingPage() {
   const [rateit,triggerToRate] = useState(0);
   const pre = '/AGRFrontend/static/images/'
   const post = '.jpg'
-  console.log(pre.concat(setid,post))
+  // console.log(pre.concat(setid,post))
 
 
   const history = useHistory();
@@ -155,10 +135,6 @@ export default function MuscleBuildingPage() {
     history.push('/Home');
   };
 
-  // const handleReset = () => {
-  //   setActiveStep(0);
-  // };
-
   useEffect(() => {
     if(userStatus===0)
     {
@@ -176,56 +152,54 @@ export default function MuscleBuildingPage() {
 
   }, [userStatus]);
 
-  // const rateMyExercises = () => {
-  //   setActiveStep(3);
-  // }
+  // Get 4 exercises for specified muscle. not needed here. 
+  // function getExercise4Muscle(muscle) {
+  //   const requestOptions = {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         username:username,
+  //         muscle:muscle,
+  //       }),
+  //   };
+  //   console.log(requestOptions);
+  //   if (muscle!=' '){
+  //   fetch('/AGR/GetExercise4Muscle', requestOptions)
+  //       .then(function(response){
+  //         if (!response.ok){
+  //           throw new Error('Response not OK');
+  //         }
+  //         else{
+  //           return response.json();
+  //         }
+  //       }).then(
+  //         (data) => {
+  //           setListExercise(data.exercises);
+  //           setUserStatus(data.status);
+  //           setExercise1(data.exercises[0]);
+  //           setExercise2(data.exercises[1]);
+  //           setExercise3(data.exercises[2]);
+  //           setExercise4(data.exercises[3]);
+  //           console.log(data.exercises);
+  //           console.log(listExercise);
+  //           // console.log(listExercise[0].id);
+  //         },
+  //         (error) => {alert("getExercise4Muscle alert raised, please report bug",error)}
+  //       )
+  //       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  //     }
+  //   else{
+  //     if(muscle==' ') {alert('Choose a mucle group to get started!')}
+  //   }
+  // };
 
-  function getExercise4Muscle(muscle) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username:username,
-          muscle:muscle,
-        }),
-    };
-    console.log(requestOptions);
-    if (muscle!=' '){
-    fetch('/AGR/GetExercise4Muscle', requestOptions)
-        .then(function(response){
-          if (!response.ok){
-            throw new Error('Response not OK');
-          }
-          else{
-            return response.json();
-          }
-        }).then(
-          (data) => {
-            setListExercise(data.exercises);
-            setUserStatus(data.status);
-            setExercise1(data.exercises[0]);
-            setExercise2(data.exercises[1]);
-            setExercise3(data.exercises[2]);
-            setExercise4(data.exercises[3]);
-            console.log(data.exercises);
-            console.log(listExercise);
-            // console.log(listExercise[0].id);
-          },
-          (error) => {alert(error)}
-        )
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      }
-    else{
-      if(muscle==' ') {alert('Choose a mucle group to get started!')}
-    }
-  };
-
+  // Get recommended 6 exercises  
   const getRepeatMuscleBuildingExercise=(username,muscle)=> {
     if (username!=''){
       console.log(username)
-      console.log(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
+      console.log(`/AGR/AlgoExercise?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
       // fetch(`/AGR/FirstRecommend?username=${username}&exercise_id=${preferedExerciseId}&mode=2&muscle=${muscle}`)
-      fetch(`/AGR/ModelToLearn?username=${username}`)
+      fetch(`/AGR/AlgoExercise?username=${username}`)
           .then(response => response.json())
           .then(
             (data) => {
@@ -234,10 +208,10 @@ export default function MuscleBuildingPage() {
               setExercises(data.set_exercise_details)
               setDate(data.set_date)
               setSetid(data.set_id)
+              console.log(data.set_exercise_details)
               Cookies.set('setId', data.set_id);
-              Cookies.set('setExData', data.set_exercise_details);  
             },
-            (error) => {alert(error)}
+            (error) => {alert("getRepeatMuscleBuildingExercise alert raised, please report bug",error)}
           )
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
@@ -251,14 +225,16 @@ export default function MuscleBuildingPage() {
     // console.log(muscle)
     if(activeStep ===0){
       console.log("routing through handleNext activeStep0");
-      getExercise4Muscle(muscle);
+      getRepeatMuscleBuildingExercise(username,muscle);
+      // getExercise4Muscle(muscle);
     }
     if(activeStep ===1){
       console.log("routing through handleNext activeStep1");
-      getRepeatMuscleBuildingExercise(username,muscle);
+      setActiveStep(2);
+      // getRepeatMuscleBuildingExercise(username,muscle);
     }
     if(activeStep ===2){
-      console.log("routing through handleNext activeStep3");
+      console.log("routing through handleNext activeStep2");
       triggerToRate(1);
     }
   };
@@ -290,29 +266,6 @@ export default function MuscleBuildingPage() {
             )}
           </Select>
         </FormControl>
-        {/* <ButtonGroup 
-          disableElevation 
-          variant="contained" 
-          width='20vw'
-          className={classes.buttongrouping2}
-          >
-          <Button
-          className={classes.backbutton}
-          startIcon={<ArrowBackIcon />}
-          backgroundColor="secondary"
-          onClick={() => {history.goBack();}}
-          >
-            Back
-          </Button>
-          <Button
-            className={classes.submitbutton2}
-            endIcon={<TrendingFlatIcon />}
-            color="secondary"
-            onClick={() => getExercise4Muscle(muscle)}
-          >
-            Generate exercises!
-          </Button>
-        </ButtonGroup> */}
       </Grid>
     </div>
   )
@@ -337,8 +290,7 @@ export default function MuscleBuildingPage() {
       </div>
       {exercises.map((tile) => (
         <ExerciseContainer 
-        img1= {pre.concat(tile.pic_no[0],post)} 
-        img2= {pre.concat(tile.pic_no[1],post)} 
+        imgs= {tile.pic_no}
         exercise_name= {tile.exercise_name} 
         main_muscle= {tile.main_musclegroup} 
         detailed_musclegroup= {tile.detail_muscle} 
@@ -428,12 +380,10 @@ export default function MuscleBuildingPage() {
                 {(()=>{
                   switch(activeStep){
                     case 0:
-                      return 'Generate exercises';
-                    case 1:
                       return 'See my Exercise Set';
-                    case 2:
+                    case 1:
                       return 'Rate my exercises';
-                    case 3:
+                    case 2:
                       return 'Save my rating';  
                     default:
                       return 'Next';

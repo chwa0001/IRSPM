@@ -333,8 +333,7 @@ export default function EndurencePage() {
       </div>
       {exercises.map((tile) => (
         <ExerciseContainer 
-        img1= {pre.concat(tile.pic_no[0],post)} 
-        img2= {pre.concat(tile.pic_no[1],post)} 
+        imgs= {tile.pic_no}
         exercise_name= {tile.exercise_name} 
         main_muscle= {tile.main_musclegroup} 
         detailed_musclegroup= {tile.detail_muscle} 

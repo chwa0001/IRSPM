@@ -135,73 +135,17 @@ export default function ExerciseRatingContainer(props) {
 
   const [userStatus, setUserStatus] = useState(-1)
   const history = useHistory();
-  const [refresh, setRefresh] = useState(0)
 
   React.useEffect(()=>{
     if(triggerToRate===1){
       SaveUserRating(username,setId,score);
     }
   },[triggerToRate])
-  // React.useEffect(()=> {
-
-  //   console.log("react response - UseEffect")
-
-  //     const requestOptions = {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({
-  //         username:username,
-  //         }),
-  //       };
-  //       console.log(username)
-  //       console.log(requestOptions)
-  //       if (username!=''){
-  //         fetch('/AGR/GetSetToRate', requestOptions)
-  //         .then(function(response){
-  //           console.log(response)
-  //           if (response.status === 418){
-  //             setUserStatus(3)
-  //           }
-  //           else if (!response.ok){
-  //             throw new Error('Response not OK');
-  //           }
-  //           else{
-  //             return response.json();
-  //           }
-  //         }).then(
-  //           (data) => {
-  //             console.log(data.user_id)
-  //             console.log(data.set_id)
-  //             console.log(data.date)
-  //             console.log(data.exercises)
-  //             console.log(data.exercise1)
-  //             console.log(data.exercise6)
-  //             setUserId(data.user_id);
-  //             setSetId(data.set_id);
-  //             setDate(data.date);
-  //             if (data.exercises){
-  //               setExercises(data.exercises);
-  //             }
-  //             else{
-  //               setExercises([{'id':1,'name':''}]);
-  //             }
-  //             setUserStatus(data.status);
-  //           },
-  //           (error) => {
-  //             userStatus(-5)
-  //             alert(error)
-  //           }
-  //         )
-  //       }
-
-  // }, [refresh]);  
-   
 
   useEffect(() => {
     if(userStatus===0)
     {
       setUserStatus(-1);
-      setRefresh(refresh + 1);
       history.push('/Home');
     }
     else if (userStatus===1)
@@ -211,7 +155,7 @@ export default function ExerciseRatingContainer(props) {
     }
     else if (userStatus===2){
       setUserStatus(-1);
-      alert('Not sure but cannot signup!')
+      alert('Please report bug to make the apps better')
     }
     else if (userStatus===3){
       setUserStatus(-1);
