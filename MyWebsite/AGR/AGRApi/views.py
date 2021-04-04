@@ -583,17 +583,43 @@ class AlgoToExercise(APIView):
 
     def get(self, request, format=None):
         username = request.GET.get('username')
+        mode = int(request.GET.get('mode'))
+        muscle = request.GET.get("muscle")
+        fitness, location = getfitnesslocation(username)
         try:
             user_id = int(get_userid_from_userdb(username))
             qs = UserExerciseRating.objects.all()
             q = qs.values('user_id', 'exercise_id','user_score')
-            df = pd.DataFrame.from_records(q)
+            df1 = pd.DataFrame.from_records(q)
+
+            if username != None and mode == 1: #For general fitness
+            # exercise_data = Exercise.objects.filter(difficulty=fitness) #get all exercise data from db according to models.py format filtered by difficulty and equipment
+                exercise_data = getExerciseGeneralFitness(fitness)
+                df = pd.DataFrame.from_records(exercise_data.values())
+                print("ALL: ", df.tail)
+            
+            elif username != None and mode == 2: #For focused muscle building
+                # exercise_data = Exercise.objects.filter(main_musclegroup=muscle, difficulty=fitness) #get exercise data filetered for muscle, difficulty and equipment from db according to models.py format
+                exercise_data = getExerciseMuscleFitness(muscle,fitness)
+                print(exercise_data)
+                df = pd.DataFrame.from_records(exercise_data.values())
+                print("MUSCLE: ", df.head)
+
+            elif username != None  and mode == 3: #For cardio
+                muscle = "Cardio" #set muscle to cardio
+                exercise_data = Exercise.objects.filter(main_musclegroup= muscle) #get exercise data filetered for cardio from db according to models.py format
+                df = pd.DataFrame.from_records(exercise_data.values())
+                #print("CARDIO: ", df.head)
+
+            else:
+                return Response({"Bad Request": "No Username and/or exercise_id out of range"}, status=status.HTTP_400_BAD_REQUEST)
+
             # recommend exercise (individual)
-            exercise, usermatrix, itemid  = recommend_exercise(user_id, df , n=6, rating_scale=(1, 10))
+            exercise, usermatrix, itemid  = recommend_exercise(user_id, df1, df, n=6, rating_scale=(1, 5))
             
             print(exercise)
             ################## result 0, hard coding return 
-            exercise = [10,20,40,90,130,140]
+            # exercise = [10,20,40,90,130,140]
             recoExArray = convertExerciseListToDetailsJson(exercise)
 
             return Response({"set_exercise_details":recoExArray,"set_id": 8, "set_date": "31/02/2020"}, status=status.HTTP_200_OK)
@@ -612,27 +638,27 @@ class AlgoToLearn(APIView):
             q = qs.values('user_id', 'exercise_id','user_score')
             df = pd.DataFrame.from_records(q)
             # recommend exercise (individual)
-            exercise, usermatrix, itemid  = recommend_exercise(user_id, df , n=5, rating_scale=(1, 10))
+            exercise, usermatrix, itemid  = recommend_exercise(user_id, df , n=5, rating_scale=(1, 5))
             # recommend exercise buddy
             nearestusers = nearestuser(20,5,usermatrix)
             nearestusers = nearestusers.astype(int)
             
-            buddy_exercisesdata = []
+            # buddy_exercisesdata = []
             
-            for k in nearestusers:
-                buddy_exercises = recommend_exercise_n_users([user_id,int(k)], df , n=3, rating_scale=(1, 10))
-                exercisepics_buddy=[]
-                for m in range(0,len(buddy_exercises)):  
-                    exercisepics = Exercise.objects.filter(id = str(buddy_exercises[m])).values('pic_no')
-                    exercisepics_buddy.append(exercisepics)
-                buddy_exercisesdata.append(exercisepics_buddy)
+            # for k in nearestusers:
+            #     buddy_exercises = recommend_exercise_n_users([user_id,int(k)], df , n=3, rating_scale=(1, 5))
+            #     exercisepics_buddy=[]
+            #     for m in range(0,len(buddy_exercises)):  
+            #         exercisepics = Exercise.objects.filter(id = str(buddy_exercises[m])).values('pic_no')
+            #         exercisepics_buddy.append(exercisepics)
+            #     buddy_exercisesdata.append(exercisepics_buddy)
 
             # recommend exercise for buddy/group
             # nearestusers = [1,2,3]
             exercisepicsdata=[]
             for j in nearestusers:
                 print(j)
-                group_exercises = recommend_exercise_n_users([user_id,j], df , n=3, rating_scale=(1, 10))
+                group_exercises = recommend_exercise_n_users([user_id,j], df , n=3, rating_scale=(1, 5))
                 for i in range(0,len(group_exercises)):  
                     exercisepics = Exercise.objects.filter(id = str(group_exercises[i])).values('pic_no')
                     # exercisepicsdata.append(exercisepics)
