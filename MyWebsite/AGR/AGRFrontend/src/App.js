@@ -23,6 +23,8 @@ import MenuBar from './components/MenuBar';
 import Container from '@material-ui/core/Container';
 import CustomScroller from 'react-custom-scroller';
 import ExerciseBuddytest from './ExerciseBuddy';
+import Glossary from "./GlossaryMode";
+import DenseTable from "./Test";
 
 export default class App extends Component {
   constructor(props) {
@@ -56,6 +58,8 @@ export default class App extends Component {
               <Route exact path="/EndurenceTraining" component={EndurencePage}/>
               <Route exact path="/RMuscleBuilding" component={RepeatMuscleBuildingPage}/>
               <Route exact path="/ExerciseBuddy" component={ExerciseBuddytest}/>
+              <Route exact path="/Glossary" component={Glossary}/>
+              <Route exact path="/Test" component={DenseTable}/>
             </Container>
             </CustomScroller>
             </div>
