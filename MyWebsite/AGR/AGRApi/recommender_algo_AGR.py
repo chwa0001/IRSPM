@@ -57,7 +57,7 @@ def recommend_exercise(user_id, db , dbfilter, n=10, rating_scale=(1, 5)):
     # print(trainingSet.to_raw_iid(0))
     
     testset = trainingSet.build_anti_testset()
-
+    
     filterid = []
     for f in dbfilter['id']:
         filterid.append(f)

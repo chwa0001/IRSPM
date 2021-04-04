@@ -636,9 +636,11 @@ class AlgoToLearn(APIView):
             user_id = int(user_id)
             qs = UserExerciseRating.objects.all()
             q = qs.values('user_id', 'exercise_id','user_score')
-            df = pd.DataFrame.from_records(q)
+            df1 = pd.DataFrame.from_records(q)
+            exercise_data = Exercise.objects.all()
+            df = pd.DataFrame.from_records(exercise_data.values())
             # recommend exercise (individual)
-            exercise, usermatrix, itemid  = recommend_exercise(user_id, df , n=5, rating_scale=(1, 5))
+            exercise, usermatrix, itemid  = recommend_exercise(user_id, df1 ,df, n=5, rating_scale=(1, 5))
             # recommend exercise buddy
             nearestusers = nearestuser(20,5,usermatrix)
             nearestusers = nearestusers.astype(int)
@@ -658,7 +660,7 @@ class AlgoToLearn(APIView):
             exercisepicsdata=[]
             for j in nearestusers:
                 print(j)
-                group_exercises = recommend_exercise_n_users([user_id,j], df , n=3, rating_scale=(1, 5))
+                group_exercises = recommend_exercise_n_users([user_id,j], df1, n=3, rating_scale=(1, 5))
                 for i in range(0,len(group_exercises)):  
                     exercisepics = Exercise.objects.filter(id = str(group_exercises[i])).values('pic_no')
                     # exercisepicsdata.append(exercisepics)
