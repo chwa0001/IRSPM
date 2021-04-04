@@ -16,5 +16,8 @@ urlpatterns = [
     path('EndurenceTraining',index),
     path('ExerciseBuddy',index),
     path('RMuscleBuilding',index),
+    path('REndurenceTraining',index),
+    path('RGeneralFitness',index),
+
     
 ]

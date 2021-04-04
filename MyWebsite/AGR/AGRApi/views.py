@@ -416,8 +416,8 @@ def pic2array (excerciseDetailsData):
 
 #changing string text to array 
 def instruction2array (excerciseDetailsData):
-    excerciseDetailsData['instruction_text'] = excerciseDetailsData['instruction_text'].replace("\n","")
-    excerciseDetailsData['instruction_text'] = excerciseDetailsData['instruction_text'].split("_x000D_")
+    # excerciseDetailsData['instruction_text'] = excerciseDetailsData['instruction_text'].replace("\n","")
+    excerciseDetailsData['instruction_text'] = excerciseDetailsData['instruction_text'].split("\n\n")
     return excerciseDetailsData
 
 #grouping together changes for accessibility 
