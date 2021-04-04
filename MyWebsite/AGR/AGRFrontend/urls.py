@@ -18,4 +18,8 @@ urlpatterns = [
     path('RMuscleBuilding',index),
     path('Glossary',index),
     path('Test',index),
+    path('REndurenceTraining',index),
+    path('RGeneralFitness',index),
+
+    
 ]

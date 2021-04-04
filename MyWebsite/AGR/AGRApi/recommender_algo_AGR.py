@@ -23,6 +23,9 @@ def get_top_n(predictions, user_id, n=10):
     for uid, iid, true_r, est, _ in predictions:
         top_n[uid].append((iid, est))
 
+    # Only map the exercises which matches the filter e.g. muscle type
+    
+
     # Then sort the predictions for each user and retrieve the k highest and lowest ones.
     for uid, user_ratings in top_n.items():
         user_ratings.sort(key=lambda x: x[1], reverse=True)
@@ -31,7 +34,7 @@ def get_top_n(predictions, user_id, n=10):
         
     return top_n[user_id], bottom_n[user_id]
 
-def recommend_exercise(user_id, db , n=10, rating_scale=(1, 10)):
+def recommend_exercise(user_id, db , dbfilter, n=10, rating_scale=(1, 5)):
 
     # conn = sqlite3.connect(db)
     # c = conn.cursor()
@@ -48,13 +51,23 @@ def recommend_exercise(user_id, db , n=10, rating_scale=(1, 10)):
     algo.fit(trainingSet)
     
     innertorawid = []
-    for innerid in range(0,trainingSet.n_users):
-        innertorawid.append(trainingSet.to_raw_uid(innerid))
-        
+    for innerid in range(0,trainingSet.n_items):
+        innertorawid.append(trainingSet.to_raw_iid(innerid))
+
     # print(trainingSet.to_raw_iid(0))
     
     testset = trainingSet.build_anti_testset()
-    predictions = algo.test(testset)
+    
+    filterid = []
+    for f in dbfilter['id']:
+        filterid.append(f)
+    testsetfiltered = []
+    for t in testset:
+        if (int(t[1]) in filterid):
+            testsetfiltered.append(t)
+
+    predictions = algo.test(testsetfiltered)
+
 
     top_n, bottom_n = get_top_n(predictions, str(user_id), n=n)
     
@@ -72,7 +85,7 @@ def nearestuser(user, n_users, usermatrix):
     return user_similarity[1:n_users+1,0]
 
 
-def recommend_exercise_n_users(user_id_array, db , n=10, rating_scale=(1, 10)):
+def recommend_exercise_n_users(user_id_array, db , n=10, rating_scale=(1, 5)):
 
     # conn = sqlite3.connect(db)
     # c = conn.cursor()
