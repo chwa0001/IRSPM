@@ -1,15 +1,12 @@
 import React,{ useState , useEffect } from 'react';
 import Cookies from 'js-cookie';
-import {fade,makeStyles } from '@material-ui/core/styles';
+import {makeStyles } from '@material-ui/core/styles';
 import {useHistory} from "react-router-dom";
 import Card from '@material-ui/core/Card';
-import MenuBar from './components/MenuBar';
-import CustomScroller from 'react-custom-scroller';
-import Container from '@material-ui/core/Container';
+import CardMedia from '@material-ui/core/CardMedia';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
-import { DataGrid } from '@material-ui/data-grid';
 import Typography from '@material-ui/core/Typography';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -25,6 +22,9 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
+import Grid from '@material-ui/core/Grid';
+import TextField  from '@material-ui/core/TextField';
+import DirectionsIcon from '@material-ui/icons/Directions';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -60,6 +60,9 @@ export default function Glossary() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(0);
+  const [exercisesNumber,setExercisesNumber] = useState(50);
+  const pre = '/AGRFrontend/static/images/';
+  const post = '.jpg';
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -80,7 +83,13 @@ export default function Glossary() {
   useEffect(()=> {
     let url =''
     console.log("react response - UseEffect")
-    if (search!=''){
+    if (search!='' && exercisesNumber>0){
+      url = `/AGR/GetExerciseList?search=${search}&numbers=${exercisesNumber}`;
+    }
+    else if(search=='' && exercisesNumber>0){
+      url = `/AGR/GetExerciseList?numbers=${exercisesNumber}`;
+    }
+    else if(search!='' && exercisesNumber<=0){
       url = `/AGR/GetExerciseList?search=${search}`;
     }
     else{
@@ -103,7 +112,8 @@ export default function Glossary() {
       }).then(
         (data) => {
           setExerciseList(data.exercises)
-          console.log(data.exercises)
+          setPage(0)
+          alert(`${data.exercises.length} exercises found!`)
         },
         (error) => {alert(error)}
       )
@@ -128,6 +138,8 @@ export default function Glossary() {
         <Card>
           <CardHeader style={{marginLeft:10}} title={<Typography variant="h5" component="h2">Muscle Building</Typography>}
           />
+          <Grid container spacing={3} direction='row' justify="center"  alignItems="center" style={{flexGrow:1}}>
+          <Grid item xs={12} sm={6}>
           <InputBase
             type="search"
             className={classes.input}
@@ -138,13 +150,27 @@ export default function Glossary() {
           <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={()=>{SetTriggerSearch(!triggerSearch)}}>
             <SearchIcon />
           </IconButton>
-          
+          </Grid>
+          <Grid item xs={12} sm={6}>
+          <TextField
+          id="exercisesNumber"
+          label="Numbers of exercises"
+          type="number"
+          defaultValue={exercisesNumber}
+          value={exercisesNumber}
+          onChange={e => setExercisesNumber(e.target.value)}
+          />
+          <IconButton color="primary" className={classes.iconButton} aria-label="directions" onClick={()=>{SetTriggerSearch(!triggerSearch)}}>
+            <DirectionsIcon />
+          </IconButton>
+          </Grid>
+          </Grid>
         </Card>
         <TableContainer component={Paper}>
             <Table aria-label="simple table">
               <TableHead>
-                <TableCell/>
-                <TableCell>
+                <TableCell size='small'/>
+                <TableCell size='small' id="id">
                   ID
                 </TableCell>
                 <TableCell  align="left">
@@ -153,10 +179,10 @@ export default function Glossary() {
                 <TableCell align="left">
                   Exercise Type
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="center">
                   Equipment
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="center">
                   Difficulty
                 </TableCell>
               </TableHead>
@@ -165,12 +191,12 @@ export default function Glossary() {
                   return (
                   <React.Fragment>
                     <TableRow hover key={row.id}>
-                      <TableCell>
+                      <TableCell size='small'>
                         <IconButton aria-label="expand row" size="small" onClick={()=>ExpandCollapse(row.id)}>
                           {open===row.id ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                         </IconButton>
                       </TableCell>
-                      <TableCell component="th" scope="row">
+                      <TableCell size='small'>
                         {row.id}
                       </TableCell>
                       <TableCell align="left">
@@ -179,18 +205,33 @@ export default function Glossary() {
                       <TableCell align="left">
                         {row.exercise_type}
                       </TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">
                         {row.equipment}
                       </TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">
                         {row.difficulty}
                       </TableCell>
                     </TableRow>
-                    <Box>
-                    <Collapse in={open===row.id} timeout="auto" unmountOnExit>
-                      hi
+                    <TableRow>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    <Collapse in={open===row.id} timeout="auto" unmountOnExit> 
+                      <CardContent>
+                        {(row.instruction_text).map((line) => (<p>{line}</p>))}
+                      </CardContent>
+                      <Grid container spacing={3} direction='row' justify="center"  alignItems="center" style={{flexGrow:1}}>
+                        {row.pic_no.map(
+                          (pic)=>
+                          <Grid item xs={12} sm={6}>
+                          <CardMedia
+                            style = {{ height: 100, paddingTop: '90%'}}
+                            image={pre.concat(pic,post)}
+                            />
+                          </Grid>
+                        )}
+                      </Grid>
                     </Collapse>
-                    </Box>
+                    </TableCell>
+                    </TableRow>
                   </React.Fragment>
                   );
                 })}

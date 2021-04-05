@@ -545,12 +545,15 @@ class CheckModeFirst(APIView):
 class GetExerciseList(APIView):
     def get(self, request, format=None):
         try:
-            
+            defaultNumbers = 50
             keywords=request.GET.get('search')
+            numbers=int(request.GET.get('numbers'))
+            if numbers>0:
+                defaultNumbers = numbers
             if 'search' not in request.GET.keys() or keywords==None or keywords=="":
-                exercises=Exercise.objects.order_by('exercise_name')[0:50]
+                exercises=Exercise.objects.order_by('exercise_name')[0:defaultNumbers]
             else:
-                exercises=Exercise.objects.filter(exercise_name__contains=keywords)
+                exercises=Exercise.objects.filter(exercise_name__contains=keywords)[0:defaultNumbers]
             renderExercise=[]
             for exercise in exercises:
                 renderExercise.append(prepExerciseDetails(ExerciseSerializer(exercise).data))
