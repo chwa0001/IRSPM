@@ -199,7 +199,7 @@ export default function MuscleBuildingPage() {
       console.log(username)
       console.log(`/AGR/AlgoExercise?username=${username}&mode=2&muscle=${muscle}`)
       // fetch(`/AGR/FirstRecommend?username=${username}&mode=2&muscle=${muscle}`)
-      fetch(`/AGR/AlgoExercise?username=${username}`)
+      fetch(`/AGR/AlgoExercise?username=${username}&mode=2&muscle=${muscle}`)
           .then(response => response.json())
           .then(
             (data) => {
