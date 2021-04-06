@@ -58,32 +58,16 @@ More reference video presentations [here](https://telescopeuser.wordpress.com/20
 
 ## SECTION 5 : USER GUIDE
 
-`Refer to appendix <Installation & User Guide> in project report at Github Folder: ProjectReport`
+## Installation:
+1. Download / clone this file into your directory
+2. Open command prompt (cmd) or anaconda prompt and navigate to the directory 
+3. Run the following line in the command prompt 
+>pip install -r requirements.txt
+4. Navigate into MyWebsite\AGR folder 
+5. Run the line below to start the program running locally 
+> $ python manage.py runserver
+6. Go to localhost:8000 http://127.0.0.1:8000/
 
-### [ 1 ] To run the system using iss-vm
-
-> download pre-built virtual machine from http://bit.ly/iss-vm
-
-> start iss-vm
-
-> open terminal in iss-vm
-
-> $ git clone https://github.com/telescopeuser/Workshop-Project-Submission-Template.git
-
-> $ source activate iss-env-py2
-
-> (iss-env-py2) $ cd Workshop-Project-Submission-Template/SystemCode/clips
-
-> (iss-env-py2) $ python app.py
-
-> **Go to URL using web browser** http://0.0.0.0:5000 or http://127.0.0.1:5000
-
-### [ 2 ] To run the system in other/local machine:
-### Install additional necessary libraries. This application works in python 2 only.
-
-> $ sudo apt-get install python-clips clips build-essential libssl-dev libffi-dev python-dev python-pip
-
-> $ pip install pyclips flask flask-socketio eventlet simplejson pandas
 
 ---
 ## SECTION 6 : PROJECT REPORT / PAPER

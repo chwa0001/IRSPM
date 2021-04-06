@@ -357,8 +357,6 @@ export default function UserDataPage() {
                   defaultValue={bmi}
                   value={bmi}
                   fullWidth
-                  value={bmi}
-                  fullWidth
                   onChange={e => setBmi(e.target.value)}
                 />
               </FormControl>
