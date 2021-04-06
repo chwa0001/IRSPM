@@ -23,16 +23,15 @@ def get_top_n(predictions, user_id, n=10):
     for uid, iid, true_r, est, _ in predictions:
         top_n[uid].append((iid, est))
 
-    # Only map the exercises which matches the filter e.g. muscle type
-    
+    user_id1 = int(user_id)
 
     # Then sort the predictions for each user and retrieve the k highest and lowest ones.
     for uid, user_ratings in top_n.items():
         user_ratings.sort(key=lambda x: x[1], reverse=True)
         top_n[uid] = user_ratings[:n]
         bottom_n[uid] = user_ratings[-n:]
-        
-    return top_n[user_id], bottom_n[user_id]
+    
+    return top_n[user_id1], bottom_n[user_id1]
 
 def recommend_exercise(user_id, db , dbfilter, n=10, rating_scale=(1, 5)):
 
@@ -68,9 +67,8 @@ def recommend_exercise(user_id, db , dbfilter, n=10, rating_scale=(1, 5)):
 
     predictions = algo.test(testsetfiltered)
 
-
     top_n, bottom_n = get_top_n(predictions, str(user_id), n=n)
-    
+
     return [int(iid) for (iid, _) in top_n], algo.pu, innertorawid
 
 from scipy.spatial import distance
