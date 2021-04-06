@@ -572,6 +572,7 @@ def convertExerciseListToDetailsJson(exercise):
     recoExArray = []
     i = 0
     while i < len(recoEx):
+        print("in the while loop of convertExerciseListToDetailsJson")
         recoExArray.append(prepExerciseDetails(ExerciseSerializer(recoEx[i]).data)) #serialize into json format
         i += 1
     print(recoExArray)
@@ -624,6 +625,7 @@ class AlgoToExercise(APIView):
 
             # recommend exercise (individual)
             exercise, usermatrix, itemid  = recommend_exercise(user_id, df1, df, n=6, rating_scale=(1, 5))
+            exercise = [10,20,40,90,130,140]
             
             print(f"exercisessss: {exercise}")
             ################## result 0, hard coding return 
@@ -632,12 +634,9 @@ class AlgoToExercise(APIView):
 
             print(username, mode, exercise)
             set_id,set_date = createSetExercises(username, mode, exercise)
+            print(set_id,set_date)
 
-            if set_id >=0: 
-                data['set_id'] = set_id
-                data['set_date'] = set_date
-
-            return Response({"set_exercise_details":recoExArray,"set_id": set_id, "set_date": set_date}, status=status.HTTP_200_OK)
+            return Response({"status":3 ,"set_exercise_details":recoExArray,"set_id": set_id, "set_date": set_date}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
