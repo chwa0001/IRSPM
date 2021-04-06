@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -20,12 +21,9 @@ const useStyles = makeStyles((theme) => ({
     margin: '0 2px',
     transform: 'scale(0.8)',
   },
-  title: {
-    fontSize: 14,
-  },
   pos: {
     marginBottom: 12,
-  },
+  }
 }));
 
 export default function HomePage() {
@@ -34,29 +32,47 @@ export default function HomePage() {
   const username = Cookies.get('username');
   Cookies.set('PageName', "Advance Gym Recommender");
 
-  const bull = <span className={classes.bullet}>•</span>;
-
   return (
         <div className={classes.paper}>
           <Card variant="outlined">
             <CardContent>
-              <Typography className={classes.title} color="textSecondary" gutterBottom>
-                Word of the Day
-              </Typography>
+              <Grid>
               <Typography variant="h5" component="h2">
-                be{bull}nev{bull}o{bull}lent
+                Recommender Mode
               </Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                adjective
+              <Typography color="textSecondary">
+                View Your Recommended Exercises
               </Typography>
-              <Typography variant="body2" component="p">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
+              </Grid>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Select the mode</Button>
+            </CardActions>
+          </Card>
+          <Card variant="outlined">
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                Recommender Mode
+              </Typography>
+              <Typography color="textSecondary">
+                View Your Recommended Exercises
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small">Learn More</Button>
+              <Button size="small">Select the mode</Button>
+            </CardActions>
+          </Card>
+          <Card variant="outlined">
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                Recommender Mode
+              </Typography>
+              <Typography color="textSecondary">
+                View Your Recommended Exercises
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Select the mode</Button>
             </CardActions>
           </Card>
         </div>
