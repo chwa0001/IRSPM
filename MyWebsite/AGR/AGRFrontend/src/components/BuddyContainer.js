@@ -35,6 +35,54 @@ export default function ExBuddyGrid(props) {
   const images = props.expics
   const count = props.count
   const slicedimages = images.slice((count-1)*3,((count*3)))
+
+  const [goalStatus, setGoalStatus] = useState([props.goal]);
+  const [locationStatus, setLocationStatus] = useState([props.location]);
+  const [fitnessStatus, setFitnessStatus] = useState([props.fitness]);
+
+  useEffect(() => {
+    if(props.goal===1)
+    {
+      setGoalStatus('General Fitness')
+    }
+    else if (props.goal===2)
+    {
+      setGoalStatus('Muscle BUilding')
+    }
+    else if (props.goal===3){
+      setGoalStatus('Endurance Training')
+    }
+  }, [])
+
+  useEffect(() => {
+    if(props.location===1)
+    {
+      setLocationStatus('Gym')
+    }
+    else if (props.location===2)
+    {
+      setLocationStatus('Home')
+    }
+  }, [])
+
+
+  useEffect(() => {
+    if(props.fitness===1)
+    {
+      setFitnessStatus('Beginner')
+    }
+    else if (props.fitness===2)
+    {
+      setFitnessStatus('Intermediate')
+    }
+    else if (props.fitness===3){
+      setFitnessStatus('Advanced')
+    }
+  }, [])
+
+
+
+
   
   function CircularProgressWithLabel(props) {
     return (
@@ -153,13 +201,13 @@ export default function ExBuddyGrid(props) {
                 <FormRow type={"body2"} name={'Gender:'} value={props.gender}/>
               </Grid>
               <Grid item xs={12} container spacing={3}>
-                <FormRow type={"body2"} name={'Goal:'} value={props.goal}/>
+                <FormRow type={"body2"} name={'Goal:'} value={goalStatus}/>
               </Grid>
               <Grid item xs={12} container spacing={3}>
-                <FormRow type={"body2"} name={'Preferred Location:'} value={props.location}/>
+                <FormRow type={"body2"} name={'Preferred Location:'} value={locationStatus}/>
               </Grid>
               <Grid item xs={12} container spacing={3}>
-                <FormRow type={"body2"} name={'Fitness:'} value={props.fitness}/>
+                <FormRow type={"body2"} name={'Fitness:'} value={fitnessStatus}/>
               </Grid>
                 <Grid item xs={12} container spacing={3}> 
                 <Grid item xs={12}>
