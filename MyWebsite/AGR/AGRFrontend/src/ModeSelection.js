@@ -8,6 +8,8 @@ import {useHistory} from "react-router-dom";
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import Switch from '@material-ui/core/Switch';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -65,7 +67,7 @@ export default function ModeSelection() {
   Cookies.set('PageName', "Advance Gym Recommender - Choose your mode");
   const [RecommendMode,SetRecommendMode] = useState(true);
   const [GlossaryMode,SetGlossaryMode] = useState(false);
-  const [PastMode,SetPastMode] = useState(false);
+  const [mode,SetMode] = useState("");
 
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
@@ -86,13 +88,24 @@ export default function ModeSelection() {
     CheckModeFirst(username,newValue)
   };
 
-  const handleChangeMode1 = (event) => {
-    SetRecommendMode(event.target.checked);
-  };
+  // const handleChangeMode1 = (event) => {
+  //   SetRecommendMode(event.target.checked);
+  // };
 
-  const handleChangeMode2 = (event) => {
-    SetGlossaryMode(event.target.checked);
-    SetPastMode(!event.target.checked);
+  // const handleChangeMode2 = (event) => {
+  //   SetGlossaryMode(event.target.checked);
+  //   SetPastMode(!event.target.checked);
+  // };
+  const handleChangeMode = (event) => {
+    if(event.target.value==="RM"){
+      SetRecommendMode(true);
+      SetGlossaryMode(false);
+    }
+    else if(event.target.value==="GM"){
+      SetRecommendMode(false);
+      SetGlossaryMode(true);
+    }
+    SetMode(event.target.value);
   };
 
   function SetUserData(username,fitnesslevel,goal,intensity,gender,bmi,location) {
@@ -236,43 +249,54 @@ export default function ModeSelection() {
     }
   };
 
-  const renderModeSelection = (
-  <Grid container spacing={2}>
-  <Grid item xs={12}>
-    <FormControlLabel
-      control={
-        <Switch
-          checked={RecommendMode}
-          onChange={handleChangeMode1}
-          name="RecommendMode"
-          color="primary"
-        />
-      }
-      style={(RecommendMode)?{color:'#ca2c92'}:{color:'#567ace'}}
-      label={(RecommendMode)?"Recommender Mode":"Normal Mode"}
+  // const renderModeSelection = (
+  // <Grid container spacing={2}>
+  // <Grid item xs={12}>
+  //   <FormControlLabel
+  //     control={
+  //       <Switch
+  //         checked={RecommendMode}
+  //         onChange={handleChangeMode1}
+  //         name="RecommendMode"
+  //         color="primary"
+  //       />
+  //     }
+  //     style={(RecommendMode)?{color:'#ca2c92'}:{color:'#567ace'}}
+  //     label={(RecommendMode)?"Recommender Mode":"Normal Mode"}
       
-    />
-    </Grid>
-    <Grid item xs={12}>
-    <Collapse in={!RecommendMode} timeout="auto" unmountOnExit>
-    <FormControlLabel
-      control={
-        <Switch
-          checked={GlossaryMode}
-          onChange={handleChangeMode2}
-          name="NormalMode"
-          color="secondary"
-        />
-      }
-      style={(GlossaryMode)?{color:'#ff3000'}:((PastMode)?{color:'#44975c'}:{color:'#465b73'})}
-      label={(GlossaryMode)?"Glossary Mode":((PastMode)?"Past Routine Mode":"Toggle to choose your mode!")}
+  //   />
+  //   </Grid>
+  //   <Grid item xs={12}>
+  //   <Collapse in={!RecommendMode} timeout="auto" unmountOnExit>
+  //   <FormControlLabel
+  //     control={
+  //       <Switch
+  //         checked={GlossaryMode}
+  //         onChange={handleChangeMode2}
+  //         name="NormalMode"
+  //         color="secondary"
+  //       />
+  //     }
+  //     style={(GlossaryMode)?{color:'#ff3000'}:((PastMode)?{color:'#44975c'}:{color:'#465b73'})}
+  //     label={(GlossaryMode)?"Glossary Mode":((PastMode)?"Past Routine Mode":"Toggle to choose your mode!")}
       
-    />
-    </Collapse>
+  //   />
+  //   </Collapse>
 
+  //   </Grid>
+  //   </Grid>
+  //   );
+
+  const renderModeSelection = (
+    <Grid container spacing={2}>
+    <Grid item xs={12}>
+    <RadioGroup aria-label="mode" name="mode" value={mode} onChange={handleChangeMode}>
+        <FormControlLabel value="RM" control={<Radio />} label="Recommender Mode" style={(mode==="RM")?{color:'#ff3000'}:{color:'#567ace'}}/>
+        <FormControlLabel value="GM" control={<Radio />} label="Glossary Mode" style={(mode==="GM")?{color:'#ff3000'}:{color:'#567ace'}}/>
+    </RadioGroup>
     </Grid>
     </Grid>
-    );
+      );
 
   const renderUserData = (
     <Grid container 

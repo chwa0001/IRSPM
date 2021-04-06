@@ -137,7 +137,7 @@ export default function Glossary() {
   return (
       <div className={classes.paper}>
         <Card>
-          <CardHeader style={{marginLeft:10}} title={<Typography variant="h5" component="h2">Muscle Building</Typography>}
+          <CardHeader style={{marginLeft:10}} title={<Typography variant="h5" component="h2">Glossary Mode</Typography>}
           />
           <Grid container spacing={3} direction='row' justify="center"  alignItems="center" style={{flexGrow:1}}>
           <Grid item xs={12} sm={6}>

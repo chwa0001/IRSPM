@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(20),
     flexDirection: 'column',
     alignItems: 'center',
     flexGrow: 1,
@@ -34,47 +34,88 @@ export default function HomePage() {
 
   return (
         <div className={classes.paper}>
-          <Card variant="outlined">
+          <Grid container direction="column">
+          <Grid container direction="row">
+          <Card variant="outlined" style={{width:300}}>
             <CardContent>
-              <Grid>
-              <Typography variant="h5" component="h2">
-                Recommender Mode
-              </Typography>
-              <Typography color="textSecondary">
-                View Your Recommended Exercises
-              </Typography>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Typography variant="h5" component="h2">
+                    Mode Selection
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography color="textSecondary">
+                    Choose Your Exercise Mode
+                  </Typography>
+                </Grid>
               </Grid>
             </CardContent>
             <CardActions>
-              <Button size="small">Select the mode</Button>
+              <Button size="small" onClick={()=>{history.push('/ModeSelection')}}>Select the mode</Button>
             </CardActions>
           </Card>
-          <Card variant="outlined">
+          <Card variant="outlined" style={{width:300}}>
             <CardContent>
-              <Typography variant="h5" component="h2">
-                Recommender Mode
-              </Typography>
-              <Typography color="textSecondary">
-                View Your Recommended Exercises
-              </Typography>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Typography variant="h5" component="h2">
+                    Glossary
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography color="textSecondary">
+                    View All Exercises
+                  </Typography>
+                </Grid>
+              </Grid>
             </CardContent>
             <CardActions>
-              <Button size="small">Select the mode</Button>
+              <Button size="small" onClick={()=>{history.push('/Glossary')}}>View it now</Button>
             </CardActions>
           </Card>
-          <Card variant="outlined">
+          </Grid>
+          <Grid container direction="row">
+          <Card variant="outlined" style={{width:300}}>
             <CardContent>
-              <Typography variant="h5" component="h2">
-                Recommender Mode
-              </Typography>
-              <Typography color="textSecondary">
-                View Your Recommended Exercises
-              </Typography>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Typography variant="h5" component="h2">
+                    Exercise Buddy
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography color="textSecondary">
+                    View Your Buddy
+                  </Typography>
+                </Grid>
+              </Grid>
             </CardContent>
             <CardActions>
-              <Button size="small">Select the mode</Button>
+              <Button size="small" onClick={()=>{history.push('/ExerciseBuddy')}}>CHeck it out</Button>
             </CardActions>
           </Card>
+          <Card variant="outlined" style={{width:300}}>
+            <CardContent>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Typography variant="h5" component="h2">
+                    Exercise Rating
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography color="textSecondary">
+                    Rate Your Exercise
+                  </Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+            <CardActions>
+              <Button size="small" onClick={()=>{history.push('/ExerciseRating')}}>Start To Rate</Button>
+            </CardActions>
+          </Card>
+          </Grid>
+          </Grid>
         </div>
   );
 }

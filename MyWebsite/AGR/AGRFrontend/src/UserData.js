@@ -78,9 +78,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserDataPage() {
   const classes = useStyles();
-  const username = Cookies.get('username')
-  console.log(username)
-  console.log(Cookies.get())
+  const username = Cookies.get('username');
+  Cookies.set('PageName', "Advance Gym Recommender - My Personal Data");
+  console.log(username);
+  console.log(Cookies.get());
 
   const [fitnesslevel,setFitnesslevel] = useState(' ');
   const [gender,setGender] = React.useState(' ');

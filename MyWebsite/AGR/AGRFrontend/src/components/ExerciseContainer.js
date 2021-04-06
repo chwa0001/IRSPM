@@ -101,56 +101,57 @@ export default function ExerciseContainer(props) {
       <TableContainer component={Paper} className={classes.container}>
         <Table className={classes.root} aria-label="collapsible table">
           <TableBody>
-            {(rows).map((row) => (
-                <React.Fragment>
-                  <TableRow key={row.name}>
-                    <TableCell />
-                    <TableCell style={{ width: 100, fontSize: 16 }} variant="head">
-                      {row.name}
-                    </TableCell>
-                    <TableCell style={{ width: 600, fontSize: 13 }} align="left">
-                      {row.details}
-                    </TableCell>
-                  </TableRow>
-                  </React.Fragment>
-                ))}
-                <React.Fragment>
-                  <TableRow key="Instructions">
-                    <TableCell />
-                    <TableCell style={{ width: 100, fontSize: 16 }} variant="head">
-                      Instruction
-                    </TableCell>
-                    <TableCell style={{ width: 600, fontSize: 13 }} align="left">
-                      {(props.Instructions).map((line) => (<p>{line}</p>))}
-                    </TableCell>
-                  </TableRow>
-                  </React.Fragment>
+            <TableRow key="Instructions">
+              <TableCell />
+              <TableCell style={{ width: 100, fontSize: 16 }} variant="head">
+                Instruction
+              </TableCell>
+              <TableCell style={{ width: 600, fontSize: 13 }} align="left">
+                {(props.Instructions).map((line) => (<p>{line}</p>))}
+              </TableCell>
+            </TableRow>
             <TableRow>
-              <TableCell scope="row" align="left" size="small" width={5} alignContent="left">
-                  <IconButton width={5} aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+              <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
+                  {props.imgs.map(
+                    (pic)=>
+                    <Grid item xs={12} sm={6}>
+                    <CardMedia
+                      style = {{ height: 100, paddingTop: '90%'}}
+                      image={pre.concat(pic,post)}
+                      />
+                    </Grid>
+                  )}
+                </Grid>
+                <CardContent className={{marginBottom:'10%'}}></CardContent>
+              </TableCell>
+            </TableRow>
+            <TableRow hover onClick={() => setOpen(!open)}>
+              <TableCell colSpan={6} scope="row" align="center" size="small" width={5} alignContent="center" style={{ paddingBottom: 0, paddingTop: 0 }}>
+                  <IconButton width={5} aria-label="expand row" size="small" >
                       {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                   </IconButton>
               </TableCell>
               <TableCell />
               <TableCell />
             </TableRow>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+            {(rows).map((row) => (
+                <React.Fragment>
+                  <TableRow key={row.name}>
+                    <TableCell colSpan={3} style={{width:200,fontSize: 16 }} size="small" align="center" variant="head">
+                      {row.name}
+                    </TableCell>
+                    <TableCell colSpan={3} style={{width: 500,fontSize: 16 }} size="small" align="center" alignContent="center">
+                      {row.details}
+                    </TableCell>
+                  </TableRow>
+                  </React.Fragment>
+                ))}
+            </Collapse>
           </TableBody>
         </Table>
       </TableContainer>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <Grid container spacing={3} direction='row' justify="center"  alignItems="center">
-          {props.imgs.map(
-            (pic)=>
-            <Grid item xs={12} sm={6}>
-            <CardMedia
-              style = {{ height: 100, paddingTop: '90%'}}
-              image={pre.concat(pic,post)}
-              />
-            </Grid>
-          )}
-        </Grid>
-        <CardContent className={{marginBottom:'10%'}}></CardContent>
-      </Collapse>
     </Card>
 
   );
