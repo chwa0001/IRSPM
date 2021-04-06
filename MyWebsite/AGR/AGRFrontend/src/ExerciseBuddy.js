@@ -74,6 +74,7 @@ function a11yProps(index) {
 export default function ExerciseBuddytest() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    Cookies.set('PageName', "Advance Gym Recommender - Your Buddy");
 
     const handleChange = (event, newValue) => {
       setValue(newValue);

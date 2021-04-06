@@ -54,6 +54,7 @@ export default function Glossary() {
   const classes = useStyles();
   let history = useHistory()
   const username = Cookies.get('username');
+  Cookies.set('PageName', "Advance Gym Recommender - Glossary Mode");
   const [search,setSearchData]=useState('');
   const [exerciseList, setExerciseList]=useState([]);
   const [triggerSearch, SetTriggerSearch] = useState(0);
