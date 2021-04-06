@@ -345,11 +345,16 @@ def createSetExercises(username, mode, exercise_ids):
         user_id = get_userid_from_userdb(username)
         print(username,user_id,mode,type(mode),exercise_ids)
         print(user_id, mode, date.today())
-
+        
         routine = Routine(userdata_id=user_id, mode=mode, date=date.today())
         print(username,user_id)
+        print(routine)
 
-        routine.save()
+        try:
+            routine.save()
+        except  Exception as error: 
+            print("error in saving routine")
+
         print(username,user_id)
         for exercise_id in exercise_ids:
             re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
@@ -567,6 +572,7 @@ def convertExerciseListToDetailsJson(exercise):
     recoExArray = []
     i = 0
     while i < len(recoEx):
+        print("in the while loop of convertExerciseListToDetailsJson")
         recoExArray.append(prepExerciseDetails(ExerciseSerializer(recoEx[i]).data)) #serialize into json format
         i += 1
     print(recoExArray)
@@ -619,13 +625,18 @@ class AlgoToExercise(APIView):
 
             # recommend exercise (individual)
             exercise, usermatrix, itemid  = recommend_exercise(user_id, df1, df, n=6, rating_scale=(1, 5))
+            exercise = [10,20,40,90,130,140]
             
-            print(exercise)
+            print(f"exercisessss: {exercise}")
             ################## result 0, hard coding return 
             # exercise = [10,20,40,90,130,140]
             recoExArray = convertExerciseListToDetailsJson(exercise)
 
-            return Response({"set_exercise_details":recoExArray,"set_id": 8, "set_date": "31/02/2020"}, status=status.HTTP_200_OK)
+            print(username, mode, exercise)
+            set_id,set_date = createSetExercises(username, mode, exercise)
+            print(set_id,set_date)
+
+            return Response({"status":3 ,"set_exercise_details":recoExArray,"set_id": set_id, "set_date": set_date}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -824,7 +835,7 @@ class FirstReco(APIView):
         data['recoExList'] = recoExArray
 
         set_id,set_date = createSetExercises(username, mode, recoList)
-        
+
         if set_id >=0: 
             data['set_id'] = set_id
             data['set_date'] = set_date

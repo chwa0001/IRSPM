@@ -136,7 +136,16 @@ export default function ModeSelection() {
       if(RecommendMode){
         switch(FitnessMode){
           case 1:
-            history.push('/MuscleBuilding');
+            if(checkifFirst==='YES')
+            {
+              history.push('/GeneralFitness')
+            }
+            else if(checkifFirst==='NO'){
+              history.push('/RGeneralFitness')
+            }
+            else{
+              alert("unable to check backend on history")
+            }          
             break;
           case 2:
             if(checkifFirst==='YES')
@@ -151,7 +160,16 @@ export default function ModeSelection() {
             }          
             break;
           case 3:
-            history.push('/MuscleBuilding');
+            if(checkifFirst==='YES')
+            {
+              history.push('/EndurenceTraining')
+            }
+            else if(checkifFirst==='NO'){
+              history.push('/REndurenceTraining')
+            }
+            else{
+              alert("unable to check backend on history")
+            }          
             break;
           default:
             alert("Please select a fitness mode!")
@@ -207,7 +225,7 @@ export default function ModeSelection() {
               setCheckifFirst(data.firsttime)
 
             },
-            (error) => {alert(error)}
+            (error) => {alert("this is in check mode first alert")}
           )
       ;
     }

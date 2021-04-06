@@ -48,7 +48,7 @@ function Copyright() {
 }
 
 function getSteps() {
-  return ['Choose your preffered exercise!','Exercise Set','Rate Exercise Set!'];
+  return ['Exercise Set','Rate Exercise Set!'];
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -219,9 +219,9 @@ export default function RepeatGeneralFitnessPage() {
   const getRepeatGeneralFitness=(username)=> {
     if (username!=''){
       console.log(username)
-      console.log(`/AGR/AlgoExercise?username=${username}&mode=1`)
-      // fetch(`/AGR/FirstRecommend?username=${username}&mode=1`)
-      fetch(`/AGR/AlgoExercise?username=${username}`)
+      console.log(`/AGR/AlgoExercise?username=${username}&mode=1&`)
+      // fetch(`/AGR/FirstRecommend?username=${username}&mode=2&muscle=${muscle}`)
+      fetch(`/AGR/AlgoExercise?username=${username}&mode=1&`)
           .then(response => response.json())
           .then(
             (data) => {

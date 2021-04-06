@@ -217,9 +217,9 @@ export default function RepeatEndurencePage() {
   const getRepeatMuscleBuildingExercise=(username,muscle)=> {
     if (username!=''){
       console.log(username)
-      console.log(`/AGR/AlgoExercise?username=${username}&mode=2&muscle=${muscle}`)
+      console.log(`/AGR/AlgoExercise?username=${username}&mode=3&muscle=${muscle}`)
       // fetch(`/AGR/FirstRecommend?username=${username}&mode=2&muscle=${muscle}`)
-      fetch(`/AGR/AlgoExercise?username=${username}`)
+      fetch(`/AGR/AlgoExercise?username=${username}&mode=3&muscle=${muscle}`)
           .then(response => response.json())
           .then(
             (data) => {
