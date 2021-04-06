@@ -3,7 +3,7 @@ from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,SetUserDat
 from .views import AlgoToLearn,ExerciseRating,GetAccountData, AlgoToExercise
 from .views import UserView,CreateUserView,LoginUserView,ModelToLearn,FirstReco
 from .views import GetSetToRate,CreateSet,CreateSetExercises,GetSetDetails
-from .views import GetExercise4General,GetExercise4Muscle,CheckModeFirst,GetExerciseList
+from .views import GetExercise4General,GetExercise4Muscle,CheckModeFirst,GetExerciseList,GetSetList
 
 urlpatterns = [
     path('User', UserView.as_view()),
@@ -25,5 +25,6 @@ urlpatterns = [
     path('GetExercise4General',GetExercise4General.as_view()),
     path('CheckModeFirst',CheckModeFirst.as_view()),
     path('GetExerciseList',GetExerciseList.as_view()),
+    path('GetSetList',GetSetList.as_view()),
     
 ]
