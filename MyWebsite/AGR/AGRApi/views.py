@@ -566,6 +566,52 @@ class GetExerciseList(APIView):
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
+class GetSetList(APIView):
+    def get(self, request, format=None):
+        try:
+            defaultNumbers = 50
+            username=request.GET.get('username')
+            user_id = int(get_userid_from_userdb(username))
+            numbers=int(request.GET.get('numbers'))
+            if numbers>0:
+                defaultNumbers = numbers
+            sets = Routine.objects.filter(userdata_id = user_id).order_by('date')
+
+            if(len(sets)<1):
+                return Response({"status": -2,}, status=status.HTTP_200_OK)
+            
+            set_return = []
+            for s in sets:
+                set_details = {}
+                set_details["date"] = s.date
+                mode_int = s.mode
+                if mode_int == 1:
+                    set_details["mode"] = "General Fitness"
+                elif mode_int == 2: 
+                    set_details["mode"] = "Muscle Building"
+                else:
+                    set_details["mode"] = "Endurence Training"
+                routine_exercises_class = RoutineExercises.objects.filter(routine_id = s.id)
+                exercises_details = []
+                exercise_name = []
+                for routine_exercises in routine_exercises_class:
+                    print(f"exercise_item.exercise_id: {routine_exercises.exercise_id}")
+                    
+                    item = Exercise.objects.get(id=routine_exercises.exercise_id)
+                    exercise_name.append(item.exercise_name)
+                    exercises_details.append(prepExerciseDetails(ExerciseSerializer(item).data))
+                set_details["exercises"] = exercises_details
+                set_details["exercises_name"] = exercise_name
+                set_return.append(set_details)
+            return Response({"set_details":set_return , "status":1}, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+                    
+
+
+
 # concert exercise list (array) into dictionary/json file with processed data.
 def convertExerciseListToDetailsJson(exercise):
     recoEx = Exercise.objects.filter(id__in = exercise) #filter for Exercise db for recommended exercise according to models.py format
