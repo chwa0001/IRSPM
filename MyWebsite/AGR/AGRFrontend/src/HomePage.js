@@ -1,41 +1,30 @@
 import React,{ useState , useEffect } from 'react';
 import Cookies from 'js-cookie';
-import {fade,makeStyles } from '@material-ui/core/styles';
+import {makeStyles } from '@material-ui/core/styles';
 import {useHistory} from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import MenuBar from './components/MenuBar';
-import CustomScroller from 'react-custom-scroller';
-import Container from '@material-ui/core/Container';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
-import { DataGrid } from '@material-ui/data-grid';
-
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
-  grow: {
-    flexGrow: 1,
-  },
-  gridList: {
-    width: 500,
-    height: 450,
-  },
   paper: {
     marginTop: theme.spacing(4),
     flexDirection: 'column',
     alignItems: 'center',
     flexGrow: 1,
   },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
   },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
+  title: {
+    fontSize: 14,
   },
-  Images:{
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+  pos: {
+    marginBottom: 12,
   },
 }));
 
@@ -43,10 +32,32 @@ export default function HomePage() {
   const classes = useStyles();
   let history = useHistory()
   const username = Cookies.get('username');
+  Cookies.set('PageName', "Advance Gym Recommender");
+
+  const bull = <span className={classes.bullet}>•</span>;
 
   return (
         <div className={classes.paper}>
-          <Card>
+          <Card variant="outlined">
+            <CardContent>
+              <Typography className={classes.title} color="textSecondary" gutterBottom>
+                Word of the Day
+              </Typography>
+              <Typography variant="h5" component="h2">
+                be{bull}nev{bull}o{bull}lent
+              </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                adjective
+              </Typography>
+              <Typography variant="body2" component="p">
+                well meaning and kindly.
+                <br />
+                {'"a benevolent smile"'}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
           </Card>
         </div>
   );

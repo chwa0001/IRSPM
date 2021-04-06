@@ -646,7 +646,7 @@ class AlgoToExercise(APIView):
             qs = UserExerciseRating.objects.all()
             q = qs.values('user_id', 'exercise_id','user_score')
             df1 = pd.DataFrame.from_records(q)
-
+            
             if username != None and mode == 1: #For general fitness
             # exercise_data = Exercise.objects.filter(difficulty=fitness) #get all exercise data from db according to models.py format filtered by difficulty and equipment
                 exercise_data = getExerciseGeneralFitness(fitness)
@@ -671,8 +671,8 @@ class AlgoToExercise(APIView):
 
             # recommend exercise (individual)
             exercise, usermatrix, itemid  = recommend_exercise(user_id, df1, df, n=6, rating_scale=(1, 5))
-            exercise = [10,20,40,90,130,140]
-            
+            # exercise = [10,20,40,90,130,140]
+            print(exercise)
             print(f"exercisessss: {exercise}")
             ################## result 0, hard coding return 
             # exercise = [10,20,40,90,130,140]

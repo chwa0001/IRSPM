@@ -112,7 +112,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CardioPage() {
   const classes = useStyles();
-  const username = Cookies.get('username')
+  const username = Cookies.get('username');
+  Cookies.set('PageName', "Advance Gym Recommender - Cardio Mode");
   console.log(username)
   // console.log(Cookies.get())
   const [step1,SetStep1] = useState(false);

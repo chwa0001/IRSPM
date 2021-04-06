@@ -62,6 +62,7 @@ export default function ModeSelection() {
   const classes = useStyles();
   let history = useHistory()
   const username = Cookies.get('username');
+  Cookies.set('PageName', "Advance Gym Recommender - Choose your mode");
   const [RecommendMode,SetRecommendMode] = useState(true);
   const [GlossaryMode,SetGlossaryMode] = useState(false);
   const [PastMode,SetPastMode] = useState(false);

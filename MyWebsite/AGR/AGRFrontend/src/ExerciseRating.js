@@ -124,6 +124,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ExerciseRatingPage() {
   const classes = useStyles();
   const username = Cookies.get('username') // cookies not working
+  Cookies.set('PageName', "Advance Gym Recommender - Rate your exercises");
   const [score, setScore] = useState('')
   const [userId, setUserId] = useState('')
   const [setId, setSetId] = useState('')

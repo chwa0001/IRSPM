@@ -16,6 +16,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Grid from '@material-ui/core/Grid';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -90,7 +91,8 @@ export default function MenuBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const username = Cookies.get('username')
+  const username = Cookies.get('username');
+  const [pageName,setPageName] = React.useState(Cookies.get('PageName'));
   
   let history = useHistory()
   const isMenuOpen = Boolean(anchorEl);
@@ -161,22 +163,22 @@ export default function MenuBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      {/* <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="secondary">
             <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
+      </MenuItem> */}
+      {/* <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
         <p>Notifications</p>
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           aria-label="account of current user"
@@ -191,22 +193,28 @@ export default function MenuBar() {
     </Menu>
   );
 
+  const UpdatePage = () =>{
+    setPageName(Cookies.get('PageName'));
+  };
+
+  setInterval(UpdatePage,100);
+
   return (
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar style={{minHeight:"10vh"}}>
-          <IconButton
+          {/* <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
           >
             <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            {username}
+          </IconButton> */}
+          <Typography variant="h6" component="h6">
+            {pageName}
           </Typography>
-          <div className={classes.search}>
+          {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -218,10 +226,10 @@ export default function MenuBar() {
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
-          </div>
-          <div className={classes.grow} />
+          </div> */}
+          <div className={classes.grow}/>
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            {/* <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
               </Badge>
@@ -230,7 +238,9 @@ export default function MenuBar() {
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
+            <Grid container direction="column" justify="center"  alignItems="center" style={{flexGrow:1}}>
+            <Grid item>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -239,8 +249,15 @@ export default function MenuBar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <AccountCircle fontSize="large" />
             </IconButton>
+            </Grid>
+            <Grid item>
+            <Typography className={classes.title} variant="h6" noWrap>
+              {username}
+            </Typography>
+            </Grid>
+            </Grid>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
