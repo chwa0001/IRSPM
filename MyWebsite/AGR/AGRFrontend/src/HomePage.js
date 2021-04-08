@@ -36,9 +36,9 @@ export default function HomePage() {
     <div className={classes.paper}>
       <Grid container direction="column" alignContent='right' alignItems='right'>
         <Grid container direction="column">
-          <Card variant="outlined" style={{width:300,height:130}}>
+          <Card variant="outlined" style={{width:300,height:140}}>
             <CardContent>
-              <Grid container direction="column" spacing={2}>
+              <Grid container direction="column" spacing={1}>
                 <Grid item>
                   <Typography variant="h5" component="h2">
                     Mode Selection
@@ -55,9 +55,9 @@ export default function HomePage() {
               <Button size="small" onClick={()=>{history.push('/ModeSelection')}}>Select the mode</Button>
             </CardActions>
           </Card>
-          <Card variant="outlined" style={{width:300,height:100}}>
+          <Card variant="outlined" style={{width:300,height:140}}>
             <CardContent>
-              <Grid container direction="column" spacing={2}>
+              <Grid container direction="column" spacing={1}>
                 <Grid item>
                   <Typography variant="h5" component="h2">
                     Glossary
@@ -76,9 +76,9 @@ export default function HomePage() {
           </Card>
           </Grid>
           <Grid container direction="column">
-          <Card variant="outlined" style={{width:300,height:100}}>
+          <Card variant="outlined" style={{width:300,height:140}}>
             <CardContent>
-              <Grid container direction="column" spacing={2}>
+              <Grid container direction="column" spacing={1}>
                 <Grid item>
                   <Typography variant="h5" component="h2">
                     Exercise Buddy
@@ -95,9 +95,9 @@ export default function HomePage() {
               <Button size="small" onClick={()=>{history.push('/ExerciseBuddy')}}>CHeck it out</Button>
             </CardActions>
           </Card>
-          <Card variant="outlined" style={{width:300,height:100}}>
+          <Card variant="outlined" style={{width:300,height:140}}>
             <CardContent>
-              <Grid container direction="column" spacing={2}>
+              <Grid container direction="column" spacing={1}>
                 <Grid item>
                   <Typography variant="h5" component="h2">
                     Exercise Rating
@@ -116,9 +116,9 @@ export default function HomePage() {
           </Card>
         </Grid>
         <Grid container direction="row">
-          <Card variant="outlined" style={{width:300,height:100}}>
+          <Card variant="outlined" style={{width:300,height:140}}>
             <CardContent>
-              <Grid container direction="column" spacing={2}>
+              <Grid container direction="column" spacing={1}>
                 <Grid item>
                   <Typography variant="h5" component="h2">
                     Past Set Exercises

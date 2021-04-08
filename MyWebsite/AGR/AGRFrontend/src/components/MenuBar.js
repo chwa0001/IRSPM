@@ -209,7 +209,7 @@ export default function MenuBar() {
   return (
     <div className={classes.grow}>
       <AppBar position="static">
-        <Toolbar style={{minHeight:"10vh"}}>
+        <Toolbar style={{maxHeight:"10vh"}}>
           {/* <IconButton
             edge="start"
             className={classes.menuButton}
@@ -247,7 +247,7 @@ export default function MenuBar() {
               </Badge>
             </IconButton> */}
             <Grid container direction="column" justify="center"  alignItems="center" style={{flexGrow:1}}>
-            <Grid item>
+            <Grid item >
             <IconButton
               edge="end"
               aria-label="account of current user"

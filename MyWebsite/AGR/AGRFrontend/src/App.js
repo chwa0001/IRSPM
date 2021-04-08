@@ -46,7 +46,7 @@ export default class App extends Component {
             <Route exact path="/"  component={SignIn}/>
             <Route exact path="/SignUp" component={SignUp}/>
             <Route exact path="/Reset" component={ResetPassword}/>
-            <div  style={{flexGrow:1}}>
+            <div  style={{backgroundImage:`url('/AGRFrontend/static/images/background2.png')`,flexGrow:1}}>
             <CustomScroller style={{ width: '100%', height: '100%' }}>
             <MenuBar/>
             <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>

@@ -452,7 +452,7 @@ export default function ModeSelection() {
         </Grid>
         <Grid item xs={12}>
           <div role="tabpanel" hidden={FitnessMode!==1} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
-            <Card>
+            <Card direction='row'>
               <CardMedia 
               component="img"
               alt="General Fitness"

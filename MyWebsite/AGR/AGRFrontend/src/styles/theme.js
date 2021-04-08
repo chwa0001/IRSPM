@@ -124,14 +124,14 @@ const theme = createMuiTheme({
         }
       }
     },
-    MuiCssBaseline: {
-      "@global": {
-        body: {
-          backgroundImage:
-            `url('/AGRFrontend/static/images/background2.png')`
-        }
-      }
-    }
+    // MuiCssBaseline: {
+    //   "@global": {
+    //     body: {
+    //       backgroundImage:
+    //         `url('/AGRFrontend/static/images/background2.png')`
+    //     }
+    //   }
+    // }
   },
   typography: {
     useNextVariants: true,
