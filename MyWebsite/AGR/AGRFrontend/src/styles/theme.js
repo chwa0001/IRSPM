@@ -1,8 +1,8 @@
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core";
 
 // colors
-const primary = "#b3294e";
-const secondary = "#4829B2";
+const primary = "#f77474";
+const secondary = "#6547fc";
 const black = "#343a40";
 const darkBlack = "rgb(36, 40, 44)";
 const background = "#f5f5f5";
@@ -45,7 +45,7 @@ const theme = createMuiTheme({
     background: {
       default: background
     },
-    spacing
+    spacing,
   },
   breakpoints: {
     // Define custom breakpoint values.
@@ -121,6 +121,14 @@ const theme = createMuiTheme({
         [`@media (max-width:  ${sm}px)`]: {
           paddingLeft: spacing,
           paddingRight: spacing
+        }
+      }
+    },
+    MuiCssBaseline: {
+      "@global": {
+        body: {
+          backgroundImage:
+            `url('/AGRFrontend/static/images/background2.png')`
         }
       }
     }

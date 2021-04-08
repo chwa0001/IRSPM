@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(20),
+    marginTop: theme.spacing(3),
     flexDirection: 'column',
     alignItems: 'center',
     flexGrow: 1,
@@ -34,9 +34,9 @@ export default function HomePage() {
 
   return (
     <div className={classes.paper}>
-      <Grid container direction="column">
-        <Grid container direction="row">
-          <Card variant="outlined" style={{width:300}}>
+      <Grid container direction="column" alignContent='right' alignItems='right'>
+        <Grid container direction="column">
+          <Card variant="outlined" style={{width:300,height:130}}>
             <CardContent>
               <Grid container direction="column" spacing={2}>
                 <Grid item>
@@ -55,7 +55,7 @@ export default function HomePage() {
               <Button size="small" onClick={()=>{history.push('/ModeSelection')}}>Select the mode</Button>
             </CardActions>
           </Card>
-          <Card variant="outlined" style={{width:300}}>
+          <Card variant="outlined" style={{width:300,height:100}}>
             <CardContent>
               <Grid container direction="column" spacing={2}>
                 <Grid item>
@@ -75,8 +75,8 @@ export default function HomePage() {
             </CardActions>
           </Card>
           </Grid>
-          <Grid container direction="row">
-          <Card variant="outlined" style={{width:300}}>
+          <Grid container direction="column">
+          <Card variant="outlined" style={{width:300,height:100}}>
             <CardContent>
               <Grid container direction="column" spacing={2}>
                 <Grid item>
@@ -95,7 +95,7 @@ export default function HomePage() {
               <Button size="small" onClick={()=>{history.push('/ExerciseBuddy')}}>CHeck it out</Button>
             </CardActions>
           </Card>
-          <Card variant="outlined" style={{width:300}}>
+          <Card variant="outlined" style={{width:300,height:100}}>
             <CardContent>
               <Grid container direction="column" spacing={2}>
                 <Grid item>
@@ -116,7 +116,7 @@ export default function HomePage() {
           </Card>
         </Grid>
         <Grid container direction="row">
-          <Card variant="outlined" style={{width:300}}>
+          <Card variant="outlined" style={{width:300,height:100}}>
             <CardContent>
               <Grid container direction="column" spacing={2}>
                 <Grid item>

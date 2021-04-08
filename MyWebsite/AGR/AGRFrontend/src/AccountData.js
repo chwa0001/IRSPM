@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     height: 36,
   },
   submitbutton:{
-    backgroundColor:"#0a57f2",
+    // backgroundColor:"#0a57f2",
     color: 'white',
     height: 36,
   },
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   save: {
     margin: theme.spacing(2, 0, 1),
-    backgroundColor: '#34ebe8',
+    // backgroundColor: '#34ebe8',
   },
   edit: {
     margin: theme.spacing(2, 0, 1),

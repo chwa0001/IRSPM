@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Select Your Preferred Mode', 'Update Your Personal Data', 'Start Your Fitness'];
+  return ['Start Your Recommender Mode', 'Update Your Personal Data', 'Start Your Fitness'];
 }
 
 export default function ModeSelection() {
@@ -290,10 +290,11 @@ export default function ModeSelection() {
   const renderModeSelection = (
     <Grid container spacing={2}>
     <Grid item xs={12}>
-    <RadioGroup aria-label="mode" name="mode" value={mode} onChange={handleChangeMode}>
+    <Typography >Please be patient to go through all the required steps for our Recommender.</Typography>
+    {/* <RadioGroup aria-label="mode" name="mode" value={mode} onChange={handleChangeMode}>
         <FormControlLabel value="RM" control={<Radio />} label="Recommender Mode" style={(mode==="RM")?{color:'#ff3000'}:{color:'#567ace'}}/>
         <FormControlLabel value="GM" control={<Radio />} label="Glossary Mode" style={(mode==="GM")?{color:'#ff3000'}:{color:'#567ace'}}/>
-    </RadioGroup>
+    </RadioGroup> */}
     </Grid>
     </Grid>
       );

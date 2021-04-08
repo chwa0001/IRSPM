@@ -1,5 +1,5 @@
 import React, { Component, Fragment, Suspense} from "react";
-import { MuiThemeProvider, CssBaseline } from "@material-ui/core";
+import { MuiThemeProvider, CssBaseline, Button } from "@material-ui/core";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { render } from "react-dom";
 
@@ -46,7 +46,7 @@ export default class App extends Component {
             <Route exact path="/"  component={SignIn}/>
             <Route exact path="/SignUp" component={SignUp}/>
             <Route exact path="/Reset" component={ResetPassword}/>
-            <div style={{flexGrow:1}}>
+            <div  style={{flexGrow:1}}>
             <CustomScroller style={{ width: '100%', height: '100%' }}>
             <MenuBar/>
             <Container component="main" maxWidth="md" style={{maxHeight: "90vh", overflow: 'auto'}}>
