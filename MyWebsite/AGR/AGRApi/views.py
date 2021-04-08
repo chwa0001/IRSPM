@@ -575,7 +575,7 @@ class GetSetList(APIView):
             numbers=int(request.GET.get('numbers'))
             if numbers>0:
                 defaultNumbers = numbers
-            sets = Routine.objects.filter(userdata_id = user_id).order_by('date')
+            sets = Routine.objects.filter(userdata_id = user_id).order_by('-id')
 
             if(len(sets)<1):
                 return Response({"status": -2,}, status=status.HTTP_200_OK)
@@ -584,6 +584,7 @@ class GetSetList(APIView):
             for s in sets:
                 set_details = {}
                 set_details["date"] = s.date
+                set_details["id"] = s.id
                 mode_int = s.mode
                 if mode_int == 1:
                     set_details["mode"] = "General Fitness"

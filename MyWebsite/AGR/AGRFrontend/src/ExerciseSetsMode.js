@@ -134,28 +134,35 @@ export default function ExerciseSets() {
         </Card>
         <TableContainer component={Paper}>
             <Table aria-label="simple table">
-              <TableHead>
-                {/* <TableCell size='small'/> */}
+            <TableHead>
+                <TableCell size='small'/>
                 <TableCell size='small' id="id">
-                  Date
+                  ID
                 </TableCell>
                 <TableCell  align="left">
-                  Exercise Type
+                  Date
                 </TableCell>
                 <TableCell align="left">
+                  Exercise Type
+                </TableCell>
+                <TableCell align="center">
                   Exercises
                 </TableCell>
               </TableHead>
+
               <TableBody>
                 {exercisesSet.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                   return (
                   <React.Fragment>
-                    <TableRow hover key={row.date}>
-                      {/* <TableCell size='small'>
+                    <TableRow hover key={row.id}>
+                      <TableCell size='small'>
                         <IconButton aria-label="expand row" size="small" onClick={()=>ExpandCollapse(row.id)}>
-                          {open===row.id ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                          {open===row.date ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                         </IconButton>
-                      </TableCell> */}
+                      </TableCell>
+                      <TableCell size='small'>
+                        {row.id}
+                      </TableCell>
                       <TableCell size='small'>
                         {row.date}
                       </TableCell>
@@ -164,31 +171,40 @@ export default function ExerciseSets() {
                       </TableCell>
                       <TableCell align="left">
                         {/* {row.exercises} */}
-                        {row.exercises_name.map((e) => {
-                            <p>{e}</p>
-                        })}
+                        {(row.exercises_name).map(
+                          (e) => 
+                            <div>{e}</div>
+                        )}
                       </TableCell>
                     </TableRow>
-                    {/* <TableRow>
+                    <TableRow>
                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open===row.id} timeout="auto" unmountOnExit> 
                       <CardContent>
-                        {(row.instruction_text).map((line) => (<p>{line}</p>))}
+                      {(row.exercises).map(
+                        (exercise) => 
+                        <div>
+                        <CardContent>
+                          <Typography variant="h4" component="h4">{exercise.exercise_name}</Typography>
+                          <Typography variant="body" component="body">{exercise.instruction_text}</Typography>
+                        </CardContent>
+                        <Grid container spacing={3} direction='row' justify="center"  alignItems="center" style={{flexGrow:1}}>
+                          {exercise.pic_no.map(
+                            (pic)=>
+                            <Grid item xs={12} sm={6}>
+                              <CardMedia
+                                style = {{ height: 100, paddingTop: '90%'}}
+                                image={pre.concat(pic,post)}
+                                />
+                            </Grid>
+                          )}
+                        </Grid>
+                        </div>
+                      )}
                       </CardContent>
-                      <Grid container spacing={3} direction='row' justify="center"  alignItems="center" style={{flexGrow:1}}>
-                        {row.pic_no.map(
-                          (pic)=>
-                          <Grid item xs={12} sm={6}>
-                          <CardMedia
-                            style = {{ height: 100, paddingTop: '90%'}}
-                            image={pre.concat(pic,post)}
-                            />
-                          </Grid>
-                        )}
-                      </Grid>
                     </Collapse>
                     </TableCell>
-                    </TableRow> */}
+                    </TableRow>
                   </React.Fragment>
                   );
                 })}

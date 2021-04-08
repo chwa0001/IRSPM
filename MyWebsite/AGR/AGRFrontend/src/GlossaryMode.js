@@ -140,31 +140,31 @@ export default function Glossary() {
           <CardHeader style={{marginLeft:10}} title={<Typography variant="h5" component="h2">Glossary Mode</Typography>}
           />
           <Grid container spacing={3} direction='row' justify="center"  alignItems="center" style={{flexGrow:1}}>
-          <Grid item xs={12} sm={6}>
-          <InputBase
-            type="search"
-            className={classes.input}
-            placeholder="Search Exercises"
-            inputProps={{ 'aria-label': 'search exercises' }}
-            onChange={inputSearch}
-          />
-          <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={()=>{SetTriggerSearch(!triggerSearch)}}>
-            <SearchIcon />
-          </IconButton>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-          <TextField
-          id="exercisesNumber"
-          label="Numbers of exercises"
-          type="number"
-          defaultValue={exercisesNumber}
-          value={exercisesNumber}
-          onChange={e => setExercisesNumber(e.target.value)}
-          />
-          <IconButton color="primary" className={classes.iconButton} aria-label="directions" onClick={()=>{SetTriggerSearch(!triggerSearch)}}>
-            <DirectionsIcon />
-          </IconButton>
-          </Grid>
+            <Grid item xs={12} sm={6}>
+            <InputBase
+              type="search"
+              className={classes.input}
+              placeholder="Search Exercises"
+              inputProps={{ 'aria-label': 'search exercises' }}
+              onChange={inputSearch}
+            />
+            <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={()=>{SetTriggerSearch(!triggerSearch)}}>
+              <SearchIcon />
+            </IconButton>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+            <TextField
+            id="exercisesNumber"
+            label="Numbers of exercises"
+            type="number"
+            defaultValue={exercisesNumber}
+            value={exercisesNumber}
+            onChange={e => setExercisesNumber(e.target.value)}
+            />
+            <IconButton color="primary" className={classes.iconButton} aria-label="directions" onClick={()=>{SetTriggerSearch(!triggerSearch)}}>
+              <DirectionsIcon />
+            </IconButton>
+            </Grid>
           </Grid>
         </Card>
         <TableContainer component={Paper}>
