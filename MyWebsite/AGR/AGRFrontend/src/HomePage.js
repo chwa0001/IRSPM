@@ -33,9 +33,9 @@ export default function HomePage() {
   Cookies.set('PageName', "Advance Gym Recommender");
 
   return (
-        <div className={classes.paper}>
-          <Grid container direction="column">
-          <Grid container direction="row">
+    <div className={classes.paper}>
+      <Grid container direction="column">
+        <Grid container direction="row">
           <Card variant="outlined" style={{width:300}}>
             <CardContent>
               <Grid container direction="column" spacing={2}>
@@ -114,8 +114,29 @@ export default function HomePage() {
               <Button size="small" onClick={()=>{history.push('/ExerciseRating')}}>Start To Rate</Button>
             </CardActions>
           </Card>
-          </Grid>
-          </Grid>
-        </div>
+        </Grid>
+        <Grid container direction="row">
+          <Card variant="outlined" style={{width:300}}>
+            <CardContent>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Typography variant="h5" component="h2">
+                    Past Set Exercises
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography color="textSecondary">
+                    View Past Exercises
+                  </Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+            <CardActions>
+              <Button size="small" onClick={()=>{history.push('/ExerciseSets')}}>View it now</Button>
+            </CardActions>
+          </Card>
+        </Grid>
+      </Grid>
+    </div>
   );
 }
