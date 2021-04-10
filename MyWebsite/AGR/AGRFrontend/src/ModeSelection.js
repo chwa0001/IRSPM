@@ -346,7 +346,7 @@ export default function ModeSelection() {
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            <MenuItem value={1}>Beginer</MenuItem>
+            <MenuItem value={1}>Beginner</MenuItem>
             <MenuItem value={2}>Intermediate</MenuItem>
             <MenuItem value={3}>Advance</MenuItem>
           </Select>
@@ -454,8 +454,8 @@ export default function ModeSelection() {
           </Tabs>
         </Grid>
         <Grid item xs={12}>
-          <div role="tabpanel" hidden={FitnessMode!==1} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
-            <Card direction='row'>
+          <div role="tabpanel" hidden={FitnessMode!==1} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1" >
+            <Card>
               <CardMedia 
               component="img"
               alt="General Fitness"
@@ -466,16 +466,16 @@ export default function ModeSelection() {
               />
               <CardContent>
                 <Typography variant="h5" component="h2">
-                General Fitness Description
+                General Fitness
                 </Typography>
               </CardContent>
             </Card>
           </div>
         </Grid>
         <Grid item xs={12}>
-        <div role="tabpanel" hidden={FitnessMode!==2} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
+        <div role="tabpanel" hidden={FitnessMode!==2} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1" >
           <Card>
-              <CardMedia 
+            <CardMedia 
               component="img"
               alt="Focused Muscle Building"
               image="/AGRFrontend/static/images/MB.png"
@@ -485,7 +485,7 @@ export default function ModeSelection() {
               /> 
             <CardContent>
               <Typography variant="h5" component="h2">
-              General Fitness Description
+              Focused Muscle Building
               </Typography>
             </CardContent>
           </Card>
@@ -504,7 +504,7 @@ export default function ModeSelection() {
               />
               <CardContent>
                 <Typography variant="h5" component="h2">
-                General Fitness Description
+                Endurance Training
                 </Typography>
               </CardContent>
             </Card>
