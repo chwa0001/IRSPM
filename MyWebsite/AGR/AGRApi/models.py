@@ -36,7 +36,7 @@ class UserData(models.Model):
     fitness_level   = models.IntegerField(null=False, default=0)
     gender          = models.CharField(max_length=1, default='')
     goal            = models.IntegerField(null=False, default=0)
-    bmi             = models.IntegerField(null=False, default=20)
+    bmi             = models.FloatField(null=False, default=20)
     intensity       = models.IntegerField(null=False, default=0)
     location        = models.IntegerField(null=False, default =0) #1 home, 2 gym 
 

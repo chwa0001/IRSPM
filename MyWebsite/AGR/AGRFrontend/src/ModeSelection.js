@@ -122,6 +122,7 @@ export default function ModeSelection() {
           location:location,
         }),
     };
+    console.log(requestOptions);
     if (username!='' && fitnesslevel!='' && gender!='' && goal!='' && intensity!='' && bmi!=''){
     fetch('/AGR/SetUserData', requestOptions)
         .then(function(response){
@@ -132,6 +133,9 @@ export default function ModeSelection() {
             return response.json();
           }
         }).then(
+          (data) => {
+
+          },
           (error) => {alert(error)}
         )
       }
