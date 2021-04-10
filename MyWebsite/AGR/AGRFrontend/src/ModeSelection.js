@@ -132,10 +132,6 @@ export default function ModeSelection() {
             return response.json();
           }
         }).then(
-          (data) => {
-            console.log(data)
-
-          },
           (error) => {alert(error)}
         )
       }
@@ -239,8 +235,9 @@ export default function ModeSelection() {
           .then(response => response.json())
           .then(
             (data) => {
-              console.log(data.firsttime)
+              console.log(checkifFirst)
               setCheckifFirst(data.firsttime)
+
             },
             (error) => {alert("this is in check mode first alert")}
           )
@@ -346,7 +343,7 @@ export default function ModeSelection() {
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            <MenuItem value={1}>Beginner</MenuItem>
+            <MenuItem value={1}>Beginer</MenuItem>
             <MenuItem value={2}>Intermediate</MenuItem>
             <MenuItem value={3}>Advance</MenuItem>
           </Select>
@@ -369,7 +366,7 @@ export default function ModeSelection() {
             </MenuItem>
             <MenuItem value={1}>General Training</MenuItem>
             <MenuItem value={2}>Muscle Building</MenuItem>
-            <MenuItem value={3}>Endurance Training</MenuItem>
+            <MenuItem value={3}>Endurence Training</MenuItem>
           </Select>
         </FormControl>
       </Grid>
@@ -454,8 +451,8 @@ export default function ModeSelection() {
           </Tabs>
         </Grid>
         <Grid item xs={12}>
-          <div role="tabpanel" hidden={FitnessMode!==1} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1" >
-            <Card>
+          <div role="tabpanel" hidden={FitnessMode!==1} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
+            <Card direction='row'>
               <CardMedia 
               component="img"
               alt="General Fitness"
@@ -466,16 +463,16 @@ export default function ModeSelection() {
               />
               <CardContent>
                 <Typography variant="h5" component="h2">
-                General Fitness
+                General Fitness Description
                 </Typography>
               </CardContent>
             </Card>
           </div>
         </Grid>
         <Grid item xs={12}>
-        <div role="tabpanel" hidden={FitnessMode!==2} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1" >
+        <div role="tabpanel" hidden={FitnessMode!==2} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
           <Card>
-            <CardMedia 
+              <CardMedia 
               component="img"
               alt="Focused Muscle Building"
               image="/AGRFrontend/static/images/MB.png"
@@ -485,7 +482,7 @@ export default function ModeSelection() {
               /> 
             <CardContent>
               <Typography variant="h5" component="h2">
-              Focused Muscle Building
+              General Fitness Description
               </Typography>
             </CardContent>
           </Card>
@@ -504,7 +501,7 @@ export default function ModeSelection() {
               />
               <CardContent>
                 <Typography variant="h5" component="h2">
-                Endurance Training
+                General Fitness Description
                 </Typography>
               </CardContent>
             </Card>
