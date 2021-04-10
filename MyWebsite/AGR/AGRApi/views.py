@@ -870,13 +870,8 @@ class FirstReco(APIView):
             reco_id = df.loc[exercise[0], 'id'] #Convert row number in filtered df back to exercise_id
             recoList.append(reco_id)
             i=i+1
-
-            if mode == 3:
-                if i>2:
-                    break
-            else:
-                if i>5:
-                    break
+            if i>5:
+                break
             
         #print("RECOLIST HERE ", recoList)
 
