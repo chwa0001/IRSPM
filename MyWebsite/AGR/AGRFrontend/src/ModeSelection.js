@@ -132,6 +132,10 @@ export default function ModeSelection() {
             return response.json();
           }
         }).then(
+          (data) => {
+            console.log(data)
+
+          },
           (error) => {alert(error)}
         )
       }
@@ -235,9 +239,8 @@ export default function ModeSelection() {
           .then(response => response.json())
           .then(
             (data) => {
-              console.log(checkifFirst)
+              console.log(data.firsttime)
               setCheckifFirst(data.firsttime)
-
             },
             (error) => {alert("this is in check mode first alert")}
           )
@@ -366,7 +369,7 @@ export default function ModeSelection() {
             </MenuItem>
             <MenuItem value={1}>General Training</MenuItem>
             <MenuItem value={2}>Muscle Building</MenuItem>
-            <MenuItem value={3}>Endurence Training</MenuItem>
+            <MenuItem value={3}>Endurance Training</MenuItem>
           </Select>
         </FormControl>
       </Grid>
