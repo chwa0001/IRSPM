@@ -57,7 +57,6 @@ class SetUserData(APIView):
             goal = request.data.get("goal")
             intensity = request.data.get("intensity")
             bmi = request.data.get("bmi")
-            print(request.data.get("bmi"))
             location = request.data.get("location")
 
             user_id = get_userid_from_userdb(username)
@@ -75,7 +74,7 @@ class SetUserData(APIView):
                     print(f"print intensity {intensity}")
                     user.intensity = int(intensity)
                     print(f"print bmi {bmi}")
-                    user.bmi = float(bmi)
+                    user.bmi = int(bmi)
                     print(f"print fitness {fitness_level}")
                     user.location = int(location)
 
@@ -871,8 +870,13 @@ class FirstReco(APIView):
             reco_id = df.loc[exercise[0], 'id'] #Convert row number in filtered df back to exercise_id
             recoList.append(reco_id)
             i=i+1
-            if i>5:
-                break
+            if mode == 3:
+                if i>2:
+                    break
+            
+            else:
+                if i>5:
+                    break
             
         #print("RECOLIST HERE ", recoList)
 
