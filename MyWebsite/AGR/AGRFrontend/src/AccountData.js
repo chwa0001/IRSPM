@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AccountData() {
   const classes = useStyles();
   const originalUsername = Cookies.get('username');
-  Cookies.set('PageName', "Advance Gym Recommender - My Profile");
+  Cookies.set('PageName', "Advanced Gym Recommender - My Profile");
   const [fullname,setFullname] = useState('');
   const [username,setUsername] = useState(originalUsername);
   const [password,setPassword] = useState('');

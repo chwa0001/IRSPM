@@ -30,7 +30,7 @@ export default function HomePage() {
   const classes = useStyles();
   let history = useHistory()
   const username = Cookies.get('username');
-  Cookies.set('PageName', "Advance Gym Recommender");
+  Cookies.set('PageName', "Advanced Gym Recommender");
 
   return (
     <div className={classes.paper}>
