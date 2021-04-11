@@ -39,7 +39,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-      Advance Gym Recommender (AGR) 
+      Advanced Gym Recommender (AGR) 
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
 export default function GeneralFitnessPage() {
   const classes = useStyles();
   const username = Cookies.get('username');
-  Cookies.set('PageName', "Advance Gym Recommender - General Fitness");
+  Cookies.set('PageName', "Advanced Gym Recommender - General Fitness");
   console.log(username)
   // console.log(Cookies.get())
   const [step1,SetStep1] = useState(false);
