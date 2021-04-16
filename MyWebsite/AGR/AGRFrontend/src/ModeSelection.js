@@ -140,11 +140,11 @@ export default function ModeSelection() {
         )
       }
     else{
-      if(bmi=='') {alert('All field must be field!')}
-      else if (fitnesslevel==''){alert('All field must be field!')}
-      else if (goal==''){alert('All field must be field!')}
-      else if (gender==''){alert('All field must be field!')}
-      else if (intensity==''){alert('All field must be field!')}
+      if(bmi=='') {alert('BMI is empty!')}
+      else if (fitnesslevel==''){alert('The fitness level is empty!')}
+      else if (goal==''){alert('The fitness goal is empty!')}
+      else if (gender==''){alert('You did not fill up your gender!')}
+      else if (intensity==''){alert('Exercise intensity is empty!')}
     }
   }
 
@@ -444,8 +444,10 @@ export default function ModeSelection() {
   const renderFitnessMode = (
     <div className={classes.grow}>
       {RecommendMode===true?(
-      <Grid container 
+      <Grid container
       spacing={2}
+      alignItems="center"
+      justify="center"
       >
         <Grid item xs={12}>
           <Tabs value={FitnessMode} onChange={handleChangeFitnessMode} aria-label="simple tabs example" centered variant='fullWidth'>
@@ -454,9 +456,9 @@ export default function ModeSelection() {
               <Tab label="Endurance Training" icon={<AccessibilityIcon />} value={3} id="simple-tab-3" aria-controls="simple-tabpanel-3" />
           </Tabs>
         </Grid>
-        <Grid item xs={12}>
-          <div role="tabpanel" hidden={FitnessMode!==1} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
-            <Card direction='row'>
+        <div role="tabpanel" hidden={FitnessMode!==1} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
+          <Grid item xs={12}>
+            <Card style={{display: 'flex'}}>
               <CardMedia 
               component="img"
               alt="General Fitness"
@@ -467,15 +469,17 @@ export default function ModeSelection() {
               />
               <CardContent>
                 <Typography variant="h5" component="h2">
-                General Fitness Description
+                General exercise recommendation
                 </Typography>
+                <p>Most people intends to select this mode to provide a overall fitness.<br/>The followings are the sample exercises which may recommend you:</p>
+                <ul><li>Flat Bench Leg Pull In</li><li>Eagle Pose</li><li>Deep Push Up</li></ul>
               </CardContent>
             </Card>
-          </div>
-        </Grid>
-        <Grid item xs={12}>
+          </Grid>
+        </div>
         <div role="tabpanel" hidden={FitnessMode!==2} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
-          <Card>
+          <Grid item xs={12}>
+            <Card style={{display: 'flex'}}> 
               <CardMedia 
               component="img"
               alt="Focused Muscle Building"
@@ -483,18 +487,20 @@ export default function ModeSelection() {
               title="Focused Muscle Building"
               className={classes.Images}
               style = {{ height: 250, width:250}}
-              /> 
-            <CardContent>
-              <Typography variant="h5" component="h2">
-              General Fitness Description
-              </Typography>
-            </CardContent>
-          </Card>
-          </div>
-        </Grid>
-        <Grid item xs={12}>
-          <div role="tabpanel" hidden={FitnessMode!==3} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
-            <Card>
+              />
+              <CardContent>
+                <Typography variant="h5" component="h2">
+                More specific for muscle growth
+                </Typography>
+                <p>This mode intends to recommend you exercises based on the muscle that you will like to train.<br/>The followings are the sample exercises which may recommend you:</p>
+                <ul><li>Alternate Leg Bridge</li><li>Barbell Muscle Snatch</li><li>Dumbbell Deadlift</li></ul>
+              </CardContent>
+            </Card>
+          </Grid>
+        </div>
+        <div role="tabpanel" hidden={FitnessMode!==3} id="wrapped-tabpanel-1" aria-labelledby="wrapped-tab-1">
+          <Grid item xs={12}>
+            <Card style={{display: 'flex'}}>
               <CardMedia 
               component="img"
               alt="Endurance Training"
@@ -505,12 +511,14 @@ export default function ModeSelection() {
               />
               <CardContent>
                 <Typography variant="h5" component="h2">
-                General Fitness Description
+                Cardio exercises
                 </Typography>
+                <p>This mode will recommend you based on your preferred cardio exercises<br/>The followings are the sample exercises which may recommend you:</p>
+                <ul><li>Swimming</li><li>Running</li><li>Boxing</li></ul>
               </CardContent>
             </Card>
-          </div>
-        </Grid>
+          </Grid>
+        </div>
       </Grid>
           ):(
           <div>Glossary mode</div>
