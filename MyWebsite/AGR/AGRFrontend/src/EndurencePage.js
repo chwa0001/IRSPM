@@ -362,7 +362,7 @@ export default function EndurencePage() {
     <Card>
       <CardHeader avatar={<AccessibilityIcon/>} 
         action={<IconButton aria-label="settings"><MoreVertIcon /></IconButton>}
-        title={<Typography variant="h5" component="h2">Endurence Training</Typography>}
+        title={<Typography variant="h5" component="h2">Endurance Training</Typography>}
       />
       <Stepper activeStep={activeStep} alternativeLabel style={{backgroundColor: '#34ebe8'}}>
       {steps.map((label) => (

@@ -48,15 +48,24 @@ def recommend_exercise(user_id, db , dbfilter, n=10, rating_scale=(1, 5)):
 
     trainingSet = data.build_full_trainset()
     algo.fit(trainingSet)
-    
+
     innertorawid = []
     for innerid in range(0,trainingSet.n_items):
         innertorawid.append(trainingSet.to_raw_iid(innerid))
+    
+    iteminnertorawid = []
+    for iinnerid in trainingSet.all_items():
+        iteminnertorawid.append(trainingSet.to_raw_iid(iinnerid))
+
+    userinnertorawid = []
+    for uinnerid in trainingSet.all_users():
+        userinnertorawid.append(trainingSet.to_raw_uid(uinnerid))
 
     # print(trainingSet.to_raw_iid(0))
     
+    # trainset2, testset2 = train_test_split(data, test_size=0.2)
     testset = trainingSet.build_anti_testset()
-    
+
     filterid = []
     for f in dbfilter['id']:
         filterid.append(f)
@@ -67,9 +76,23 @@ def recommend_exercise(user_id, db , dbfilter, n=10, rating_scale=(1, 5)):
 
     predictions = algo.test(testsetfiltered)
 
-    top_n, bottom_n = get_top_n(predictions, str(user_id), n=n)
+    # predictions and ranking over all exercises
+    topn = defaultdict(list)
+    for uid in userinnertorawid:
+        for iid in iteminnertorawid:
+            if ((iid) in filterid):
+                est = algo.predict(uid, iid).est
+                topn[uid].append((iid,est))
 
-    return [int(iid) for (iid, _) in top_n], algo.pu, innertorawid
+    for uid, user_ratings in topn.items():
+        user_ratings.sort(key=lambda x: x[1], reverse=True)
+        topn[uid] = user_ratings[:n]
+    # print("topn=" + str(topn[int(str(user_id))]))
+    
+    top_n, bottom_n = get_top_n(predictions, str(user_id), n=n)
+    # return [int(iid) for (iid, _) in top_n], algo.pu, innertorawid
+
+    return [int(iid) for (iid, _) in topn[int(str(user_id))]], algo.pu, innertorawid
 
 from scipy.spatial import distance
 
@@ -102,6 +125,14 @@ def recommend_exercise_n_users(user_id_array, db , n=10, rating_scale=(1, 5)):
     innertorawid = []
     for innerid in range(0,trainingSet.n_items):
         innertorawid.append(trainingSet.to_raw_iid(innerid))
+
+    iteminnertorawid = []
+    for iinnerid in trainingSet.all_items():
+        iteminnertorawid.append(trainingSet.to_raw_iid(iinnerid))
+
+    userinnertorawid = []
+    for uinnerid in trainingSet.all_users():
+        userinnertorawid.append(trainingSet.to_raw_uid(uinnerid))
         
     # print(trainingSet.to_raw_iid(0))
     
@@ -117,10 +148,23 @@ def recommend_exercise_n_users(user_id_array, db , n=10, rating_scale=(1, 5)):
     algo.pu[0] = average_pu
     predictions = algo.test(testset)
     #print(algo.pu[0])
+
+    topn = defaultdict(list)
+    for uid in userinnertorawid:
+        for iid in iteminnertorawid:
+            est = algo.predict(uid, iid).est
+            topn[uid].append((iid,est))
+
+    for uid, user_ratings in topn.items():
+        user_ratings.sort(key=lambda x: x[1], reverse=True)
+        topn[uid] = user_ratings[:n]
+    # print("topn=" + str(topn[int(str(user_id))]))
+
     
     top_n, bottom_n = get_top_n(predictions, str(1), n=n)
     
-    return [int(iid) for (iid, _) in top_n]
+    # return [int(iid) for (iid, _) in top_n]
+    return [int(iid) for (iid, _) in topn[int(str(1))]]
 
     # print(algo.pu[0])
     # print(average_pu)
