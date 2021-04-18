@@ -59,15 +59,17 @@ More reference video presentations [here](https://telescopeuser.wordpress.com/20
 ## SECTION 5 : USER GUIDE
 
 ## Installation:
-1. Download / clone this file into your directory
-2. Open command prompt (cmd) or anaconda prompt and navigate to the directory 
-3. Run the following line in the command prompt 
->pip install -r requirements.txt
-4. Navigate into MyWebsite\AGR folder 
-5. Run the line below to start the program running locally 
-> $ python manage.py runserver
-6. Go to localhost:8000 http://127.0.0.1:8000/
-
+1. Download / clone this file into your directory.
+2. Open anaconda command prompt and navigate into the downloaded/cloned directory.
+By default, the directory can be found in C:/<username>/Documents/GitHub/IRSPM
+3. Run the following command line by line
+> conda create --name myagr python=3.9.2 pip
+> conda activate myagr
+> pip install -r pip_requirements.txt
+4. Navigate into MyWebsite\AGR folder
+5. Run the line below to start the program running locally.
+> python manage.py runserver
+6. Go to localhost:8000 from web browser, link: http://127.0.0.1:8000/
 
 ---
 ## SECTION 6 : PROJECT REPORT / PAPER
