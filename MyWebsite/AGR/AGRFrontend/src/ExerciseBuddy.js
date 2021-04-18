@@ -23,6 +23,7 @@ import PropTypes from 'prop-types';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
+
   },
   root: {
     flexGrow: 1,
@@ -158,7 +159,7 @@ export default function ExerciseBuddytest() {
     return (
 
     <div className={classes.grow}>
-        <CustomScroller style={{ width: '100%', height: '100%' }}>
+        {/* <CustomScroller style={{ width: '100%', height: '100%' }}> */}
         <Grid container xs={12} justify="center"  spacing={3}>
           <Grid container item xs={12} justify="center">
             <Paper square className={classes.root}>
@@ -262,7 +263,7 @@ export default function ExerciseBuddytest() {
         </TabPanel>
         
         </Grid>
-        </CustomScroller>
+        {/* </CustomScroller> */}
         
     </div>
         

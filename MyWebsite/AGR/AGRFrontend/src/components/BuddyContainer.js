@@ -34,7 +34,7 @@ export default function ExBuddyGrid(props) {
   const post = '.jpg'
   const images = props.expics
   const count = props.count
-  const slicedimages = images.slice((count-1)*3,((count*3)))
+  const slicedimages = images.slice((count-1)*6,((count*6)))
 
   const [goalStatus, setGoalStatus] = useState([props.goal]);
   const [locationStatus, setLocationStatus] = useState([props.location]);
@@ -47,7 +47,7 @@ export default function ExBuddyGrid(props) {
     }
     else if (props.goal===2)
     {
-      setGoalStatus('Muscle BUilding')
+      setGoalStatus('Muscle Building')
     }
     else if (props.goal===3){
       setGoalStatus('Endurance Training')
@@ -179,9 +179,9 @@ export default function ExBuddyGrid(props) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-      <ButtonBase>
+      {/* <ButtonBase>
               <Typography variant="subtitle1"> {props.count}</Typography>
-      </ButtonBase>
+      </ButtonBase> */}
         <Grid container spacing={2}>
           <Grid item>
             <ButtonBase className={classes.image}>
@@ -227,16 +227,15 @@ export default function ExBuddyGrid(props) {
                 ))} 
                 
 
-                <Grid item xs={3}>
+                {/* <Grid item xs={3}>
                 <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/56.jpg" />
-                {/* <img className={classes.img} alt="complex" src={pre.concat(expics.pic_no,post)} /> */}
                 </Grid>
                 <Grid item xs={3}>
                 <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/56.jpg" />
                 </Grid>
                 <Grid item xs={3}>
                 <img className={classes.img} alt="complex" src="/AGRFrontend/static/images/28.jpg" />
-                </Grid>
+                </Grid> */}
                 </Grid>
               </Grid>
               <Grid item>

@@ -642,6 +642,7 @@ class AlgoToExercise(APIView):
         mode = int(request.GET.get('mode'))
         muscle = request.GET.get("muscle")
         fitness, location = getfitnesslocation(username)
+        return_n = 6
         try:
             user_id = int(get_userid_from_userdb(username))
             qs = UserExerciseRating.objects.all()
@@ -665,13 +666,14 @@ class AlgoToExercise(APIView):
                 muscle = "Cardio" #set muscle to cardio
                 exercise_data = Exercise.objects.filter(main_musclegroup= muscle) #get exercise data filetered for cardio from db according to models.py format
                 df = pd.DataFrame.from_records(exercise_data.values())
+                return_n=3
                 #print("CARDIO: ", df.head)
 
             else:
                 return Response({"Bad Request": "No Username and/or exercise_id out of range"}, status=status.HTTP_400_BAD_REQUEST)
 
             # recommend exercise (individual)
-            exercise, usermatrix, itemid  = recommend_exercise(user_id, df1, df, n=6, rating_scale=(1, 5))
+            exercise, usermatrix, itemid  = recommend_exercise(user_id, df1, df, n=return_n, rating_scale=(1, 5))
             # exercise = [10,20,40,90,130,140]
             print(exercise)
             print(f"exercisessss: {exercise}")
@@ -723,7 +725,7 @@ class AlgoToLearn(APIView):
             exercisepicsdata=[]
             for j in nearestusers:
                 print(j)
-                group_exercises = recommend_exercise_n_users([user_id1,j], df1, n=3, rating_scale=(1, 5))
+                group_exercises = recommend_exercise_n_users([user_id1,j], df1, n=6, rating_scale=(1, 5))
                 for i in range(0,len(group_exercises)):  
                     exercisepics = Exercise.objects.filter(id = str(group_exercises[i])).values('pic_no')
                     # exercisepicsdata.append(exercisepics)
