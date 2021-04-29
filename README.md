@@ -1,7 +1,7 @@
 ## SECTION 1 : PROJECT TITLE
 ## Advanced Gym Recommender
 
-<img src="Miscellaneous/HomePage.png"
+<img src="Miscellaneous/HomePage.PNG"
      style="float: left; margin-right: 0px;" />
 
 ---
