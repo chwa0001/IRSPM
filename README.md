@@ -69,7 +69,6 @@ python manage.py runserver
 
 REFER TO THE PROJECT REPORT : [NUS ISS PM AGR REPORT](https://github.com/chwa0001/IRSPM/blob/Reset9c4739ea/Miscellaneous/NUS%20ISS%20IRS%20PM%20Advanced%20Gym%20Recommender%20Introduction.pdf)
 
-**Recommended Sections for Project Report / Paper:**
 1.	EXECUTIVE SUMMARY
 2.	PROBLEM STATEMENT & OBJECTIVES
 3.	SOULUTION
