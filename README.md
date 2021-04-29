@@ -81,8 +81,6 @@ REFER TO THE PROJECT REPORT : [NUS ISS PM AGR REPORT](https://github.com/chwa000
 
 `Refer to Github Folder: Miscellaneous`
 
-### ISS MRS PM System architecture
-System architecture
 ---
 ---
 ## SECTION 8 : WORKFLOW GUI GUIDANCE
