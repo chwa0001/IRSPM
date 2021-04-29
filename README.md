@@ -34,11 +34,14 @@ The AGR application provides a full stack solution to exercise recommendation fo
      style="float: left; margin-right: 0px;" />
 </a>
 
+NUS ISS IRS PM Advanced Gym Recommender Promotion Video
+
 <a href="https://youtu.be/bCBPM0r4SKw">
-<img src="Miscellaneous/NUS ISS IRS PM Advanced Gym Recommender introduction Video.PNG"
+<img src="Miscellaneous/NUS ISS IRS PM Advanced Gym Recommender Introduction.PNG"
      style="float: left; margin-right: 0px;" />
 </a>
 
+NUS ISS IRS PM Advanced Gym Recommender Introduction
 ---
 
 ## SECTION 5 : USER GUIDE
