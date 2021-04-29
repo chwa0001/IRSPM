@@ -85,7 +85,7 @@ REFER TO THE PROJECT REPORT : [NUS ISS PM AGR REPORT](https://github.com/chwa000
 `Refer to Github Folder: Miscellaneous`
 
 ---
----
+
 ## SECTION 8 : PRESENTATION
 
 Presentation of the Advanced Gym Recommender : [Power Point Slide](https://github.com/chwa0001/IRSPM/blob/Reset9c4739ea/Miscellaneous/NUS%20ISS%20IRS%20PM%20Advanced%20Gym%20Recommender%20Introduction.pdf)
