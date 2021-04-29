@@ -1,7 +1,7 @@
 ## SECTION 1 : PROJECT TITLE
 ## Advanced Gym Recommender
 
-<img src="Others/HomePage.png"
+<img src="Miscellaneous/HomePage.png"
      style="float: left; margin-right: 0px;" />
 
 ---
@@ -29,6 +29,10 @@ The AGR application provides a full stack solution to exercise recommendation fo
 ---
 
 ## SECTION 4 : VIDEO OF SYSTEM MODELLING & USE CASE DEMO
+<a href="https://youtu.be/zaSo8qBiEW8">
+<img src="Miscellaneous/NUS ISS IRS PM Advanced Gym Recommender Promotion Video.png"
+     style="float: left; margin-right: 0px;" />
+</a>
 
 [![NUS ISS IRS PM Advanced Gym Recommender Promotion Video](https://youtu.be/zaSo8qBiEW8)](https://youtu.be/zaSo8qBiEW8 "NUS ISS IRS PM Advanced Gym Recommender Promotion Video")
 
@@ -81,5 +85,5 @@ python manage.py runserver
 ---
 ## SECTION 8 : WORKFLOW GUI GUIDANCE
 
-GUI Workflow and functionalities : [Power Point Slide](https://github.com/KevinChngJY/IntelligentReservationSystem/blob/main/Miscellaneous/Documents/Intelligent%20reservation%20agent%20-%20Bot.pdf)
+GUI Workflow and functionalities : [Power Point Slide](https://github.com/chwa0001/IRSPM/blob/Reset9c4739ea/Miscellaneous/NUS%20ISS%20IRS%20PM%20Advanced%20Gym%20Recommender%20Introduction.pdf)
 
