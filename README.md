@@ -81,10 +81,8 @@ REFER TO THE PROJECT REPORT : [NUS ISS PM AGR REPORT](https://github.com/chwa000
 
 `Refer to Github Folder: Miscellaneous`
 
-### HDB_BTO_SURVEY.xlsx
-* Results of survey
-* Insights derived, which were subsequently used in our system
-
+### ISS MRS PM System architecture
+System architecture
 ---
 ---
 ## SECTION 8 : WORKFLOW GUI GUIDANCE
