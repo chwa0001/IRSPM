@@ -41,7 +41,10 @@ NUS ISS IRS PM Advanced Gym Recommender Promotion Video
      style="float: left; margin-right: 0px;" />
 </a>
 
-NUS ISS IRS PM Advanced Gym Recommender PRESENTATION
+NUS ISS IRS PM Advanced Gym Recommender Presentation
+
+
+
 ---
 
 ## SECTION 5 : USER GUIDE
