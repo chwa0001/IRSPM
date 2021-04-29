@@ -30,7 +30,7 @@ The AGR application provides a full stack solution to exercise recommendation fo
 
 ## SECTION 4 : VIDEO OF SYSTEM MODELLING & USE CASE DEMO
 <a href="https://youtu.be/zaSo8qBiEW8">
-<img src="Miscellaneous/NUS ISS IRS PM Advanced Gym Recommender Promotion Video.png"
+<img src="Miscellaneous/NUS ISS IRS PM Advanced Gym Recommender Promotion Video.PNG"
      style="float: left; margin-right: 0px;" />
 </a>
 
