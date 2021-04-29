@@ -41,7 +41,7 @@ NUS ISS IRS PM Advanced Gym Recommender Promotion Video
      style="float: left; margin-right: 0px;" />
 </a>
 
-NUS ISS IRS PM Advanced Gym Recommender Introduction
+NUS ISS IRS PM Advanced Gym Recommender PRESENTATION
 ---
 
 ## SECTION 5 : USER GUIDE
@@ -83,7 +83,7 @@ REFER TO THE PROJECT REPORT : [NUS ISS PM AGR REPORT](https://github.com/chwa000
 
 ---
 ---
-## SECTION 8 : WORKFLOW GUI GUIDANCE
+## SECTION 8 : PRESENTATION
 
-GUI Workflow and functionalities : [Power Point Slide](https://github.com/chwa0001/IRSPM/blob/Reset9c4739ea/Miscellaneous/NUS%20ISS%20IRS%20PM%20Advanced%20Gym%20Recommender%20Introduction.pdf)
+Presentation of the Advanced Gym Recommender : [Power Point Slide](https://github.com/chwa0001/IRSPM/blob/Reset9c4739ea/Miscellaneous/NUS%20ISS%20IRS%20PM%20Advanced%20Gym%20Recommender%20Introduction.pdf)
 
