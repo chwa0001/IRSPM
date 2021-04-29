@@ -55,9 +55,13 @@ This section act as an installation guide for AGR in a new anaconda environment 
 2.	Open anaconda command prompt and navigate into the downloaded/cloned directory.
 By default, the directory can be found in C:/<username>/Documents/GitHub/IRSPM
 3.	Run the following command line by line
+
 conda create --name myagr python=3.9.2 pip
+
 conda activate myagr
+
 pip install -r pip_requirements.txt
+
 4.	Navigate into MyWebsite\AGR folder
 5.	Run the line below to start the program running locally.
 python manage.py runserver
