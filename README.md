@@ -64,7 +64,7 @@ python manage.py runserver
 ---
 ## SECTION 6 : PROJECT REPORT / PAPER
 
-`Refer to project report at Github Folder: ProjectReport`
+REFER TO THE PROJECT REPORT : [NUS ISS PM AGR REPORT](https://github.com/chwa0001/IRSPM/blob/Reset9c4739ea/Miscellaneous/NUS%20ISS%20IRS%20PM%20Advanced%20Gym%20Recommender%20Introduction.pdf)
 
 **Recommended Sections for Project Report / Paper:**
 1.	EXECUTIVE SUMMARY
