@@ -26,7 +26,6 @@ import Container from '@material-ui/core/Container';
 import CustomScroller from 'react-custom-scroller';
 import ExerciseBuddytest from './ExerciseBuddy';
 import Glossary from "./GlossaryMode";
-import DenseTable from "./Test";
 import ExerciseSets from "./ExerciseSetsMode";
 
 export default class App extends Component {
@@ -64,7 +63,6 @@ export default class App extends Component {
               <Route exact path="/REndurenceTraining" component={RepeatEndurencePage}/>
               <Route exact path="/ExerciseBuddy" component={ExerciseBuddytest}/>
               <Route exact path="/Glossary" component={Glossary}/>
-              <Route exact path="/Test" component={DenseTable}/>
               <Route exact path="/ExerciseSets" component={ExerciseSets}/>
             </Container>
             </CustomScroller>
