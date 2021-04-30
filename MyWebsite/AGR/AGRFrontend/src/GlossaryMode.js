@@ -112,9 +112,14 @@ export default function Glossary() {
         }
       }).then(
         (data) => {
+          if(data.exercises!=null){
           setExerciseList(data.exercises)
-          setPage(0)
           alert(`${data.exercises.length} exercises found!`)
+          }
+          else{
+            setExerciseList([])
+          }
+          setPage(0)
         },
         (error) => {alert(error)}
       )
@@ -187,6 +192,7 @@ export default function Glossary() {
                   Difficulty
                 </TableCell>
               </TableHead>
+              {exerciseList.length>0?
               <TableBody>
                 {exerciseList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                   return (
@@ -237,6 +243,7 @@ export default function Glossary() {
                   );
                 })}
               </TableBody>
+              :<TableBody></TableBody>}
             </Table>
           </TableContainer>
           <TablePagination

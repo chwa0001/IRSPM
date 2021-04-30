@@ -103,12 +103,19 @@ export default function ExerciseSets() {
         }
       }).then(
         (data) => {
+          if(data.set_details!=null){
           setExercisesSet(data.set_details)
           console.log(data.set_details)
-          setPage(0)
           // alert(`${data.exercises.length} exercises found!`)
+          }
+          else{
+          setExercisesSet([])
+          }
+          setPage(0)
         },
-        (error) => {alert(error)}
+        (error) => {
+          alert(error)
+        }
       )
 
   }, [triggerSearch]);
@@ -149,7 +156,7 @@ export default function ExerciseSets() {
                   Exercises
                 </TableCell>
               </TableHead>
-
+              {exercisesSet.length>0?
               <TableBody>
                 {exercisesSet.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                   return (
@@ -209,6 +216,7 @@ export default function ExerciseSets() {
                   );
                 })}
               </TableBody>
+            :<TableBody></TableBody>}
             </Table>
           </TableContainer>
           <TablePagination
