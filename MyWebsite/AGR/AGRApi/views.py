@@ -74,7 +74,7 @@ class SetUserData(APIView):
                     print(f"print intensity {intensity}")
                     user.intensity = int(intensity)
                     print(f"print bmi {bmi}")
-                    user.bmi = int(bmi)
+                    user.bmi = bmi
                     print(f"print fitness {fitness_level}")
                     user.location = int(location)
 
