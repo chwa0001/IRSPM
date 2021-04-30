@@ -24,7 +24,7 @@ The AGR application provides a full stack solution to exercise recommendation fo
 | Antonia Devina | A0127686R | | e0689798@u.nus.edu |
 | Chwa Choon Xiang | A0229962R | | e0687370@u.nus.edu|
 | Gerard Ong Zi Quan | A0229967H | | e0687375@u.nus.edu |
-| Benjamin Quek Xiang Yi |  | | e0687381@u.nus.edu |
+| Benjamin Quek Xiang Yi | A0229973M | | e0687381@u.nus.edu |
 
 ---
 
@@ -56,15 +56,15 @@ This section act as an installation guide for AGR in a new anaconda environment 
 By default, the directory can be found in C:/<username>/Documents/GitHub/IRSPM
 3.	Run the following command line by line
 
-conda create --name myagr python=3.9.2 pip
+`conda create --name myagr python=3.9.2 pip
 
-conda activate myagr
+`conda activate myagr
 
-pip install -r pip_requirements.txt
+`pip install -r pip_requirements.txt
 
 4.	Navigate into MyWebsite\AGR folder
 5.	Run the line below to start the program running locally.
-python manage.py runserver
+`python manage.py runserver
 6.	Go to localhost:8000 from web browser, link: http://127.0.0.1:8000/
 
 
