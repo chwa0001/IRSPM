@@ -64,7 +64,9 @@ By default, the directory can be found in C:/<username>/Documents/GitHub/IRSPM
 
 4.	Navigate into MyWebsite\AGR folder
 5.	Run the line below to start the program running locally.
+
 `python manage.py runserver`
+
 6.	Go to localhost:8000 from web browser, link: http://127.0.0.1:8000/
 
 
