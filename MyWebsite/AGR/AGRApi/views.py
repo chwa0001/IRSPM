@@ -505,7 +505,7 @@ class GetSetDetails(APIView):
             elif routine.mode == 2:
                 set_type = 'Muscle Building'
             elif routine.mode == 3: 
-                set_type = 'Endurence'
+                set_type = 'Endurance'
             else: 
                 set_type = 'unknown'
 
@@ -581,17 +581,19 @@ class GetSetList(APIView):
                 return Response({"status": -2,}, status=status.HTTP_200_OK)
             
             set_return = []
+            i = len(sets) if sets!=None else 0
             for s in sets:
                 set_details = {}
                 set_details["date"] = s.date
-                set_details["id"] = s.id
+                # set_details["id"] = s.id
+                set_details["id"] = i
                 mode_int = s.mode
                 if mode_int == 1:
                     set_details["mode"] = "General Fitness"
                 elif mode_int == 2: 
                     set_details["mode"] = "Muscle Building"
                 else:
-                    set_details["mode"] = "Endurence Training"
+                    set_details["mode"] = "Endurance Training"
                 routine_exercises_class = RoutineExercises.objects.filter(routine_id = s.id)
                 exercises_details = []
                 exercise_name = []
@@ -604,6 +606,7 @@ class GetSetList(APIView):
                 set_details["exercises"] = exercises_details
                 set_details["exercises_name"] = exercise_name
                 set_return.append(set_details)
+                i = i - 1
             return Response({"set_details":set_return , "status":1}, status=status.HTTP_200_OK)
         except Exception as error:
             return Response({"Bad Request": str(error)}, status=status.HTTP_400_BAD_REQUEST)
