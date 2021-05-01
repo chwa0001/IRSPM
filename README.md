@@ -55,7 +55,7 @@ This section act as an installation guide for AGR in a new anaconda environment 
 ### Windows 10 download guide. Prerequisite having anaconda installed
 1.	Download / clone this file into your directory.
 2.	Open anaconda command prompt and navigate into the downloaded/cloned directory.
-By default, the directory can be found in C:/<<username>>/Documents/GitHub/IRSPM
+By default, the directory can be found in C:/`username`/Documents/GitHub/IRSPM
 3.	Run the following command line by line
 
 `conda create --name myagr python=3.9.2 pip`
@@ -75,7 +75,7 @@ By default, the directory can be found in C:/<<username>>/Documents/GitHub/IRSPM
 ### Ubuntu Linux download guide. Prerequisite having anaconda installed
 1.	Download / clone this file into your directory.
 2.	Open anaconda command prompt and navigate into the downloaded/cloned directory.
-By default, the directory can be found in C:/<<username>>/Documents/GitHub/IRSPM
+By default, the directory can be found in C:/`username`/Documents/GitHub/IRSPM
 3.	Run the following command line by line
 
 `conda create --name myagr python=3.9.2 pip`
