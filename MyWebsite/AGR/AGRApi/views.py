@@ -65,21 +65,21 @@ class SetUserData(APIView):
                 user = queryset[0]
                 if user.user_id==user_id:
                     #status:0==> user credential verified okay
-                    print(f"print fitness {fitness_level}")
+                    # print(f"print fitness {fitness_level}")
                     user.fitness_level=int(fitness_level)
-                    print(f"print goal {goal}")
+                    # print(f"print goal {goal}")
                     user.goal = goal
-                    print(f"print gender {gender}")
+                    # print(f"print gender {gender}")
                     user.gender = gender
-                    print(f"print intensity {intensity}")
+                    # print(f"print intensity {intensity}")
                     user.intensity = int(intensity)
-                    print(f"print bmi {bmi}")
+                    # print(f"print bmi {bmi}")
                     user.bmi = bmi
-                    print(f"print fitness {fitness_level}")
+                    # print(f"print fitness {fitness_level}")
                     user.location = int(location)
 
                     user.save()
-                    print(user.user_id)
+                    # print(user.user_id)
 
                     return Response({"status":0}, status=status.HTTP_200_OK)
                 else:
@@ -102,9 +102,9 @@ class GetUserData(APIView):
                 print("AGRApi no session")
                 self.request.session.create()
             username = request.data.get("username")
-            print(username)
+            # print(username)
             userdata = get_alluserdata_from_userdb(username)
-            print(UserDataSerializer(userdata).data)
+            # print(UserDataSerializer(userdata).data)
             return Response(UserDataSerializer(userdata).data, status=status.HTTP_200_OK)
             # return Response({"gender":userdata.gender,
             #                 "fitness_level":userdata.fitness_level,
@@ -136,7 +136,7 @@ class CreateUserView(APIView):
             username = request.data.get("username")
             password = request.data.get("password")
             queryset = User.objects.filter(username=username)
-            print(request.data)
+            # print(request.data)
             if CreateUser==0:
                 if queryset.exists():
                     user = queryset[0]
@@ -232,7 +232,7 @@ class ExerciseRating(APIView):
             username = request.data.get('username')
             set_id = request.data.get('set_id')
             score = int(request.data.get('score'))
-            print(f"username: {username}, set_id: {set_id}, score: {score}")
+            # print(f"username: {username}, set_id: {set_id}, score: {score}")
             user_id = get_userid_from_userdb(username)
 
             if user_id == None :
@@ -252,7 +252,7 @@ class ExerciseRating(APIView):
                     print(f"Exercise {eid}. count {uer.exercise_count}, score: {uer.user_score}")
                     
                     score_average = ( uer.user_score + score ) / 2
-                    print(f"score_average : {score_average}")
+                    # print(f"score_average : {score_average}")
                     count = uer.user_score + 1
 
                     # uer = UserExerciseRating(user_id=user_id, exercise_id=eid, user_score=score_average,exercise_count= count)
@@ -260,14 +260,14 @@ class ExerciseRating(APIView):
                     uer.user_score = score_average
                     uer.exercise_count += 1
                     uer.save()
-                    print(f"data saved! {uer.id}")
+                    # print(f"data saved! {uer.id}")
 
                 else : 
                     print(f"this is the first time user raiting exercise {eid}")
                     #create a UserExerciseRating (uer) object 
                     uer = UserExerciseRating(user_id=user_id, exercise_id=eid, user_score=score,exercise_count=1)
                     uer.save()
-                    print("data saved!")
+                    # print("data saved!")
 
 
             routine.rate = True
@@ -280,7 +280,7 @@ class ExerciseRating(APIView):
 class GetSetToRate(APIView):
     
     def post(self, request, format=None):
-        print(f"requestdata : {request.data}")
+        # print(f"requestdata : {request.data}")
         try:
             if not self.request.session.exists(self.request.session.session_key):
                 self.request.session.create()
@@ -295,14 +295,22 @@ class GetSetToRate(APIView):
                 self.request.session.create()
             username = request.data.get("username")
             # queryset = User.objects.filter(username=username)
-            print(username)
+            # print(username)
             setToReview = get_set_to_review(username,rate=False)
             if setToReview == "no exercise to rate":
                 return Response({"status":3 , "Bad Request":"No Exercise to rate"}, status=status.HTTP_200_OK)
             else :
                 exercises,edic,_ = get_set_exercises(setToReview)
-                print(exercises)
-                return Response({"status":"good", "user_id":setToReview.userdata_id ,  
+                # print(exercises)
+
+                if (len(exercises)==3):
+                    return Response({"status":"good", "user_id":setToReview.userdata_id ,  
+                                    "date":setToReview.date , "set_id":setToReview.id , 
+                                    "exercises": edic , "exercise1" : exercises[0],
+                                    "exercise2" : exercises[1], "exercise3" : exercises[2],
+                                    }, status=status.HTTP_200_OK)
+                else: 
+                    return Response({"status":"good", "user_id":setToReview.userdata_id ,  
                                 "date":setToReview.date , "set_id":setToReview.id , 
                                 "exercises": edic , "exercise1" : exercises[0],
                                 "exercise2" : exercises[1], "exercise3" : exercises[2],
@@ -343,19 +351,19 @@ class CreateSetExercises(APIView):
 def createSetExercises(username, mode, exercise_ids):
     try:
         user_id = get_userid_from_userdb(username)
-        print(username,user_id,mode,type(mode),exercise_ids)
-        print(user_id, mode, date.today())
+        # print(username,user_id,mode,type(mode),exercise_ids)
+        # print(user_id, mode, date.today())
         
         routine = Routine(userdata_id=user_id, mode=mode, date=date.today())
-        print(username,user_id)
-        print(routine)
+        # print(username,user_id)
+        # print(routine)
 
         try:
             routine.save()
         except  Exception as error: 
             print("error in saving routine")
 
-        print(username,user_id)
+        # print(username,user_id)
         for exercise_id in exercise_ids:
             re = RoutineExercises(routine_id=routine.id, exercise_id=exercise_id)
             re.save()
@@ -400,7 +408,7 @@ def getExerciseGeneralFitness(fitness):
 def getfitnesslocation(username):
     user_id = int(get_userid_from_userdb(username))
     userdata = UserData.objects.filter(user_id=user_id)[0]
-    print(f"getfitnesslocation userdata:{userdata}")
+    # print(f"getfitnesslocation userdata:{userdata}")
 
     if(userdata.fitness_level==1):
         fitness = 'Beginner'
@@ -410,7 +418,7 @@ def getfitnesslocation(username):
         fitness = 'Expert'
     location = userdata.location #may not be used due to ambuguity of exercises in db (barbell at home?)
     
-    print(f"getfitnesslocation fitness, location:{fitness}, {location}")
+    # print(f"getfitnesslocation fitness, location:{fitness}, {location}")
 
     return (fitness, location)
 
@@ -436,20 +444,20 @@ class GetExercise4Muscle(APIView):
         try:
             username = request.data.get("username")
             muscle = request.data.get("muscle")
-            print(f"muscle,username: {muscle},{username}")
+            # print(f"muscle,username: {muscle},{username}")
 
             fitness, location = getfitnesslocation(username)
-            print(f"muscle,fitness: {muscle},{fitness}")
+            # print(f"muscle,fitness: {muscle},{fitness}")
             
             exercises = getExerciseMuscleFitness(muscle,fitness)
             # exercises = Exercise.objects.filter(main_musclegroup=muscle).get(difficulty=fitness)
-            print(exercises)
+            # print(exercises)
             if (len(exercises)>0):
                 renderExercise = []
-                print(f"len(exercises): {len(exercises)}")
+                # print(f"len(exercises): {len(exercises)}")
                 # print(f"exercises: {exercises}")
                 random4 = random.sample(range(len(exercises)-1),4)
-                print(random4)
+                # print(random4)
                 for ran in random4: 
                     exercise = exercises[ran]
                     renderExercise.append(prepExerciseDetails(ExerciseSerializer(exercise).data))
@@ -466,20 +474,20 @@ class GetExercise4General(APIView):
     def post(self, request, format=None):
         try:
             username = request.data.get("username")
-            print(f"username: {username}")
+            # print(f"username: {username}")
 
             fitness, location = getfitnesslocation(username)
-            print(f"location,fitness: {location},{fitness}")
+            # print(f"location,fitness: {location},{fitness}")
             
             exercises = getExerciseGeneralFitness(fitness)
             # exercises = Exercise.objects.filter(main_musclegroup=muscle).get(difficulty=fitness)
-            print(exercises)
+            # print(exercises)
             if (len(exercises)>0):
                 renderExercise = []
-                print(f"len(exercises): {len(exercises)}")
+                # print(f"len(exercises): {len(exercises)}")
                 # print(f"exercises: {exercises}")
                 random4 = random.sample(range(len(exercises)-1),4)
-                print(random4)
+                # print(random4)
                 for ran in random4: 
                     renderExercise.append(prepExerciseDetails(ExerciseSerializer(exercises[ran]).data))
                     print(f"renderExercise: {renderExercise}")
@@ -496,9 +504,9 @@ class GetSetDetails(APIView):
             if (set_id == None):
                 set_id = get_sets(username)
             
-            print(f"username,set_id: {username}, {set_id}")
+            # print(f"username,set_id: {username}, {set_id}")
             routine = Routine.objects.get(id=set_id)
-            print(f"routine: {routine}, {routine.id}")
+            # print(f"routine: {routine}, {routine.id}")
             
             if (routine.mode) == 1:
                 set_type = 'General Fitness'
@@ -512,18 +520,18 @@ class GetSetDetails(APIView):
 
 
             exercise_class = RoutineExercises.objects.filter(routine_id=set_id)
-            print(f"exercise_class: {exercise_class}")
+            # print(f"exercise_class: {exercise_class}")
 
             exercises_details = []
             for exercise_item in exercise_class:
-                print(f"exercise_item.exercise_id: {exercise_item.exercise_id}")
+                # print(f"exercise_item.exercise_id: {exercise_item.exercise_id}")
                 
                 item = Exercise.objects.get(id=exercise_item.exercise_id)
                 # print(f"item: {item}")
                 exercises_details.append(prepExerciseDetails(ExerciseSerializer(item).data))
 
 
-            print(f"exercises_details: {exercises_details}")
+            # print(f"exercises_details: {exercises_details}")
 
             return Response({"set_date":routine.date, "set_type":set_type,"exercises_details":exercises_details , "status":1}, status=status.HTTP_200_OK)
         except Exception as error:
@@ -656,14 +664,14 @@ class AlgoToExercise(APIView):
             # exercise_data = Exercise.objects.filter(difficulty=fitness) #get all exercise data from db according to models.py format filtered by difficulty and equipment
                 exercise_data = getExerciseGeneralFitness(fitness)
                 df = pd.DataFrame.from_records(exercise_data.values())
-                print("ALL: ", df.tail)
+                # print("ALL: ", df.tail)
             
             elif username != None and mode == 2: #For focused muscle building
                 # exercise_data = Exercise.objects.filter(main_musclegroup=muscle, difficulty=fitness) #get exercise data filetered for muscle, difficulty and equipment from db according to models.py format
                 exercise_data = getExerciseMuscleFitness(muscle,fitness)
-                print(exercise_data)
+                # print(exercise_data)
                 df = pd.DataFrame.from_records(exercise_data.values())
-                print("MUSCLE: ", df.head)
+                # print("MUSCLE: ", df.head)
 
             elif username != None  and mode == 3: #For cardio
                 muscle = "Cardio" #set muscle to cardio
@@ -678,15 +686,14 @@ class AlgoToExercise(APIView):
             # recommend exercise (individual)
             exercise, usermatrix, itemid  = recommend_exercise(user_id, df1, df, n=return_n, rating_scale=(1, 5))
             # exercise = [10,20,40,90,130,140]
-            print(exercise)
-            print(f"exercisessss: {exercise}")
+            # print(exercise)
             ################## result 0, hard coding return 
             # exercise = [10,20,40,90,130,140]
             recoExArray = convertExerciseListToDetailsJson(exercise)
 
-            print(username, mode, exercise)
+            # print(username, mode, exercise)
             set_id,set_date = createSetExercises(username, mode, exercise)
-            print(set_id,set_date)
+            # print(set_id,set_date)
 
             return Response({"status":3 ,"set_exercise_details":recoExArray,"set_id": set_id, "set_date": set_date}, status=status.HTTP_200_OK)
         except Exception as error:
@@ -727,7 +734,7 @@ class AlgoToLearn(APIView):
             # nearestusers = [1,2,3]
             exercisepicsdata=[]
             for j in nearestusers:
-                print(j)
+                # print(j)
                 group_exercises = recommend_exercise_n_users([user_id1,j], df1, n=6, rating_scale=(1, 5))
                 for i in range(0,len(group_exercises)):  
                     exercisepics = Exercise.objects.filter(id = str(group_exercises[i])).values('pic_no')
@@ -800,25 +807,25 @@ class FirstReco(APIView):
         exercise_id = int(request.GET.get('exercise_id'))
         mode = int(request.GET.get('mode'))
         muscle = request.GET.get("muscle")
-        print(f"username,exercise_id,mode,muscle: {username},{exercise_id},{mode},{muscle}")
+        # print(f"username,exercise_id,mode,muscle: {username},{exercise_id},{mode},{muscle}")
 
         fitness, location = getfitnesslocation(username)
 
-        print(f"username,exercise_id,mode,muscle,fitness,location: {username},{exercise_id},{mode},{muscle},{fitness},{location}")
+        # print(f"username,exercise_id,mode,muscle,fitness,location: {username},{exercise_id},{mode},{muscle},{fitness},{location}")
 
-        print(f"len(Exercise.objects.filter(id= exercise_id)):{len(Exercise.objects.filter(id= exercise_id))}")
+        # print(f"len(Exercise.objects.filter(id= exercise_id)):{len(Exercise.objects.filter(id= exercise_id))}")
         if username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 1: #For general fitness
             # exercise_data = Exercise.objects.filter(difficulty=fitness) #get all exercise data from db according to models.py format filtered by difficulty and equipment
             exercise_data = getExerciseGeneralFitness(fitness)
             df = pd.DataFrame.from_records(exercise_data.values())
-            print("ALL: ", df.tail)
+            # print("ALL: ", df.tail)
         
         elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 2: #For focused muscle building
             # exercise_data = Exercise.objects.filter(main_musclegroup=muscle, difficulty=fitness) #get exercise data filetered for muscle, difficulty and equipment from db according to models.py format
             exercise_data = getExerciseMuscleFitness(muscle,fitness)
-            print(exercise_data)
+            # print(exercise_data)
             df = pd.DataFrame.from_records(exercise_data.values())
-            print("MUSLCE: ", df.head)
+            # print("MUSLCE: ", df.head)
 
         elif username != None and exercise_id != None and Exercise.objects.filter(id= exercise_id).exists() and mode == 3: #For cardio
             muscle = "Cardio" #set muscle to cardio
@@ -842,25 +849,25 @@ class FirstReco(APIView):
         features = ['other_musclegroups', 'exercise_type', 'mechanics', 'equipment', 'exercise_name'] #type change to exercise type because type is special keyword
         for feature in features:
             df[feature] = df[feature].fillna('')
-        print(df[feature])
+        # print(df[feature])
 
         #Create combined features column
         def combined_features(row):
             return row['other_musclegroups']+" "+row['exercise_type']+" "+row['mechanics']+" "+row['exercise_name']+" "+row['equipment']
         df["combined_features"] = df.apply(combined_features, axis =1)
-        print(df["combined_features"])
+        # print(df["combined_features"])
 
         #Use CountVectorizer to convert words into word count for cosine similarity
         cv = CountVectorizer()
         count_matrix = cv.fit_transform(df["combined_features"])
-        print("Count Matrix:", count_matrix.toarray())
+        # print("Count Matrix:", count_matrix.toarray())
 
         #Cosine similarity
         cosine_sim = cosine_similarity(count_matrix)
-        print("here", len(cosine_sim))
+        # print("here", len(cosine_sim))
 
         exercise_index = df[df['id'] == exercise_id].index[0] #Convert exercise_id into row number in filtered df
-        print('ROW NUMBER HERE: ', exercise_index)
+        # print('ROW NUMBER HERE: ', exercise_index)
 
         #Place similar exercises in list and sort in descending similarity score
         similar_exercises = list(enumerate(cosine_sim[exercise_index]))
