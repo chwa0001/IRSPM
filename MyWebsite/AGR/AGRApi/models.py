@@ -88,9 +88,9 @@ class RoutineExercises(models.Model):
         db_table = 'ROUTINE_EXERICSE'
 
 def generate_database(): 
-    print("initiating database checkpoint 2")
+    # print("initiating database checkpoint 2")
     ex_db = pd.read_excel("./ExerciseDataBase.xlsx")
-    print("initiating database checkpoint 3")
+    # print("initiating database checkpoint 3")
     for ind,ex in ex_db.iterrows():
         e = Exercise(exercise_name = ex['Exercise Name'], main_musclegroup = ex['MainMuscleGroup'], 
                         detailed_musclegroup = ex['DetailedMuscleGroup'], other_musclegroups = ex['OtherMuscleGroups'],
@@ -98,7 +98,7 @@ def generate_database():
                         difficulty = ex['Difficulty'], instruction_text = ex['InstructionText'], 
                         pic_no = ex['PIC_NO'], link_url = ex['Link'])
         e.save()
-        print(f"save {ind}")
+        # print(f"save {ind}")
 
 
 def save_routine_exercises ():
@@ -112,11 +112,11 @@ def get_userid_from_userdb (username):
 
     if queryset.exists():
         user = queryset[0]
-        print(user.id)
+        # print(user.id)
         if user.username==username:
             #status:0==> user credential verified okay
             user_id = user.id
-            print(f"print user_id from get_userid_from_userdb function: {user_id}")
+            # print(f"print user_id from get_userid_from_userdb function: {user_id}")
             return user_id
     else:
         return -1
@@ -124,16 +124,16 @@ def get_userid_from_userdb (username):
 
 ##currently not used yet
 def get_data_from_userdb (username,request_type):
-    print("was here")
+    # print("was here")
     queryset = User.objects.filter(username=username)
 
     if queryset.exists():
         user = queryset[0]
-        print(f"get_data_from_userdb: {user.id}")
+        # print(f"get_data_from_userdb: {user.id}")
         if user.username==username:
             #status:0==> user credential verified okay
             return_var = user.request_type
-            print(f"print user_id from get_userid_from_userdb function: {return_var}")
+            # print(f"print user_id from get_userid_from_userdb function: {return_var}")
             return return_var
     else:
         return -1
@@ -141,18 +141,18 @@ def get_data_from_userdb (username,request_type):
 #antonia 03/24/21
 #Given the username, return the details
 def get_alluserdata_from_userdb (username):
-    print("was here")
+    # print("was here")
     user = User.objects.filter(username=username)[0]
-    print(f"user id from get_alluserdata_from_userdb: {user.id}")
+    # print(f"user id from get_alluserdata_from_userdb: {user.id}")
     userdata = UserData.objects.filter(user_id=user.id)[0]
     if userdata.user_id==user.id:
-        print(f"user from get_alluserdata_from_userdb function: {userdata.gender}")
-        print("{" + f""""gender":{userdata.gender},
-                            "fitness_level":{userdata.fitness_level},
-                            "goal":{userdata.goal},
-                            "intensity":{userdata.intensity},
-                            "bmi":{userdata.bmi}"""+"}")
-        print(userdata)
+        # print(f"user from get_alluserdata_from_userdb function: {userdata.gender}")
+        # print("{" + f""""gender":{userdata.gender},
+        #                     "fitness_level":{userdata.fitness_level},
+        #                     "goal":{userdata.goal},
+        #                     "intensity":{userdata.intensity},
+        #                     "bmi":{userdata.bmi}"""+"}")
+        # print(userdata)
         return userdata
     return -1
 
@@ -160,27 +160,27 @@ def get_alluserdata_from_userdb (username):
 #get all the set that have not been reviewed
 #get the first set. 
 def get_set_to_review (username, rate = False):
-    print("was here - get_set_to_review")
-    print(username)
+    # print("was here - get_set_to_review")
+    # print(username)
     user = User.objects.get(username=username)
-    print(f"user id from get_alluserdata_from_userdb: {user.id}")
+    # print(f"user id from get_alluserdata_from_userdb: {user.id}")
     # return "nothing"
     routine_set = Routine.objects.filter(userdata = user.id, rate = rate).order_by('-date')
-    print(f"routine_set len: {len(routine_set)}")
-    print(f"routine_set:{routine_set}")
+    # print(f"routine_set len: {len(routine_set)}")
+    # print(f"routine_set:{routine_set}")
 
     if len(routine_set) > 0 :
-        print(f"routine_set:{routine_set}")
+        # print(f"routine_set:{routine_set}")
         routine = routine_set[0]
-        print(f"user from get_alluserdata_from_userdb function: {routine.userdata_id}")
-        print("{" + f""""user_id":{routine.userdata_id},
-                            "set_id":{routine.id},
-                            "date":{routine.date},
-                            "rate":{routine.rate}"""+"}")
-        print(routine)
+        # print(f"user from get_alluserdata_from_userdb function: {routine.userdata_id}")
+        # print("{" + f""""user_id":{routine.userdata_id},
+        #                     "set_id":{routine.id},
+        #                     "date":{routine.date},
+        #                     "rate":{routine.rate}"""+"}")
+        # print(routine)
         return routine
     else :
-        print("no exercise to rate")
+        # print("no exercise to rate")
         return "no exercise to rate"    
 
 #antonia 04/02/21
@@ -200,10 +200,10 @@ def get_set (username):
 #antonia 03/24/21
 #from routine object, get all the exercises associated with that routine set
 def get_set_exercises (routine):
-    print("was here - get_set_exercises")
+    # print("was here - get_set_exercises")
     exercises = RoutineExercises.objects.filter(routine = routine.id)
-    print(f"routine: {routine}")
-    print(f"exercises: {exercises}")
+    # print(f"routine: {routine}")
+    # print(f"exercises: {exercises}")
 
     edic = []
     enames = []
@@ -211,14 +211,14 @@ def get_set_exercises (routine):
     for exercise in exercises:
         temp_dic = {}
         e = Exercise.objects.get(id = exercise.exercise_id)
-        print(f"ename: {e.exercise_name}")
-        print(f"exercise.exercise_id : {exercise.exercise_id}")
+        # print(f"ename: {e.exercise_name}")
+        # print(f"exercise.exercise_id : {exercise.exercise_id}")
         temp_dic["id"] = e.id
         temp_dic["name"] = e.exercise_name
         edic.append(temp_dic)
         enames.append(e.exercise_name)
         eids.append(e.id)
-    print(edic)
+    # print(edic)
     return enames,edic,eids 
 
 #antonia 03/24/21 not used -- to delete in the future if not used

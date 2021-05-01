@@ -606,7 +606,7 @@ class GetSetList(APIView):
                 exercises_details = []
                 exercise_name = []
                 for routine_exercises in routine_exercises_class:
-                    print(f"exercise_item.exercise_id: {routine_exercises.exercise_id}")
+                    # print(f"exercise_item.exercise_id: {routine_exercises.exercise_id}")
                     
                     item = Exercise.objects.get(id=routine_exercises.exercise_id)
                     exercise_name.append(item.exercise_name)
@@ -630,7 +630,7 @@ def convertExerciseListToDetailsJson(exercise):
     recoExArray = []
     i = 0
     while i < len(recoEx):
-        print("in the while loop of convertExerciseListToDetailsJson")
+        # print("in the while loop of convertExerciseListToDetailsJson")
         recoExArray.append(prepExerciseDetails(ExerciseSerializer(recoEx[i]).data)) #serialize into json format
         i += 1
     print(recoExArray)
