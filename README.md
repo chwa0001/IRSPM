@@ -21,7 +21,7 @@ The AGR application provides a full stack solution to exercise recommendation fo
 
 | Official Full Name  | Student ID (MTech Applicable)  | Work Items (Who Did What) | Email (Optional) |
 | :------------ |:---------------:| :-----| :-----|
-| Antonia Devina | A0127686R | Business Idea and Market Research, Model and Database, Front and Back-end Interaction Development, Video, Report | e0689798@u.nus.edu |
+| Antonia Devina | A0127686R | Business Idea and Market Research, Knowledge Data Extraction and Database, Front and Back-end Interaction Development, Video, Report | e0689798@u.nus.edu |
 | Chwa Choon Xiang | A0229962R | Business Idea and Market Research, Front End Web Development, System architecture design, Video, Report | e0687370@u.nus.edu|
 | Gerard Ong Zi Quan | A0229967H | Business Idea and Market Research, Subsequent User Recommender Logic, Group User-User Recommender Loigc, Video, Report | e0687375@u.nus.edu |
 | Benjamin Quek Xiang Yi | A0229973M | Business Idea and Market Research, First User Recommender Logic, Solution architecture design, Video, Report  | e0687381@u.nus.edu |
