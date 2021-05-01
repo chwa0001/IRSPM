@@ -52,10 +52,10 @@ NUS ISS IRS PM Advanced Gym Recommender System Presentation
 ## Installation:
 This section act as an installation guide for AGR in a new anaconda environment to ensure minimum installation problem by users. Pip install is used instead of conda install due to some packages require the instalment through pip. Although there is other way to install all the dependencies, we high encourage users to follow the guide below. 
 
-Windows 10 download guide. Prerequisite having anaconda installed
+### Windows 10 download guide. Prerequisite having anaconda installed
 1.	Download / clone this file into your directory.
 2.	Open anaconda command prompt and navigate into the downloaded/cloned directory.
-By default, the directory can be found in C:/<username>/Documents/GitHub/IRSPM
+By default, the directory can be found in C:/<<username>>/Documents/GitHub/IRSPM
 3.	Run the following command line by line
 
 `conda create --name myagr python=3.9.2 pip`
@@ -72,10 +72,10 @@ By default, the directory can be found in C:/<username>/Documents/GitHub/IRSPM
 6.	Go to localhost:8000 from web browser, link: http://127.0.0.1:8000/
 
 
-Ubuntu Linux download guide. Prerequisite having anaconda installed
+### Ubuntu Linux download guide. Prerequisite having anaconda installed
 1.	Download / clone this file into your directory.
 2.	Open anaconda command prompt and navigate into the downloaded/cloned directory.
-By default, the directory can be found in C:/<username>/Documents/GitHub/IRSPM
+By default, the directory can be found in C:/<<username>>/Documents/GitHub/IRSPM
 3.	Run the following command line by line
 
 `conda create --name myagr python=3.9.2 pip`
