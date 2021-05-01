@@ -51,6 +51,8 @@ NUS ISS IRS PM Advanced Gym Recommender Presentation
 
 ## Installation:
 This section act as an installation guide for AGR in a new anaconda environment to ensure minimum installation problem by users. Pip install is used instead of conda install due to some packages require the instalment through pip. Although there is other way to install all the dependencies, we high encourage users to follow the guide below. 
+
+Windows 10 download guide. Prerequisite having anaconda installed
 1.	Download / clone this file into your directory.
 2.	Open anaconda command prompt and navigate into the downloaded/cloned directory.
 By default, the directory can be found in C:/<username>/Documents/GitHub/IRSPM
@@ -70,6 +72,29 @@ By default, the directory can be found in C:/<username>/Documents/GitHub/IRSPM
 6.	Go to localhost:8000 from web browser, link: http://127.0.0.1:8000/
 
 
+Ubuntu Linux download guide. Prerequisite having anaconda installed
+1.	Download / clone this file into your directory.
+2.	Open anaconda command prompt and navigate into the downloaded/cloned directory.
+By default, the directory can be found in C:/<username>/Documents/GitHub/IRSPM
+3.	Run the following command line by line
+
+`conda create --name myagr python=3.9.2 pip`
+
+`conda activate myagr`
+
+`sudo apt-get install gcc`
+
+`pip install psycopg2-binary`
+
+`pip install -r pip_linux_requirements.txt`
+
+4.	Navigate into MyWebsite\AGR folder
+5.	Run the line below to start the program running locally.
+
+`python manage.py runserver`
+
+6.	Go to localhost:8000 from web browser, link: http://127.0.0.1:8000/
+
 ---
 ## SECTION 6 : PROJECT REPORT / PAPER
 
@@ -81,7 +106,7 @@ REFER TO THE PROJECT REPORT : [NUS ISS PM AGR REPORT](https://github.com/chwa000
 4.	PROJECT IMPLEMENTATION: A CASE STUDY
 5.	PERFORMANCE VALIDATIONS AND LIMITATION
 6.	CONCLUSION
-7.	Bibliography
+7.	BIBLIOGRAPHY
 8.	APPENDIXE
 
 ---
